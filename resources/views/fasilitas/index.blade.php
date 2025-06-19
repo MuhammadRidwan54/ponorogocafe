@@ -39,7 +39,10 @@
                     <tr class="hover:bg-gray-50">
                         <td class="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-sm text-gray-900">{{ $index + 1 }}</td>
                         <td class="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $item->nama_fasilitas }}</td>
-                        <td class="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-sm text-gray-500">{!! $item->icon_svg !!}</td>
+                        <td class="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span class="inline-block w-6 h-6">{!! $item->icon_svg !!}</span>
+                        </td>
+
                         <td class="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-sm font-medium space-x-3">
                             <button onclick="openModal('edit', {{ $item->id }}, '{{ $item->nama_fasilitas }}')" class="text-blue-600 hover:text-blue-900 transition-colors">
                                 <i class="fas fa-edit"></i>
