@@ -111,5 +111,20 @@
     function closeModal() {
         document.getElementById('hargaMenuModal').classList.add('hidden');
     }
+    // ...fungsi updateIconPreview, openModal, closeModal...
+
+    // Tutup modal jika klik di luar area modalContent
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('hargaMenuModal');
+        const modalContent = document.querySelector('#hargaMenuModal .relative');
+
+        if (modal && modalContent) {
+            modal.addEventListener('mousedown', function(e) {
+                if (!modalContent.contains(e.target)) {
+                    closeModal();
+                }
+            });
+        }
+    });
 </script>
 @endsection

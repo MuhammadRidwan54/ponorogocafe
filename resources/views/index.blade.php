@@ -64,7 +64,7 @@
                     <i class="fas fa-sliders-h text-lg"></i>
                 </button>
                 <!-- Chips -->
-                <div id="selectedFilters" class="flex flex-wrap gap-2 justify-center mb-6 hidden"></div>
+                <div id="selectedFilters" class="flex flex-wrap gap-2 justify-center hidden"></div>
                 <input 
                     type="text" 
                     name="search"
@@ -174,6 +174,38 @@
                 </div>
             </form>
         </div>
+        @if(request()->has('search') || request()->has('harga_menu') || request()->has('kapasitas_ruang') || request()->has('tempat_parkir') || request()->has('fasilitas'))
+            <form action="{{ route('cafe.search') }}" method="GET" class="flex flex-wrap gap-2 mt-2 mb-8 justify-start">
+                {{-- Pertahankan filter lain --}}
+                <input type="hidden" name="search" value="{{ request('search') }}">
+                <input type="hidden" name="harga_menu" value="{{ request('harga_menu') }}">
+                <input type="hidden" name="kapasitas_ruang" value="{{ request('kapasitas_ruang') }}">
+                <input type="hidden" name="tempat_parkir" value="{{ request('tempat_parkir') }}">
+                @if(request()->has('fasilitas'))
+                    @foreach(request('fasilitas') as $f)
+                        <input type="hidden" name="fasilitas[]" value="{{ $f }}">
+                    @endforeach
+                @endif
+
+                @php
+                    $jamBukaOptions = [
+                        '' => 'Semua',
+                        'pagi' => 'Pagi',
+                        'siang' => 'Siang',
+                        'sore' => 'Sore',
+                        '24_jam' => '24 Jam'
+                    ];
+                @endphp
+
+                @foreach($jamBukaOptions as $val => $label)
+                    <button type="submit" name="jam_buka" value="{{ $val }}"
+                        class="px-4 py-2 rounded-full border transition
+                        {{ request('jam_buka', '') === $val ? 'bg-amber-700 text-white border-amber-700' : 'bg-white text-amber-700 border-amber-700 hover:bg-amber-50' }}">
+                        {{ $label }}
+                    </button>
+                @endforeach
+            </form>
+        @endif
 
         @if(request()->has('search') || request()->has('harga_menu') || request()->has('kapasitas_ruang') || request()->has('tempat_parkir') || request()->has('fasilitas'))
             <!-- Grid View for Search Results -->
@@ -398,6 +430,21 @@
             //         this.closest('form').submit();
             //     });
             // });
+
+            // Validasi: harus ada kriteria dipilih sebelum submit
+            const searchForm = document.querySelector('form[action="{{ route('cafe.search') }}"]');
+            if (searchForm) {
+                searchForm.addEventListener('submit', function(e) {
+                    // Cek apakah ada filter radio/checkbox yang dipilih
+                    const radioChecked = searchForm.querySelector('input[type="radio"]:checked');
+                    const checkboxChecked = searchForm.querySelector('input[type="checkbox"]:checked');
+                    if (!radioChecked && !checkboxChecked) {
+                        e.preventDefault();
+                        alert('Silakan pilih minimal satu kriteria pencarian (filter) terlebih dahulu.');
+                        return false;
+                    }
+                });
+            }
 
             // Initialize on page load
             updateSelectedFilters();

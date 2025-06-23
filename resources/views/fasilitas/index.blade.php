@@ -166,5 +166,20 @@
     function closeModal() {
         document.getElementById('fasilitasModal').classList.add('hidden');
     }
+    // ...fungsi updateIconPreview, openModal, closeModal...
+
+    // Tutup modal jika klik di luar area modalContent
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('fasilitasModal');
+        const modalContent = document.querySelector('#fasilitasModal .relative');
+
+        if (modal && modalContent) {
+            modal.addEventListener('mousedown', function(e) {
+                if (!modalContent.contains(e.target)) {
+                    closeModal();
+                }
+            });
+        }
+    });
 </script>
 @endsection 

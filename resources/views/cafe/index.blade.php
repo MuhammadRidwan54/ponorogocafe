@@ -170,7 +170,7 @@ function openModal(action, id = null) {
 
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Alamat URL</label>
-                    <input type="url" name="alamat_url"
+                    <input type="text" name="alamat_url"
                         class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent"
                         placeholder="https://maps.google.com/..." >
                 </div>

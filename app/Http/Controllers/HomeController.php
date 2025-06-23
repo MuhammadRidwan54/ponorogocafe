@@ -57,6 +57,19 @@ class HomeController extends Controller
             $query->where('tempatparkir_id', $request->tempat_parkir);
         }
 
+        // Filter berdasarkan jam_buka
+        if ($request->filled('jam_buka')) {
+            if ($request->jam_buka === '24_jam') {
+                $query->whereHas('jambuka', function($q) {
+                    $q->where('jam_buka', 'like', '%24 jam%');
+                });
+            } else {
+                $query->whereHas('jambuka', function($q) use ($request) {
+                    $q->where('jam_buka', 'like', '%' . $request->jam_buka . '%');
+                });
+            }
+        }
+
         $cafes = $query->get();
 
         return view('index', [

@@ -44,7 +44,7 @@ class CafeController extends Controller
         $request->validate([
             'nama_cafe' => 'required|string',
             'alamat' => 'required|string',
-            'alamat_url' => 'nullable|url',
+            'alamat_url' => 'required|url',
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'gambar.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'fasilitas_id' => 'required|array',
@@ -65,7 +65,7 @@ class CafeController extends Controller
         $cafe = Cafe::create([
             'nama_cafe' => $request->nama_cafe,
             'alamat' => $request->alamat,
-            'alamat_url' => $request->alamat_url ?? null,
+            'alamat_url' => $request->alamat_url,
             'thumbnail' => $request->file('thumbnail')->store('thumbnail_cafe', 'public'),
             'gambar' => json_encode($gambarPaths),
             'hargamenu_id' => $request->hargamenu_id,
@@ -95,7 +95,7 @@ class CafeController extends Controller
             'hargamenu',
             'kapasitasruang',
             'tempatparkir',
-            'fasilitas'
+            'fasilitas',
         ));
     }
 
