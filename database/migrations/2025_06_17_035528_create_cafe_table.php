@@ -15,6 +15,7 @@ return new class extends Migration
     $table->id();
     $table->string('nama_cafe');
     $table->string('alamat');
+    $table->string('alamat_url')->nullable();
     $table->string('thumbnail');
     $table->json('gambar')->nullable();
     $table->unsignedBigInteger('hargamenu_id');

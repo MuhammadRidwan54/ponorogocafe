@@ -22,6 +22,8 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/', 'index')->name('home.index');
     Route::get('/hasil', 'hasil')->name('home.hasil');
     Route::get('/cafe/{id}', 'cafe')->name('home.cafe');
+
+    Route::get('/search', 'search')->name('cafe.search');
 });
 
 /*
@@ -45,6 +47,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware(['auth'])->group(function () {
     // Dashboard Route
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    
     
     // Admin Resource Routes
     Route::resource('cafe', CafeController::class);

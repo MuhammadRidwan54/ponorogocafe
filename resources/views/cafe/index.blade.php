@@ -33,6 +33,7 @@
                         <th class="px-3 lg:px-6 py-3 lg:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gambar</th>
                         <th class="px-3 lg:px-6 py-3 lg:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Cafe</th>
                         <th class="px-3 lg:px-6 py-3 lg:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alamat</th>
+                        <th class="px-3 lg:px-6 py-3 lg:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alamat URL</th>
                         <th class="px-3 lg:px-6 py-3 lg:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fasilitas</th>
                         <th class="px-3 lg:px-6 py-3 lg:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga Menu</th>
                         <th class="px-3 lg:px-6 py-3 lg:py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kapasitas Ruang</th>
@@ -61,6 +62,13 @@
                         </td>
                         <td class="px-3 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $item->nama_cafe }}</td>
                         <td class="px-3 lg:px-6 py-3 lg:py-4 text-sm text-gray-500">{{ $item->alamat }}</td>
+                        <td class="px-3 lg:px-6 py-3 lg:py-4 text-sm text-gray-500">
+                            @if($item->alamat_url)
+                                <a href="{{ $item->alamat_url }}" target="_blank" class="text-blue-600 hover:underline">{{ $item->alamat_url }}</a>
+                            @else
+                                -
+                            @endif
+                        </td>
                         <td class="px-3 lg:px-6 py-3 lg:py-4 text-sm text-gray-500">{{ $item->fasilitas->pluck('nama_fasilitas')->implode(', ') ?: '-' }}</td>
                         <td class="px-3 lg:px-6 py-3 lg:py-4 text-sm text-gray-500">{{ $item->hargamenu->harga_menu ?? '-' }}</td>
                         <td class="px-3 lg:px-6 py-3 lg:py-4 text-sm text-gray-500">{{ $item->kapasitasruang->kapasitas_ruang ?? '-' }}</td>
@@ -71,6 +79,7 @@
                                 "id" => $item->id,
                                 "nama_cafe" => $item->nama_cafe,
                                 "alamat" => $item->alamat,
+                                "alamat_url" => $item->alamat_url,
                                 "jambuka_id" => $item->jambuka_id,
                                 "hargamenu_id" => $item->hargamenu_id,
                                 "kapasitasruang_id" => $item->kapasitasruang_id,
@@ -157,6 +166,13 @@ function openModal(action, id = null) {
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Alamat</label>
                     <textarea name="alamat" rows="3" class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Alamat URL</label>
+                    <input type="url" name="alamat_url"
+                        class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent"
+                        placeholder="https://maps.google.com/..." >
                 </div>
 
                 <div class="mb-4">
@@ -247,6 +263,13 @@ function openModal(action, id = null) {
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2">Alamat</label>
                         <textarea name="alamat" rows="3" class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required>${cafe.alamat.replace(/"/g, '&quot;')}</textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Alamat URL</label>
+                        <input type="url" name="alamat_url" value="${cafe.alamat_url ? cafe.alamat_url : ''}" 
+                            class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent"
+                            placeholder="https://maps.google.com/..." >
                     </div>
 
                     <div class="mb-4">
@@ -472,5 +495,19 @@ function handleImagePreview(event) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+  // ...fungsi modal, openModal, closeModal, dsb...
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const modal = document.getElementById('cafeModal');
+        const modalContent = document.querySelector('#cafeModal .relative');
+
+        if (modal && modalContent) {
+            modal.addEventListener('mousedown', function(e) {
+                if (!modalContent.contains(e.target)) {
+                    closeModal();
+                }
+            });
+        }
+    });
 </script>
 @endsection

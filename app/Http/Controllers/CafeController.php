@@ -44,6 +44,7 @@ class CafeController extends Controller
         $request->validate([
             'nama_cafe' => 'required|string',
             'alamat' => 'required|string',
+            'alamat_url' => 'nullable|url',
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'gambar.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'fasilitas_id' => 'required|array',
@@ -64,6 +65,7 @@ class CafeController extends Controller
         $cafe = Cafe::create([
             'nama_cafe' => $request->nama_cafe,
             'alamat' => $request->alamat,
+            'alamat_url' => $request->alamat_url ?? null,
             'thumbnail' => $request->file('thumbnail')->store('thumbnail_cafe', 'public'),
             'gambar' => json_encode($gambarPaths),
             'hargamenu_id' => $request->hargamenu_id,
@@ -75,6 +77,7 @@ class CafeController extends Controller
         $cafe->fasilitas()->sync($request->fasilitas_id);
 
         return redirect()->route('cafe.index')->with('success', 'Cafe berhasil ditambahkan');
+        
     }
 
     public function edit($id)
@@ -101,6 +104,7 @@ class CafeController extends Controller
         $request->validate([
             'nama_cafe' => 'required|string',
             'alamat' => 'required|string',
+            'alamat_url' => 'nullable|url',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'gambar.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'hargamenu_id' => 'required|exists:hargamenu,id',
@@ -123,6 +127,7 @@ class CafeController extends Controller
         $updateData = [
             'nama_cafe' => $request->nama_cafe,
             'alamat' => $request->alamat,
+            'alamat_url' => $request->alamat_url ?? null,
             'gambar' => json_encode($gambarPaths),
             'hargamenu_id' => $request->hargamenu_id,
             'kapasitasruang_id' => $request->kapasitasruang_id,

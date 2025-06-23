@@ -14,6 +14,7 @@ class Cafe extends Model
     protected $fillable = [
         'nama_cafe',
         'alamat',
+        'alamat_url',
         'thumbnail', // Disimpan sebagai string (path ke gambar)
         'gambar', // Disimpan dalam bentuk JSON (array)
         'hargamenu_id',

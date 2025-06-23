@@ -15,13 +15,59 @@ class HomeController extends Controller
     // Halaman utama
     public function index()
     {
+        $cafes = Cafe::with(['fasilitas', 'hargamenu', 'kapasitasruang', 'tempatparkir', 'jambuka'])->get();
+
         return view('index', [
+            'cafes' => $cafes,
             'hargamenu' => HargaMenu::all(),
             'kapasitasruang' => KapasitasRuang::all(),
             'fasilitas' => Fasilitas::all(),
             'tempatParkir' => TempatParkir::all()
         ]);
     }
+
+    public function search(Request $request)
+    {
+        $query = Cafe::with(['fasilitas', 'hargamenu', 'kapasitasruang', 'tempatparkir', 'jambuka']);
+
+        // Filter berdasarkan nama_cafe
+        if ($request->filled('search')) {
+            $query->where('nama_cafe', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter berdasarkan fasilitas
+        if ($request->has('fasilitas') && is_array($request->fasilitas)) {
+            $query->whereHas('fasilitas', function ($q) use ($request) {
+                $q->whereIn('fasilitas.id', $request->fasilitas);
+            });
+        }
+
+        // Filter berdasarkan harga_menu
+        if ($request->filled('harga_menu')) {
+            $query->where('hargamenu_id', $request->harga_menu);
+        }
+
+        // Filter berdasarkan kapasitas_ruang
+        if ($request->filled('kapasitas_ruang')) {
+            $query->where('kapasitasruang_id', $request->kapasitas_ruang);
+        }
+
+        // Filter berdasarkan tempat_parkir
+        if ($request->filled('tempat_parkir')) {
+            $query->where('tempatparkir_id', $request->tempat_parkir);
+        }
+
+        $cafes = $query->get();
+
+        return view('index', [
+            'cafes' => $cafes,
+            'hargamenu' => HargaMenu::all(),
+            'kapasitasruang' => KapasitasRuang::all(),
+            'fasilitas' => Fasilitas::all(),
+            'tempatParkir' => TempatParkir::all()
+        ]);
+    }
+
 
     // Hasil rekomendasi SAW
     public function hasil(Request $request)

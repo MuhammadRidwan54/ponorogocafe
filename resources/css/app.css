@@ -1,11 +1,20 @@
-@import 'tailwindcss';
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+/* Chip Filter Style */
+.filter-chip {
+    @apply bg-white text-black text-sm px-3 py-1 rounded-full cursor-pointer border border-gray-300 hover:bg-gray-100 transition;
+}
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+input:checked + .filter-chip {
+    @apply bg-black text-white border-black;
+}
+
+/* Selected filter chip at top (with X button) */
+.selected-chip {
+    @apply bg-[#6e5832] text-white text-sm px-3 py-1 rounded-full flex items-center gap-2;
+}
+.selected-chip .remove-chip {
+    @apply text-white cursor-pointer;
 }
