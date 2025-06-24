@@ -31,10 +31,9 @@ class HomeController extends Controller
         $query = Cafe::with(['fasilitas', 'hargamenu', 'kapasitasruang', 'tempatparkir', 'jambuka']);
 
         // Filter berdasarkan nama_cafe
-        if ($request->filled('search')) {
-            $query->where('nama_cafe', 'like', '%' . $request->search . '%');
-        }
-
+       if ($request->filled('search')) {
+        $query->where('nama_cafe', 'like', '%' . $request->search . '%');
+    }
         // Filter berdasarkan fasilitas
         if ($request->has('fasilitas') && is_array($request->fasilitas)) {
             $query->whereHas('fasilitas', function ($q) use ($request) {
@@ -59,16 +58,10 @@ class HomeController extends Controller
 
         // Filter berdasarkan jam_buka
         if ($request->filled('jam_buka')) {
-            if ($request->jam_buka === '24_jam') {
-                $query->whereHas('jambuka', function($q) {
-                    $q->where('jam_buka', 'like', '%24 jam%');
-                });
-            } else {
-                $query->whereHas('jambuka', function($q) use ($request) {
-                    $q->where('jam_buka', 'like', '%' . $request->jam_buka . '%');
-                });
-            }
-        }
+        $query->whereHas('jambuka', function($q) use ($request) {
+            $q->where('waktu_buka', $request->jam_buka === '24_jam' ? '24' : $request->jam_buka);
+        });
+    }
 
         $cafes = $query->get();
 
@@ -83,79 +76,98 @@ class HomeController extends Controller
 
 
     // Hasil rekomendasi SAW
-    public function hasil(Request $request)
-    {
-        // Ambil input user
-        $input = $request->only([
-            'harga_menu',
-            'kapasitas_ruang',
-            'tempat_parkir',
-            'fasilitas',
-            'jam'
-        ]);
+  public function hasil(Request $request)
+{
+    $input = $request->only([
+        'harga_menu',
+        'kapasitas_ruang',
+        'tempat_parkir',
+        'fasilitas',
+        'jam'
+    ]);
 
-        // Ambil data cafe dan relasi
-        $cafes = Cafe::with(['hargamenu', 'kapasitasruang', 'tempatparkir', 'jambuka', 'fasilitas'])->get();
+    $cafes = Cafe::with(['hargamenu', 'kapasitasruang', 'tempatparkir', 'jambuka', 'fasilitas'])->get();
 
-        // Bobot SAW
-        $bobot = [
-            'harga_menu' => 0.25,
-            'kapasitas_ruang' => 0.25,
-            'tempat_parkir' => 0.25,
-            'jam_buka' => 0.25,
-        ];
+    $bobot = [
+        'harga_menu'      => 0.28, // Cost
+        'kapasitas_ruang' => 0.12,
+        'ac'              => 0.14,
+        'tempat_ibadah'   => 0.20,
+        'toilet'          => 0.14,
+        'ruang_rapat'     => 0.10,
+        'tempat_parkir'   => 0.02,
+    ];
 
-        // Nilai maksimum per kriteria
-        $max = [
-            'harga_menu' => $cafes->max(fn($c) => $c->hargamenu->nilai ?? 1),
-            'kapasitas_ruang' => $cafes->max(fn($c) => $c->kapasitasruang->nilai ?? 1),
-            'tempat_parkir' => $cafes->max(fn($c) => $c->tempatparkir->nilai ?? 1),
-            'jam_buka' => $cafes->max(fn($c) => $c->jambuka->nilai ?? 1),
-        ];
-
-        // Hitung skor SAW
-        $cafes = $cafes->map(function ($cafe) use ($bobot, $max) {
-            $score = 0;
-            $score += (($cafe->hargamenu->nilai ?? 0) / ($max['harga_menu'] ?: 1)) * $bobot['harga_menu'];
-            $score += (($cafe->kapasitasruang->nilai ?? 0) / ($max['kapasitas_ruang'] ?: 1)) * $bobot['kapasitas_ruang'];
-            $score += (($cafe->tempatparkir->nilai ?? 0) / ($max['tempat_parkir'] ?: 1)) * $bobot['tempat_parkir'];
-            $score += (($cafe->jambuka->nilai ?? 0) / ($max['jam_buka'] ?: 1)) * $bobot['jam_buka'];
-            $cafe->score = round($score, 4);
-            return $cafe;
-        })->sortByDesc('score')->values();
-
-        // Filter berdasarkan jam buka
-        if (!empty($input['jam'])) {
-            $cafes = $cafes->filter(function ($cafe) use ($input) {
-                $jamBuka = $cafe->jambuka->jam_buka ?? '00:00';
-                $jamAwal = intval(substr($jamBuka, 0, 2));
-
-                return match ($input['jam']) {
-                    'pagi' => $jamAwal >= 7 && $jamAwal <= 11,
-                    'siang' => $jamAwal >= 12 && $jamAwal <= 15,
-                    'sore' => $jamAwal >= 16 && $jamAwal <= 18,
-                    '24' => str_contains(strtolower($jamBuka), '24'),
-                    default => true,
-                };
-            })->values();
+    $cafes = $cafes->map(function ($cafe) use ($bobot) {
+        // Harga Menu (Cost)
+        $harga = intval($cafe->hargamenu->harga_menu);
+        $nilaiHarga = 1;
+        if ($harga <= 10000) {
+            $nilaiHarga = 5;
+        } elseif ($harga <= 20000) {
+            $nilaiHarga = 3;
         }
 
-        // Filter berdasarkan fasilitas
-        if (!empty($input['fasilitas'])) {
-            $fasilitasInput = $input['fasilitas'];
-            $cafes = $cafes->filter(function ($cafe) use ($fasilitasInput) {
-                $cafeFasilitas = $cafe->fasilitas->pluck('id')->toArray();
-                return count(array_intersect($fasilitasInput, $cafeFasilitas)) === count($fasilitasInput);
-            })->values();
+        // Kapasitas Ruang
+        $kapasitas = intval($cafe->kapasitasruang->kapasitas_ruang);
+        $nilaiKapasitas = 1;
+        if ($kapasitas > 50) {
+            $nilaiKapasitas = 5;
+        } elseif ($kapasitas >= 20) {
+            $nilaiKapasitas = 3;
         }
 
-        return view('hasil', [
-            'cafes' => $cafes,
-            'jamBukaOptions' => Jambuka::all(),
-            'kriteria' => $input,
-            'request' => $request
-        ]);
+        // Tempat Parkir
+        $parkir = strtolower($cafe->tempatparkir->tempat_parkir ?? '');
+        $nilaiParkir = ($parkir === 'luas (motor & mobil)') ? 5 : 3;
+
+        // Fasilitas
+        $fasilitasId = $cafe->fasilitas->pluck('nama_fasilitas')->map(fn($f) => strtolower($f))->toArray();
+
+        $nilaiAc           = in_array('ac', $fasilitasId) ? 5 : 3;
+        $nilaiTempatIbadah = in_array('tempat ibadah', $fasilitasId) ? 5 : 3;
+        $nilaiToilet       = in_array('toilet', $fasilitasId) ? 5 : 3;
+        $nilaiRuangRapat   = in_array('ruang rapat', $fasilitasId) ? 5 : 3;
+
+        // Skor SAW
+        $score =
+            ($nilaiHarga / 5) * $bobot['harga_menu'] +
+            ($nilaiKapasitas / 5) * $bobot['kapasitas_ruang'] +
+            ($nilaiAc / 5) * $bobot['ac'] +
+            ($nilaiTempatIbadah / 5) * $bobot['tempat_ibadah'] +
+            ($nilaiToilet / 5) * $bobot['toilet'] +
+            ($nilaiRuangRapat / 5) * $bobot['ruang_rapat'] +
+            ($nilaiParkir / 5) * $bobot['tempat_parkir'];
+
+        $cafe->score = round($score, 4);
+        return $cafe;
+    })->sortByDesc('score')->values();
+
+    // Filter jam buka pakai waktu_buka
+    if (!empty($input['jam'])) {
+        $cafes = $cafes->filter(function ($cafe) use ($input) {
+            return strtolower($cafe->jambuka->waktu_buka) === strtolower($input['jam']);
+        })->values();
     }
+
+    // Filter fasilitas tambahan
+    if (!empty($input['fasilitas'])) {
+        $fasilitasInput = $input['fasilitas'];
+        $cafes = $cafes->filter(function ($cafe) use ($fasilitasInput) {
+            $cafeFasilitas = $cafe->fasilitas->pluck('id')->toArray();
+            return count(array_intersect($fasilitasInput, $cafeFasilitas)) === count($fasilitasInput);
+        })->values();
+    }
+
+    return view('index', [
+        'cafes' => $cafes,
+        'jamBukaOptions' => Jambuka::all(),
+        'kriteria' => $input,
+        'request' => $request
+    ]);
+}
+
+
 
     // Detail cafe
     public function cafe($id)

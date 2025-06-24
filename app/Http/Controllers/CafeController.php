@@ -45,8 +45,8 @@ class CafeController extends Controller
             'nama_cafe' => 'required|string',
             'alamat' => 'required|string',
             'alamat_url' => 'required|url',
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'gambar.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:5120', // 5MB
+            'gambar.*' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // 5MB
             'fasilitas_id' => 'required|array',
             'fasilitas_id.*' => 'exists:fasilitas,id',
             'hargamenu_id' => 'required|exists:hargamenu,id',

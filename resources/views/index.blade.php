@@ -1,102 +1,44 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rekomendasi Cafe - Ponorogo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'amber': {
-                            50: '#fffbeb',
-                            100: '#fef3c7',
-                            200: '#fde68a',
-                            300: '#fcd34d',
-                            400: '#fbbf24',
-                            500: '#f59e0b',
-                            600: '#d97706',
-                            700: '#b45309',
-                            800: '#92400e',
-                            900: '#78350f',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
-        .filter-chip {
-            @apply bg-white/20 text-white px-3 py-2 rounded-full text-sm cursor-pointer transition-all duration-200 hover:bg-white/30;
-        }
-        .filter-chip.active {
-            @apply bg-white text-amber-800;
-        }
-        .cafe-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .cafe-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-    </style>
-</head>
-<body class="bg-white min-h-screen">
-    <!-- Hero Section -->
-    <div class="text-center py-16 px-4">
+@extends('layouts-user.app')
+
+@section('title', 'Rekomendasi Cafe - Ponorogo')
+
+@section('content')
+<div class="text-center py-16 px-4">
         <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Rekomendasi Cafe untuk Anda</h1>
         <p class="text-gray-600 text-lg mb-8">Cari rekomendasi cafe sesuai kriteria</p>
 
         <!-- Search Form -->
         <form action="{{ route('cafe.search') }}" method="GET" class="relative mx-auto w-full max-w-2xl">
             <div class="bg-white rounded-full px-6 py-4 flex items-center shadow-lg border border-gray-200">
-                <button type="button" id="toggleFilter" class="text-amber-700 hover:bg-amber-50 rounded-full p-2 mr-3 transition-colors">
+                <button type="button" id="toggleFilter"
+                    class="text-amber-700 hover:bg-amber-50 rounded-full p-2 mr-3 transition-colors">
                     <i class="fas fa-sliders-h text-lg"></i>
                 </button>
                 <!-- Chips -->
                 <div id="selectedFilters" class="flex flex-wrap gap-2 justify-center hidden"></div>
-                <input 
-                    type="text" 
-                    name="search"
-                    id="searchInput"
-                    placeholder="Cari nama cafe..." 
-                    value="{{ request('search') }}"
-                    class="w-full flex-1 focus:outline-none text-lg bg-transparent"
-                />
+                <input type="text" name="search" id="searchInput" placeholder="Cari nama cafe..."
+                    value="{{ request('search') }}" class="w-full flex-1 focus:outline-none text-lg bg-transparent" />
                 <button type="submit" class="text-amber-700 hover:bg-amber-50 rounded-full p-2 ml-3 transition-colors">
                     <i class="fas fa-search text-lg"></i>
                 </button>
             </div>
 
             <!-- Filter Dropdown -->
-            <div id="filterDropdown" class="hidden absolute top-full mt-4 w-full bg-amber-800 text-white rounded-2xl p-6 shadow-xl z-10">
+            <div id="filterDropdown"
+                class="hidden absolute top-full mt-4 w-full bg-amber-800 text-white rounded-2xl p-6 shadow-xl z-10">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Harga Menu -->
                     <div>
                         <p class="font-bold mb-3 text-white">Harga menu</p>
                         <div class="space-y-2">
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="radio" name="harga_menu" value="1" {{ request('harga_menu') == '1' ? 'checked' : '' }} class="text-amber-600">
-                                <span class="text-sm">>10.000k</span>
-                            </label>
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="radio" name="harga_menu" value="2" {{ request('harga_menu') == '2' ? 'checked' : '' }} class="text-amber-600">
-                                <span class="text-sm">>20.000k</span>
-                            </label>
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="radio" name="harga_menu" value="3" {{ request('harga_menu') == '3' ? 'checked' : '' }} class="text-amber-600">
-                                <span class="text-sm">>30.000k</span>
-                            </label>
+                            @foreach ($hargamenu as $menu)
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="radio" name="harga_menu" value="{{ $menu->id }}"
+                                        {{ request('harga_menu') == $menu->id ? 'checked' : '' }}
+                                        class="text-amber-600">
+                                    <span class="text-sm">{{ $menu->harga_menu }}</span>
+                                </label>
+                            @endforeach
                         </div>
                     </div>
 
@@ -104,18 +46,14 @@
                     <div>
                         <p class="font-bold mb-3 text-white">Kapasitas ruang</p>
                         <div class="space-y-2">
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="radio" name="kapasitas_ruang" value="1" {{ request('kapasitas_ruang') == '1' ? 'checked' : '' }} class="text-amber-600">
-                                <span class="text-sm"><20 orang</span>
-                            </label>
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="radio" name="kapasitas_ruang" value="2" {{ request('kapasitas_ruang') == '2' ? 'checked' : '' }} class="text-amber-600">
-                                <span class="text-sm"><50 orang</span>
-                            </label>
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="radio" name="kapasitas_ruang" value="3" {{ request('kapasitas_ruang') == '3' ? 'checked' : '' }} class="text-amber-600">
-                                <span class="text-sm">>50 orang</span>
-                            </label>
+                            @foreach ($kapasitasruang as $kapasitas)
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="radio" name="kapasitas_ruang" value="{{ $kapasitas->id }}"
+                                        {{ request('kapasitas_ruang') == $kapasitas->id ? 'checked' : '' }}
+                                        class="text-amber-600">
+                                    <span class="text-sm">{{ $kapasitas->kapasitas_ruang }}</span>
+                                </label>
+                            @endforeach
                         </div>
                     </div>
 
@@ -125,13 +63,9 @@
                         <div class="space-y-2">
                             @foreach ($fasilitas as $item)
                                 <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input 
-                                        type="checkbox" 
-                                        name="fasilitas[]" 
-                                        value="{{ $item->id }}" 
+                                    <input type="checkbox" name="fasilitas[]" value="{{ $item->id }}"
                                         {{ in_array($item->id, request('fasilitas', [])) ? 'checked' : '' }}
-                                        class="text-amber-600"
-                                    >
+                                        class="text-amber-600">
                                     <span class="text-sm">{{ $item->nama_fasilitas }}</span>
                                 </label>
                             @endforeach
@@ -142,14 +76,14 @@
                     <div>
                         <p class="font-bold mb-3 text-white">Tempat parkir</p>
                         <div class="space-y-2">
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="radio" name="tempat_parkir" value="1" {{ request('tempat_parkir') == '1' ? 'checked' : '' }} class="text-amber-600">
-                                <span class="text-sm">Luas (motor & mobil)</span>
-                            </label>
-                            <label class="flex items-center space-x-2 cursor-pointer">
-                                <input type="radio" name="tempat_parkir" value="2" {{ request('tempat_parkir') == '2' ? 'checked' : '' }} class="text-amber-600">
-                                <span class="text-sm">Kurang Luas (motor)</span>
-                            </label>
+                            @foreach ($tempatParkir as $parkir)
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="radio" name="tempat_parkir" value="{{ $parkir->id }}"
+                                        {{ request('tempat_parkir') == $parkir->id ? 'checked' : '' }}
+                                        class="text-amber-600">
+                                    <span class="text-sm">{{ $parkir->tempat_parkir }}</span>
+                                </label>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -157,322 +91,290 @@
         </form>
     </div>
 
-    <!-- Explore Cafe Section -->
-    <div class="bg-gray-50 rounded-t-3xl px-6 md:px-12 py-12">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Explore Our Cafe</h2>
-            <form action="{{ route('cafe.search') }}" method="GET" class="mt-4 md:mt-0">
-                <div class="relative">
-                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                    <input 
-                        type="text" 
-                        name="search" 
-                        placeholder="🔍 Pencarian..." 
-                        value="{{ request('search') }}"
-                        class="pl-10 pr-4 py-2 w-full md:w-64 rounded-full border border-gray-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-200 focus:outline-none transition-all"
-                    >
-                </div>
-            </form>
-        </div>
-        @if(request()->has('search') || request()->has('harga_menu') || request()->has('kapasitas_ruang') || request()->has('tempat_parkir') || request()->has('fasilitas'))
-            <form action="{{ route('cafe.search') }}" method="GET" class="flex flex-wrap gap-2 mt-2 mb-8 justify-start">
-                {{-- Pertahankan filter lain --}}
-                <input type="hidden" name="search" value="{{ request('search') }}">
-                <input type="hidden" name="harga_menu" value="{{ request('harga_menu') }}">
-                <input type="hidden" name="kapasitas_ruang" value="{{ request('kapasitas_ruang') }}">
-                <input type="hidden" name="tempat_parkir" value="{{ request('tempat_parkir') }}">
-                @if(request()->has('fasilitas'))
-                    @foreach(request('fasilitas') as $f)
-                        <input type="hidden" name="fasilitas[]" value="{{ $f }}">
-                    @endforeach
-                @endif
+ <!-- Explore Cafe Section -->
+ <div class="bg-gray-50 rounded-t-3xl px-6 md:px-12 py-12">
+     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+         <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Explore Our Cafe</h2>
+     </div>
+     @if (request()->has('search') ||
+             request()->has('harga_menu') ||
+             request()->has('kapasitas_ruang') ||
+             request()->has('tempat_parkir') ||
+             request()->has('fasilitas'))
+         <form action="{{ route('cafe.search') }}" method="GET" class="flex flex-wrap gap-2 mt-2 mb-8 justify-start">
+             {{-- Pertahankan filter lain --}}
+             <input type="hidden" name="search" value="{{ request('search') }}">
+             <input type="hidden" name="harga_menu" value="{{ request('harga_menu') }}">
+             <input type="hidden" name="kapasitas_ruang" value="{{ request('kapasitas_ruang') }}">
+             <input type="hidden" name="tempat_parkir" value="{{ request('tempat_parkir') }}">
+             @if (request()->has('fasilitas'))
+                 @foreach (request('fasilitas') as $f)
+                     <input type="hidden" name="fasilitas[]" value="{{ $f }}">
+                 @endforeach
+             @endif
 
-                @php
-                    $jamBukaOptions = [
-                        '' => 'Semua',
-                        'pagi' => 'Pagi',
-                        'siang' => 'Siang',
-                        'sore' => 'Sore',
-                        '24_jam' => '24 Jam'
-                    ];
-                @endphp
+             @php
+                 $jamBukaOptions = [
+                     '' => 'Semua',
+                     'pagi' => 'Pagi',
+                     'siang' => 'Siang',
+                     'sore' => 'Sore',
+                     '24' => '24 Jam', // Changed from '24_jam' to '24'
+                 ];
+             @endphp
 
-                @foreach($jamBukaOptions as $val => $label)
-                    <button type="submit" name="jam_buka" value="{{ $val }}"
-                        class="px-4 py-2 rounded-full border transition
-                        {{ request('jam_buka', '') === $val ? 'bg-amber-700 text-white border-amber-700' : 'bg-white text-amber-700 border-amber-700 hover:bg-amber-50' }}">
-                        {{ $label }}
-                    </button>
-                @endforeach
-            </form>
-        @endif
+             @foreach ($jamBukaOptions as $val => $label)
+                 <button type="submit" name="jam_buka" value="{{ $val }}"
+                     class="px-4 py-2 rounded-full border transition
+        {{ request('jam_buka', '') === $val ? 'bg-amber-700 text-white border-amber-700' : 'bg-white text-amber-700 border-amber-700 hover:bg-amber-50' }}">
+                     {{ $label }}
+                 </button>
+             @endforeach
+         </form>
+     @endif
 
-        @if(request()->has('search') || request()->has('harga_menu') || request()->has('kapasitas_ruang') || request()->has('tempat_parkir') || request()->has('fasilitas'))
-            <!-- Grid View for Search Results -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                @forelse($cafes as $cafe)
-                    <div class="cafe-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
-                        <div class="relative">
-                            <img 
-                                src="{{ $cafe->image ?? 'https://via.placeholder.com/300x200?text=Cafe+Image' }}" 
-                                alt="{{ $cafe->nama }}" 
-                                class="w-full h-48 object-cover"
-                            >
-                            <div class="absolute top-2 right-2">
-                                <span class="bg-white/90 text-gray-700 px-2 py-1 rounded-full text-sm font-medium">
-                                    ⭐ {{ $cafe->rating ?? '4.0' }}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-semibold text-lg text-gray-900 mb-1">{{ $cafe->nama }}</h3>
-                            <p class="text-gray-600 text-sm mb-3">{{ $cafe->alamat }}</p>
-                            <div class="flex flex-wrap gap-1">
-                                @if($cafe->fasilitas)
-                                    @foreach($cafe->fasilitas->take(3) as $fasilitas)
-                                        <span class="bg-gray-50 text-gray-600 border border-gray-200 px-2 py-1 rounded-full text-xs">
-                                            {{ $fasilitas->nama_fasilitas }}
-                                        </span>
-                                    @endforeach
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <div class="col-span-full text-center py-12">
-                        <div class="text-gray-400 mb-4">
-                            <i class="fas fa-search text-4xl"></i>
-                        </div>
-                        <p class="text-gray-500 text-lg">Tidak ada hasil ditemukan.</p>
-                        <p class="text-gray-400 text-sm mt-2">Coba ubah kriteria pencarian Anda</p>
-                    </div>
-                @endforelse
-            </div>
-        @else
-            <!-- Carousel View for Default -->
-            <div class="relative">
-                <div class="flex overflow-x-auto gap-6 snap-x snap-mandatory pb-6 scrollbar-hide">
-                    @foreach($cafes as $cafe)
-                        <div class="min-w-[280px] sm:min-w-[300px] snap-center shrink-0">
-                            <div class="cafe-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
-                                <div class="relative">
-                                    <img 
-                                        src="{{ $cafe->image ?? 'https://via.placeholder.com/300x200?text=Cafe+Image' }}" 
-                                        alt="{{ $cafe->nama }}" 
-                                        class="w-full h-48 object-cover"
-                                    >
-                                    <div class="absolute top-2 right-2">
-                                        <span class="bg-white/90 text-gray-700 px-2 py-1 rounded-full text-sm font-medium">
-                                            ⭐ {{ $cafe->rating ?? '4.0' }}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="p-4">
-                                    <h3 class="font-semibold text-lg text-gray-900 mb-1">{{ $cafe->nama }}</h3>
-                                    <p class="text-gray-600 text-sm mb-3">{{ $cafe->alamat }}</p>
-                                    <div class="flex flex-wrap gap-1">
-                                        @if($cafe->fasilitas)
-                                            @foreach($cafe->fasilitas->take(3) as $fasilitas)
-                                                <span class="bg-gray-50 text-gray-600 border border-gray-200 px-2 py-1 rounded-full text-xs">
-                                                    {{ $fasilitas->nama_fasilitas }}
-                                                </span>
-                                            @endforeach
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-    </div>
+     @if (request()->has('search') ||
+             request()->has('harga_menu') ||
+             request()->has('kapasitas_ruang') ||
+             request()->has('tempat_parkir') ||
+             request()->has('fasilitas'))
+         <!-- Grid View for Search Results -->
+         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+             @forelse($cafes as $cafe)
+                 <div class="cafe-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100"
+                     data-cafe-id="{{ $cafe->id }}" data-cafe='@json($cafe)'>
+                     <div class="relative">
+                         <img src="{{ asset('storage/' . $cafe->thumbnail) }}" alt="{{ $cafe->nama_cafe }}"
+                             class="w-full h-48 object-cover">
+                         <div class="absolute top-2 right-2">
+                             <span class="bg-white/90 text-gray-700 px-2 py-1 rounded-full text-sm font-medium">
+                                 ⭐ {{ $cafe->rating ?? '4.0' }}
+                             </span>
+                         </div>
+                     </div>
 
-    <!-- Footer -->
-    <footer class="bg-white py-12 px-6 border-t border-gray-100">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start">
-            <div class="mb-6 md:mb-0">
-                <h4 class="font-bold text-xl text-gray-900 mb-3">ponorogocafe.id</h4>
-                <p class="max-w-xs text-gray-600 leading-relaxed">
-                    Platform rekomendasi cafe di Ponorogo, cocok untuk hangout, workspace, dan kuliner.
-                </p>
-            </div>
-            <div>
-                <p class="font-semibold text-gray-900 mb-3">Follow Us</p>
-                <div class="flex gap-4">
-                    <a href="#" class="text-gray-600 hover:text-amber-700 transition-colors p-2 rounded-full hover:bg-amber-50">
-                        <i class="fab fa-instagram text-xl"></i>
-                    </a>
-                    <a href="#" class="text-gray-600 hover:text-amber-700 transition-colors p-2 rounded-full hover:bg-amber-50">
-                        <i class="fab fa-tiktok text-xl"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </footer>
+                     <div class="p-4">
+                         <h3 class="font-semibold text-lg text-gray-900 mb-1">{{ $cafe->nama_cafe }}</h3>
+                         <p class="text-gray-600 text-sm mb-3 flex items-center gap-1">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-black-500">
+                                 <path stroke-linecap="round" stroke-linejoin="round"
+                                     d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                 <path stroke-linecap="round" stroke-linejoin="round"
+                                     d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                             </svg>
+                             {{ $cafe->alamat }}
+                         </p>
 
-    <!-- JavaScript -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleBtn = document.getElementById('toggleFilter');
-            const dropdown = document.getElementById('filterDropdown');
-            const selectedFilters = document.getElementById('selectedFilters');
+                         <div class="flex flex-wrap gap-1">
+                             @if ($cafe->fasilitas)
+                                 @foreach ($cafe->fasilitas->take(3) as $fasilitas)
+                                     <span
+                                         class="bg-gray-50 text-gray-600 border border-gray-200 px-2 py-1 rounded-full text-xs">
+                                         {{ $fasilitas->nama_fasilitas }}
+                                     </span>
+                                 @endforeach
+                             @endif
+                         </div>
+                     </div>
+                 </div>
+             @empty
+                 <div class="col-span-full text-center py-12">
+                     <div class="text-gray-400 mb-4">
+                         <i class="fas fa-search text-4xl"></i>
+                     </div>
+                     <p class="text-gray-500 text-lg">Tidak ada hasil ditemukan.</p>
+                     <p class="text-gray-400 text-sm mt-2">Coba ubah kriteria pencarian Anda</p>
+                 </div>
+             @endforelse
+         </div>
+     @else
+         <!-- Carousel View for Default disini menambahkan carousel -->
+         <div class="relative">
+             <div class="flex overflow-x-auto gap-6 snap-x snap-mandatory pb-6 scrollbar-hide">
+                 @foreach ($cafes as $cafe)
+                     <div class="min-w-[280px] sm:min-w-[300px] snap-center shrink-0">
+                         <div class="cafe-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100"
+                             data-cafe-id="{{ $cafe->id }}" data-cafe='@json($cafe)'>
+                             <div class="relative">
+                                 <img src="{{ asset('storage/' . $cafe->thumbnail) }}" alt="{{ $cafe->nama_cafe }}"
+                                     class="w-full h-48 object-cover">
+                                 <div class="absolute top-2 right-2">
+                                     <span class="bg-white/90 text-gray-700 px-2 py-1 rounded-full text-sm font-medium">
+                                         ⭐ {{ $cafe->rating ?? '4.0' }}
+                                     </span>
+                                 </div>
+                             </div>
+                             <div class="p-4">
+                                 <h3 class="font-semibold text-lg text-gray-900 mb-1">{{ $cafe->nama_cafe }}</h3>
+                                 <p class="text-gray-600 text-sm mb-3 flex items-center gap-1">
+                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-black-500">
+                                         <path stroke-linecap="round" stroke-linejoin="round"
+                                             d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                         <path stroke-linecap="round" stroke-linejoin="round"
+                                             d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                     </svg>
+                                     {{ $cafe->alamat }}
+                                 </p>
 
-            // Toggle filter dropdown
-            if (toggleBtn && dropdown) {
-                toggleBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    dropdown.classList.toggle('hidden');
-                });
+                                 <div class="flex flex-wrap gap-1">
+                                     @if ($cafe->fasilitas)
+                                         @foreach ($cafe->fasilitas->take(3) as $fasilitas)
+                                             <span
+                                                 class="bg-gray-50 text-gray-600 border border-gray-200 px-2 py-1 rounded-full text-xs">
+                                                 {{ $fasilitas->nama_fasilitas }}
+                                             </span>
+                                         @endforeach
+                                     @endif
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 @endforeach
+             </div>
+         </div>
+     @endif
+ </div>
+ <!-- Modal Popup -->
+ <div id="cafeModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+         <!-- Background overlay -->
+         <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+             <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+         </div>
 
-                // Close dropdown when clicking outside
-                document.addEventListener('click', (e) => {
-                    if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
-                        dropdown.classList.add('hidden');
-                    }
-                });
-            }
+         <!-- Modal content -->
+         <div
+             class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+             <!-- Ubah max-w-2xl menjadi max-w-lg -->
+             <div class="bg-white px-4 pt-5 pb-4 sm:p-4 sm:pb-4"> <!-- Kurangi padding pada desktop -->
+                 <div class="sm:flex sm:items-start">
+                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                         <div class="flex justify-between items-start">
+                             <div>
+                                 <h3 id="modalCafeName" class="text-xl leading-6 font-bold text-gray-900 sm:text-2xl">
+                                 </h3> <!-- Ukuran teks lebih kecil -->
+                                 <div class="mt-1 flex items-center text-gray-600 sm:mt-2"> <!-- Margin lebih ketat -->
+                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1 sm:w-5 sm:h-5">
+                                         <!-- Icon lebih kecil -->
+                                         <path stroke-linecap="round" stroke-linejoin="round"
+                                             d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                         <path stroke-linecap="round" stroke-linejoin="round"
+                                             d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                     </svg>
+                                     <span id="modalCafeAddress" class="text-xs sm:text-sm"></span>
+                                     <!-- Text lebih kecil -->
+                                 </div>
+                             </div>
+                             <button type="button" id="closeModal" class="text-gray-400 hover:text-gray-500">
+                                 <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24"
+                                     stroke="currentColor"> <!-- Close icon lebih kecil -->
+                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                         d="M6 18L18 6M6 6l12 12" />
+                                 </svg>
+                             </button>
+                         </div>
 
-            // Filter labels mapping
-            const filterLabels = {
-                harga_menu: {
-                    '1': '>10.000k',
-                    '2': '>20.000k',
-                    '3': '>30.000k'
-                },
-                kapasitas_ruang: {
-                    '1': '<20 orang',
-                    '2': '<50 orang',
-                    '3': '>50 orang'
-                },
-                tempat_parkir: {
-                    '1': 'Luas (motor & mobil)',
-                    '2': 'Kurang Luas (motor)'
-                }
-            };
+                         <div class="mt-3 sm:mt-4"> <!-- Margin lebih ketat -->
+                             <div class="w-full aspect-[3/4] mx-auto max-w-xs"> <!-- Container gambar lebih kecil -->
+                                 <img id="modalCafeImage" src="" alt=""
+                                     class="w-full h-full object-cover rounded-lg">
+                             </div>
 
-            function updateSelectedFilters() {
-                selectedFilters.innerHTML = '';
-                const activeFilters = [];
+                             <!-- Gallery Section -->
+                             <div class="mt-3 sm:mt-4"> <!-- Margin lebih ketat -->
+                                 <h4 class="font-semibold text-base sm:text-lg mb-1 sm:mb-2">Galeri</h4>
+                                 <!-- Ukuran teks lebih kecil -->
+                                 <div id="cafeGallery" class="grid grid-cols-3 gap-1 sm:gap-2">
+                                     <!-- Gap lebih kecil -->
+                                     <!-- Gallery images will be inserted here by JavaScript -->
+                                 </div>
+                             </div>
 
-                // Check radio buttons
-                ['harga_menu', 'kapasitas_ruang', 'tempat_parkir'].forEach(name => {
-                    const checked = document.querySelector(`input[name="${name}"]:checked`);
-                    if (checked) {
-                        activeFilters.push({
-                            name: name,
-                            value: checked.value,
-                            label: filterLabels[name][checked.value],
-                            element: checked
-                        });
-                    }
-                });
+                             <div class="mt-3 grid grid-cols-2 gap-2 sm:gap-4 sm:mt-4">
+                                 <!-- Gap dan margin lebih ketat -->
+                                 <div class="flex items-center">
+                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor"
+                                         class="w-4 h-4 mr-1 text-amber-600 sm:w-5 sm:h-5"> <!-- Icon lebih kecil -->
+                                         <path stroke-linecap="round" stroke-linejoin="round"
+                                             d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                     </svg>
+                                     <div>
+                                         <p class="text-xs text-gray-500 sm:text-sm">Jam Buka</p>
+                                         <!-- Text lebih kecil -->
+                                         <p id="modalCafeHours" class="font-medium text-sm sm:text-base"></p>
+                                         <!-- Text lebih kecil -->
+                                     </div>
+                                 </div>
+                                 <!-- Repeat similar size adjustments for other info items -->
+                                 <div class="flex items-center">
+                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor"
+                                         class="w-4 h-4 mr-1 text-amber-600 sm:w-5 sm:h-5">
+                                         <path stroke-linecap="round" stroke-linejoin="round"
+                                             d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                                     </svg>
+                                     <div>
+                                         <p class="text-xs text-gray-500 sm:text-sm">Harga Menu</p>
+                                         <p id="modalCafePrice" class="font-medium text-sm sm:text-base"></p>
+                                     </div>
+                                 </div>
+                                 <div class="flex items-center">
+                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor"
+                                         class="w-4 h-4 mr-1 text-amber-600 sm:w-5 sm:h-5">
+                                         <path stroke-linecap="round" stroke-linejoin="round"
+                                             d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                     </svg>
+                                     <div>
+                                         <p class="text-xs text-gray-500 sm:text-sm">Kapasitas</p>
+                                         <p id="modalCafeCapacity" class="font-medium text-sm sm:text-base"></p>
+                                     </div>
+                                 </div>
+                                 <div class="flex items-center">
+                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor"
+                                         class="w-4 h-4 mr-1 text-amber-600 sm:w-5 sm:h-5">
+                                         <path stroke-linecap="round" stroke-linejoin="round"
+                                             d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                                     </svg>
+                                     <div>
+                                         <p class="text-xs text-gray-500 sm:text-sm">Parkir</p>
+                                         <p id="modalCafeParking" class="font-medium text-sm sm:text-base"></p>
+                                     </div>
+                                 </div>
+                             </div>
 
-                // Check checkboxes (fasilitas)
-                const checkedFasilitas = document.querySelectorAll('input[name="fasilitas[]"]:checked');
-                checkedFasilitas.forEach(checkbox => {
-                    const label = checkbox.parentElement.querySelector('span').textContent;
-                    activeFilters.push({
-                        name: 'fasilitas',
-                        value: checkbox.value,
-                        label: label,
-                        element: checkbox
-                    });
-                });
+                             <div class="mt-4 sm:mt-6"> <!-- Margin lebih ketat -->
+                                 <h4 class="font-semibold text-base sm:text-lg mb-1 sm:mb-2">Fasilitas</h4>
+                                 <!-- Ukuran teks lebih kecil -->
+                                 <div id="modalCafeFacilities" class="flex flex-wrap gap-1 sm:gap-2">
+                                     <!-- Gap lebih kecil -->
+                                     <!-- Fasilitas akan dimasukkan oleh JavaScript -->
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             <div class="bg-gray-50 px-4 py-3 sm:px-4 sm:py-3 sm:flex sm:flex-row-reverse">
+                 <!-- Padding lebih ketat -->
+                 <a id="modalCafeMaps" href="#" target="_blank"
+                     class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1.5 bg-amber-600 text-sm font-medium text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 sm:ml-2 sm:w-auto sm:px-4 sm:py-2">
+                     <!-- Button lebih kecil -->
+                     Lihat di Maps
+                 </a>
+                 <button type="button" id="closeModalBtn"
+                     class="mt-2 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-3 py-1.5 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 sm:mt-0 sm:ml-2 sm:w-auto sm:px-4 sm:py-2">
+                     <!-- Button lebih kecil -->
+                     Tutup
+                 </button>
+             </div>
+         </div>
+     </div>
+ </div>
+ @endsection
 
-                // --- Tambahan: sembunyikan input search jika ada filter aktif ---
-                const searchInput = document.getElementById('searchInput');
-                if (activeFilters.length === 0) {
-                    selectedFilters.classList.add('hidden');
-                    if (searchInput) searchInput.classList.remove('hidden');
-                    return;
-                } else {
-                    if (searchInput) searchInput.classList.add('hidden');
-                }
-
-                // Create filter chips
-                activeFilters.forEach(filter => {
-                    const chip = document.createElement('div');
-                    chip.className = 'bg-amber-100 text-amber-800 border border-amber-200 px-3 py-1 rounded-full flex items-center gap-2 text-sm';
-                    chip.innerHTML = `
-                        <span>${filter.label}</span>
-                        <button type="button" class="text-amber-600 hover:text-amber-800 font-bold text-lg leading-none" onclick="clearFilter('${filter.name}', '${filter.value}')">
-                            ×
-                        </button>
-                    `;
-                    selectedFilters.appendChild(chip);
-                });
-
-                selectedFilters.classList.remove('hidden');
-            }
-
-            // Clear filter function
-            window.clearFilter = function(name, value) {
-                if (name === 'fasilitas') {
-                    const checkbox = document.querySelector(`input[name="fasilitas[]"][value="${value}"]`);
-                    if (checkbox) checkbox.checked = false;
-                } else {
-                    const radio = document.querySelector(`input[name="${name}"][value="${value}"]`);
-                    if (radio) radio.checked = false;
-                }
-                updateSelectedFilters();
-            };
-
-            // Listen for changes on all filter inputs
-            document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
-                input.addEventListener('change', updateSelectedFilters);
-            });
-
-            // // Listen for changes on all filter inputs (langsung otomatis submit)
-            // document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
-            //     input.addEventListener('change', function() {
-            //         updateSelectedFilters();
-            //         this.closest('form').submit();
-            //     });
-            // });
-
-            // Validasi: harus ada kriteria dipilih sebelum submit
-            const searchForm = document.querySelector('form[action="{{ route('cafe.search') }}"]');
-            if (searchForm) {
-                searchForm.addEventListener('submit', function(e) {
-                    // Cek apakah ada filter radio/checkbox yang dipilih
-                    const radioChecked = searchForm.querySelector('input[type="radio"]:checked');
-                    const checkboxChecked = searchForm.querySelector('input[type="checkbox"]:checked');
-                    if (!radioChecked && !checkboxChecked) {
-                        e.preventDefault();
-                        alert('Silakan pilih minimal satu kriteria pencarian (filter) terlebih dahulu.');
-                        return false;
-                    }
-                });
-            }
-
-            // Initialize on page load
-            updateSelectedFilters();
-
-            // Smooth scroll for carousel
-            const carousel = document.querySelector('.overflow-x-auto');
-            if (carousel) {
-                carousel.style.scrollBehavior = 'smooth';
-            }
-
-            // Add loading state to search forms
-            document.querySelectorAll('form').forEach(form => {
-                form.addEventListener('submit', function() {
-                    const submitBtn = form.querySelector('button[type="submit"]');
-                    if (submitBtn) {
-                        const originalContent = submitBtn.innerHTML;
-                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-                        submitBtn.disabled = true;
-                        
-                        // Re-enable after 3 seconds (fallback)
-                        setTimeout(() => {
-                            submitBtn.innerHTML = originalContent;
-                            submitBtn.disabled = false;
-                        }, 3000);
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>

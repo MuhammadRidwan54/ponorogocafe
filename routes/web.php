@@ -24,6 +24,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/cafe/{id}', 'cafe')->name('home.cafe');
 
     Route::get('/search', 'search')->name('cafe.search');
+    
 });
 
 /*
