@@ -38,6 +38,7 @@ class Cafe extends Model
         return $this->belongsTo(HargaMenu::class);
     }
 
+
     public function kapasitasruang()
     {
         return $this->belongsTo(KapasitasRuang::class);
@@ -57,4 +58,9 @@ class Cafe extends Model
     {
         return $this->hasMany(Review::class);
     }
+    public function labels()
+{
+    return $this->belongsToMany(Label::class, 'cafe_label');
+}
+
 }

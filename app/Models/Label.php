@@ -14,4 +14,10 @@ class Label extends Model
     protected $fillable = [
         'nama_label',
     ];
+    public function cafes()
+{
+    return $this->belongsToMany(Cafe::class, 'cafe_label');
+}
+
+
 }

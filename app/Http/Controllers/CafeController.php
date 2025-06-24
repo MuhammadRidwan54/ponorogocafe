@@ -6,6 +6,7 @@ use App\Models\Cafe;
 use App\Models\Review;
 use App\Models\JamBuka;
 use App\Models\Fasilitas;
+use App\Models\Label;
 use App\Models\HargaMenu;
 use App\Models\TempatParkir;
 use App\Models\KapasitasRuang;
@@ -15,19 +16,14 @@ class CafeController extends Controller
 {
     public function index()
     {
-        $cafe = Cafe::with([
-            'fasilitas',
-            'hargamenu', 
-            'kapasitasruang', 
-            'tempatparkir',
-            'jambuka'
-        ])->get();
-
+        $cafe = Cafe::with(['fasilitas', 'labels', 'hargamenu', 'kapasitasruang', 'tempatparkir', 'jambuka'])->get();
+        
         $jambuka = JamBuka::all();
         $hargamenu = HargaMenu::all();
         $kapasitasruang = KapasitasRuang::all();
         $tempatparkir = TempatParkir::all();
         $fasilitas = Fasilitas::all();
+        $labels = Label::all();
 
         return view('cafe.index', compact(
             'cafe',
@@ -35,7 +31,8 @@ class CafeController extends Controller
             'hargamenu',
             'kapasitasruang',
             'tempatparkir',
-            'fasilitas'
+            'fasilitas',
+            'labels'
         ));
     }
 
@@ -45,10 +42,12 @@ class CafeController extends Controller
             'nama_cafe' => 'required|string',
             'alamat' => 'required|string',
             'alamat_url' => 'required|url',
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:5120', // 5MB
-            'gambar.*' => 'nullable|image|mimes:jpeg,png,jpg|max:5120', // 5MB
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'gambar.*' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
             'fasilitas_id' => 'required|array',
             'fasilitas_id.*' => 'exists:fasilitas,id',
+            'label_id' => 'required|array',
+            'label_id.*' => 'exists:label,id',
             'hargamenu_id' => 'required|exists:hargamenu,id',
             'kapasitasruang_id' => 'required|exists:kapasitasruang,id',
             'tempatparkir_id' => 'required|exists:tempatparkir,id',
@@ -56,8 +55,8 @@ class CafeController extends Controller
         ]);
 
         $gambarPaths = [];
-        if($request->hasFile('gambar')) {
-            foreach($request->file('gambar') as $image) {
+        if ($request->hasFile('gambar')) {
+            foreach ($request->file('gambar') as $image) {
                 $gambarPaths[] = $image->store('gambar_cafe', 'public');
             }
         }
@@ -75,19 +74,21 @@ class CafeController extends Controller
         ]);
 
         $cafe->fasilitas()->sync($request->fasilitas_id);
+        $cafe->labels()->sync($request->label_id);
 
         return redirect()->route('cafe.index')->with('success', 'Cafe berhasil ditambahkan');
-        
     }
 
     public function edit($id)
     {
-        $cafe = Cafe::with('fasilitas')->findOrFail($id);
+        $cafe = Cafe::with(['fasilitas', 'labels'])->findOrFail($id);
+        
         $jambuka = JamBuka::all();
         $hargamenu = HargaMenu::all();
         $kapasitasruang = KapasitasRuang::all();
         $tempatparkir = TempatParkir::all();
         $fasilitas = Fasilitas::all();
+        $labels = Label::all();
 
         return view('cafe.edit-modal-data', compact(
             'cafe',
@@ -96,6 +97,7 @@ class CafeController extends Controller
             'kapasitasruang',
             'tempatparkir',
             'fasilitas',
+            'labels'
         ));
     }
 
@@ -107,19 +109,21 @@ class CafeController extends Controller
             'alamat_url' => 'nullable|url',
             'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'gambar.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'fasilitas_id' => 'required|array',
+            'fasilitas_id.*' => 'exists:fasilitas,id',
+            'label_id' => 'required|array',
+            'label_id.*' => 'exists:label,id',
             'hargamenu_id' => 'required|exists:hargamenu,id',
             'kapasitasruang_id' => 'required|exists:kapasitasruang,id',
             'tempatparkir_id' => 'required|exists:tempatparkir,id',
             'jambuka_id' => 'required|exists:jambuka,id',
-            'fasilitas_id' => 'required|array',
-            'fasilitas_id.*' => 'exists:fasilitas,id',
         ]);
 
         $cafe = Cafe::findOrFail($id);
-        
+
         $gambarPaths = json_decode($cafe->gambar) ?? [];
-        if($request->hasFile('gambar')) {
-            foreach($request->file('gambar') as $image) {
+        if ($request->hasFile('gambar')) {
+            foreach ($request->file('gambar') as $image) {
                 $gambarPaths[] = $image->store('gambar_cafe', 'public');
             }
         }
@@ -141,6 +145,7 @@ class CafeController extends Controller
 
         $cafe->update($updateData);
         $cafe->fasilitas()->sync($request->fasilitas_id);
+        $cafe->labels()->sync($request->label_id);
 
         return redirect()->route('cafe.index')->with('success', 'Cafe berhasil diperbarui');
     }
