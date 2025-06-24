@@ -2,19 +2,20 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-/* Chip Filter Style */
-.filter-chip {
-    @apply bg-white text-black text-sm px-3 py-1 rounded-full cursor-pointer border border-gray-300 hover:bg-gray-100 transition;
-}
+@layer components {
+  .filter-chip {
+    @apply bg-white text-gray-800 text-sm px-3 py-1.5 rounded-full cursor-pointer border border-gray-300 hover:bg-gray-50 transition-colors duration-200;
+  }
 
-input:checked + .filter-chip {
-    @apply bg-black text-white border-black;
-}
+  input:checked + .filter-chip {
+    @apply bg-primary-500 text-white border-primary-500;
+  }
 
-/* Selected filter chip at top (with X button) */
-.selected-chip {
-    @apply bg-[#6e5832] text-white text-sm px-3 py-1 rounded-full flex items-center gap-2;
-}
-.selected-chip .remove-chip {
-    @apply text-white cursor-pointer;
+  .selected-chip {
+    @apply bg-primary-500 text-white text-sm px-3 py-1.5 rounded-full inline-flex items-center gap-2;
+  }
+
+  .cafe-card {
+    @apply bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200 transition-all hover:shadow-md;
+  }
 }

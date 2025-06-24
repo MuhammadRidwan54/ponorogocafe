@@ -57,6 +57,39 @@
             transform: translateY(-4px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
+
+        /* carousel */
+        .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-item {
+            scroll-snap-align: center;
+        }
+
+        #cafeCarousel {
+            scroll-behavior: smooth;
+        }
+
+        .indicator-dot {
+            cursor: pointer;
+        }
+
+        .indicator-dot:hover {
+            opacity: 0.7;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .min-w-[280px] {
+                min-width: 250px;
+            }
+        }
     </style>
     @stack('styles')
 </head>
@@ -418,6 +451,144 @@
         cafeModal.addEventListener('click', function(event) {
             event.stopPropagation();
         });
+
+        // Smooth scroll for carousel
+        document.addEventListener('DOMContentLoaded', function() {
+        const carousel = document.getElementById('cafeCarousel');
+        const autoPlayToggle = document.getElementById('autoPlayToggle');
+        const autoPlayText = document.getElementById('autoPlayText');
+        const indicators = document.querySelectorAll('.indicator-dot');
+        
+        let currentIndex = 0;
+        let isAutoPlaying = true;
+        let autoPlayInterval;
+        let totalItems = {{ count($cafes) }};
+        
+        // Calculate how many items to show at once (responsive)
+        function getItemsToShow() {
+            const containerWidth = carousel.parentElement.offsetWidth;
+            const itemWidth = 300; // approximate item width including gap
+            return Math.floor(containerWidth / itemWidth) || 1;
+        }
+        
+        // Update carousel position
+        function updateCarousel() {
+            const itemWidth = carousel.children[0].offsetWidth + 24; // item width + gap
+            const translateX = -(currentIndex * itemWidth);
+            carousel.style.transform = `translateX(${translateX}px)`;
+            
+            // Update indicators
+            indicators.forEach((indicator, index) => {
+                if (index === currentIndex) {
+                    indicator.classList.remove('bg-gray-300');
+                    indicator.classList.add('bg-amber-600');
+                } else {
+                    indicator.classList.remove('bg-amber-600');
+                    indicator.classList.add('bg-gray-300');
+                }
+            });
+        }
+        
+        // Go to next slide (auto-play only)
+        function nextSlide() {
+            const itemsToShow = getItemsToShow();
+            const maxIndex = Math.max(0, totalItems - itemsToShow);
+            currentIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
+            updateCarousel();
+        }
+        
+        // Go to specific slide (via indicators)
+        function goToSlide(index) {
+            currentIndex = index;
+            updateCarousel();
+            pauseAutoPlay();
+            // Resume auto-play after 5 seconds of inactivity
+            setTimeout(() => {
+                if (!isAutoPlaying) {
+                    startAutoPlay();
+                }
+            }, 5000);
+        }
+        
+        // Start auto-play
+        function startAutoPlay() {
+            if (totalItems <= 1) return; // Don't auto-play if only one item
+            
+            isAutoPlaying = true;
+            autoPlayText.textContent;
+            autoPlayInterval = setInterval(nextSlide, 3000); // Change slide every 3 seconds
+        }
+        
+        // Pause auto-play
+        function pauseAutoPlay() {
+            isAutoPlaying = false;
+            autoPlayText.textContent;
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+            }
+        }
+        
+        // Toggle auto-play
+        function toggleAutoPlay() {
+            if (isAutoPlaying) {
+                pauseAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+        
+        // Event listeners
+        autoPlayToggle.addEventListener('click', toggleAutoPlay);
+        
+        // Indicator click events
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => goToSlide(index));
+        });
+        
+        // Pause auto-play on hover
+        carousel.addEventListener('mouseenter', () => {
+            if (isAutoPlaying && autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+            }
+        });
+        
+        carousel.addEventListener('mouseleave', () => {
+            if (isAutoPlaying) {
+                autoPlayInterval = setInterval(nextSlide, 3000);
+            }
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', updateCarousel);
+        
+        // Start auto-play on page load
+        if (totalItems > 1) {
+            startAutoPlay();
+        }
+        
+        // Initialize carousel position
+        updateCarousel();
+    });
+
+        document.addEventListener('DOMContentLoaded', function() {
+        // Handle filter chip selection
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                this.nextElementSibling.classList.toggle('bg-[#6e5832]', this.checked);
+                this.nextElementSibling.classList.toggle('text-white', this.checked);
+                this.nextElementSibling.classList.toggle('border-[#6e5832]', this.checked);
+            });
+        });
+
+        // Handle chip removal
+        document.querySelectorAll('.remove-chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                const chipId = this.getAttribute('data-id');
+                document.querySelector(`input[value="${chipId}"]`).checked = false;
+                this.parentElement.remove();
+            });
+        });
+    });
     </script>
     @stack('scripts')
 </body>

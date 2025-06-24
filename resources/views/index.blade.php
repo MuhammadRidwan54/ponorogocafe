@@ -3,7 +3,7 @@
 @section('title', 'Rekomendasi Cafe - Ponorogo')
 
 @section('content')
-<div class="text-center py-16 px-4">
+    <div class="text-center py-16 px-4">
         <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Rekomendasi Cafe untuk Anda</h1>
         <p class="text-gray-600 text-lg mb-8">Cari rekomendasi cafe sesuai kriteria</p>
 
@@ -34,8 +34,7 @@
                             @foreach ($hargamenu as $menu)
                                 <label class="flex items-center space-x-2 cursor-pointer">
                                     <input type="radio" name="harga_menu" value="{{ $menu->id }}"
-                                        {{ request('harga_menu') == $menu->id ? 'checked' : '' }}
-                                        class="text-amber-600">
+                                        {{ request('harga_menu') == $menu->id ? 'checked' : '' }} class="text-amber-600">
                                     <span class="text-sm">{{ $menu->harga_menu }}</span>
                                 </label>
                             @endforeach
@@ -91,290 +90,318 @@
         </form>
     </div>
 
- <!-- Explore Cafe Section -->
- <div class="bg-gray-50 rounded-t-3xl px-6 md:px-12 py-12">
-     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-         <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Explore Our Cafe</h2>
-     </div>
-     @if (request()->has('search') ||
-             request()->has('harga_menu') ||
-             request()->has('kapasitas_ruang') ||
-             request()->has('tempat_parkir') ||
-             request()->has('fasilitas'))
-         <form action="{{ route('cafe.search') }}" method="GET" class="flex flex-wrap gap-2 mt-2 mb-8 justify-start">
-             {{-- Pertahankan filter lain --}}
-             <input type="hidden" name="search" value="{{ request('search') }}">
-             <input type="hidden" name="harga_menu" value="{{ request('harga_menu') }}">
-             <input type="hidden" name="kapasitas_ruang" value="{{ request('kapasitas_ruang') }}">
-             <input type="hidden" name="tempat_parkir" value="{{ request('tempat_parkir') }}">
-             @if (request()->has('fasilitas'))
-                 @foreach (request('fasilitas') as $f)
-                     <input type="hidden" name="fasilitas[]" value="{{ $f }}">
-                 @endforeach
-             @endif
+    <!-- Explore Cafe Section -->
+    <div class="bg-gray-50 rounded-t-3xl px-6 md:px-12 py-12">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Explore Our Cafe</h2>
+        </div>
+        @if (request()->has('search') ||
+                request()->has('harga_menu') ||
+                request()->has('kapasitas_ruang') ||
+                request()->has('tempat_parkir') ||
+                request()->has('fasilitas'))
+            <form action="{{ route('cafe.search') }}" method="GET" class="flex flex-wrap gap-2 mt-2 mb-8 justify-start">
+                {{-- Pertahankan filter lain --}}
+                <input type="hidden" name="search" value="{{ request('search') }}">
+                <input type="hidden" name="harga_menu" value="{{ request('harga_menu') }}">
+                <input type="hidden" name="kapasitas_ruang" value="{{ request('kapasitas_ruang') }}">
+                <input type="hidden" name="tempat_parkir" value="{{ request('tempat_parkir') }}">
+                @if (request()->has('fasilitas'))
+                    @foreach (request('fasilitas') as $f)
+                        <input type="hidden" name="fasilitas[]" value="{{ $f }}">
+                    @endforeach
+                @endif
 
-             @php
-                 $jamBukaOptions = [
-                     '' => 'Semua',
-                     'pagi' => 'Pagi',
-                     'siang' => 'Siang',
-                     'sore' => 'Sore',
-                     '24' => '24 Jam', // Changed from '24_jam' to '24'
-                 ];
-             @endphp
+                @php
+                    $jamBukaOptions = [
+                        '' => 'Semua',
+                        'pagi' => 'Pagi',
+                        'siang' => 'Siang',
+                        'sore' => 'Sore',
+                        '24' => '24 Jam', // Changed from '24_jam' to '24'
+                    ];
+                @endphp
 
-             @foreach ($jamBukaOptions as $val => $label)
-                 <button type="submit" name="jam_buka" value="{{ $val }}"
-                     class="px-4 py-2 rounded-full border transition
+                @foreach ($jamBukaOptions as $val => $label)
+                    <button type="submit" name="jam_buka" value="{{ $val }}"
+                        class="px-4 py-2 rounded-full border transition
         {{ request('jam_buka', '') === $val ? 'bg-amber-700 text-white border-amber-700' : 'bg-white text-amber-700 border-amber-700 hover:bg-amber-50' }}">
-                     {{ $label }}
-                 </button>
-             @endforeach
-         </form>
-     @endif
+                        {{ $label }}
+                    </button>
+                @endforeach
+            </form>
+        @endif
 
-     @if (request()->has('search') ||
-             request()->has('harga_menu') ||
-             request()->has('kapasitas_ruang') ||
-             request()->has('tempat_parkir') ||
-             request()->has('fasilitas'))
-         <!-- Grid View for Search Results -->
-         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-             @forelse($cafes as $cafe)
-                 <div class="cafe-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100"
-                     data-cafe-id="{{ $cafe->id }}" data-cafe='@json($cafe)'>
-                     <div class="relative">
-                         <img src="{{ asset('storage/' . $cafe->thumbnail) }}" alt="{{ $cafe->nama_cafe }}"
-                             class="w-full h-48 object-cover">
-                         <div class="absolute top-2 right-2">
-                             <span class="bg-white/90 text-gray-700 px-2 py-1 rounded-full text-sm font-medium">
-                                 ⭐ {{ $cafe->rating ?? '4.0' }}
-                             </span>
-                         </div>
-                     </div>
+        @if (request()->has('search') ||
+                request()->has('harga_menu') ||
+                request()->has('kapasitas_ruang') ||
+                request()->has('tempat_parkir') ||
+                request()->has('fasilitas'))
+            <!-- Grid View for Search Results -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                @forelse($cafes as $cafe)
+                    <div class="cafe-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100"
+                        data-cafe-id="{{ $cafe->id }}" data-cafe='@json($cafe)'>
+                        <div class="relative">
+                            <img src="{{ asset('storage/' . $cafe->thumbnail) }}" alt="{{ $cafe->nama_cafe }}"
+                                class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2">
+                                <span class="bg-white/90 text-gray-700 px-2 py-1 rounded-full text-sm font-medium">
+                                    ⭐ {{ $cafe->rating ?? '4.0' }}
+                                </span>
+                            </div>
+                        </div>
 
-                     <div class="p-4">
-                         <h3 class="font-semibold text-lg text-gray-900 mb-1">{{ $cafe->nama_cafe }}</h3>
-                         <p class="text-gray-600 text-sm mb-3 flex items-center gap-1">
-                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                 stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-black-500">
-                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                     d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                 <path stroke-linecap="round" stroke-linejoin="round"
-                                     d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                             </svg>
-                             {{ $cafe->alamat }}
-                         </p>
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg text-gray-900 mb-1">{{ $cafe->nama_cafe }}</h3>
+                            <p class="text-gray-600 text-sm mb-3 flex items-center gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-black-500">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                </svg>
+                                {{ $cafe->alamat }}
+                            </p>
 
-                         <div class="flex flex-wrap gap-1">
-                             @if ($cafe->labels)
-                                 @foreach ($cafe->labels->take(3) as $label)
-                                     <span
-                                         class="bg-gray-50 text-gray-600 border border-gray-200 px-2 py-1 rounded-full text-xs">
-                                         {{ $label->nama_label }}
-                                     </span>
-                                 @endforeach
-                             @endif
-                         </div>
-                     </div>
-                 </div>
-             @empty
-                 <div class="col-span-full text-center py-12">
-                     <div class="text-gray-400 mb-4">
-                         <i class="fas fa-search text-4xl"></i>
-                     </div>
-                     <p class="text-gray-500 text-lg">Tidak ada hasil ditemukan.</p>
-                     <p class="text-gray-400 text-sm mt-2">Coba ubah kriteria pencarian Anda</p>
-                 </div>
-             @endforelse
-         </div>
-     @else
-         <!-- Carousel View for Default disini menambahkan carousel -->
-         <div class="relative">
-             <div class="flex overflow-x-auto gap-6 snap-x snap-mandatory pb-6 scrollbar-hide">
-                 @foreach ($cafes as $cafe)
-                     <div class="min-w-[280px] sm:min-w-[300px] snap-center shrink-0">
-                         <div class="cafe-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100"
-                             data-cafe-id="{{ $cafe->id }}" data-cafe='@json($cafe)'>
-                             <div class="relative">
-                                 <img src="{{ asset('storage/' . $cafe->thumbnail) }}" alt="{{ $cafe->nama_cafe }}"
-                                     class="w-full h-48 object-cover">
-                                 <div class="absolute top-2 right-2">
-                                     <span class="bg-white/90 text-gray-700 px-2 py-1 rounded-full text-sm font-medium">
-                                         ⭐ {{ $cafe->rating ?? '4.0' }}
-                                     </span>
-                                 </div>
-                             </div>
-                             <div class="p-4">
-                                 <h3 class="font-semibold text-lg text-gray-900 mb-1">{{ $cafe->nama_cafe }}</h3>
-                                 <p class="text-gray-600 text-sm mb-3 flex items-center gap-1">
-                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-black-500">
-                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                             d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                             d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                                     </svg>
-                                     {{ $cafe->alamat }}
-                                 </p>
+                            <div class="flex flex-wrap gap-1">
+                                @if ($cafe->labels)
+                                    @foreach ($cafe->labels->take(3) as $label)
+                                        <span
+                                            class="bg-gray-50 text-gray-600 border border-gray-200 px-2 py-1 rounded-full text-xs">
+                                            {{ $label->nama_label }}
+                                        </span>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-full text-center py-12">
+                        <div class="text-gray-400 mb-4">
+                            <i class="fas fa-search text-4xl"></i>
+                        </div>
+                        <p class="text-gray-500 text-lg">Tidak ada hasil ditemukan.</p>
+                        <p class="text-gray-400 text-sm mt-2">Coba ubah kriteria pencarian Anda</p>
+                    </div>
+                @endforelse
+            </div>
+        @else
+            <!-- Carousel View for Default disini menambahkan carousel -->
+            <div class="relative">
+                <!-- Carousel Container -->
+                <div class="overflow-hidden px-4 sm:px-6 lg:px-8 py-6">
+                    <div class="max-w-7xl mx-auto">
+                        <div class="relative">
+                            <div class="overflow-hidden">
+                                <div id="cafeCarousel"
+                                    class="flex transition-transform duration-500 ease-in-out gap-6 pb-6">
+                                    @foreach ($cafes as $index => $cafe)
+                                        <div class="min-w-[280px] sm:min-w-[300px] flex-shrink-0 carousel-item"
+                                            data-index="{{ $index }}">
+                                            <div class="cafe-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200 h-full flex flex-col transition-all hover:shadow-md"
+                                                data-cafe-id="{{ $cafe->id }}"
+                                                data-cafe='@json($cafe)'>
+                                                <!-- Gambar Cafe - Ratio 3:4 -->
+                                                <div class="relative" style="padding-bottom: 133.33%;"> <!-- 4/3 = 1.3333 -->
+                                                    <img src="{{ asset('storage/' . $cafe->thumbnail) }}"
+                                                        alt="{{ $cafe->nama_cafe }}" 
+                                                        class="absolute inset-0 w-full h-full object-cover">
+                                                </div>
+                                                
+                                                <!-- Info Cafe - Disederhanakan -->
+                                                <div class="p-4 flex flex-col gap-2">
+                                                    <h3 class="font-semibold text-lg text-gray-900 line-clamp-1">{{ $cafe->nama_cafe }}</h3>
+                                                    <p class="text-gray-500 text-sm flex items-start gap-1">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mt-0.5 flex-shrink-0">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                                        </svg>
+                                                        <span class="line-clamp-2">{{ $cafe->alamat }}</span>
+                                                    </p>
+                                                    <!-- Label/Tag (opsional) -->
+                                                    @if ($cafe->labels && $cafe->labels->count() > 0)
+                                                    <div class="flex flex-wrap gap-1 mt-1">
+                                                        @foreach ($cafe->labels->take(2) as $label)
+                                                            <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs">
+                                                                {{ $label->nama_label }}
+                                                            </span>
+                                                        @endforeach
+                                                    </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                                 <div class="flex flex-wrap gap-1">
-                                     @if ($cafe->labels)
-                                         @foreach ($cafe->labels->take(3) as $label)
-                                             <span
-                                                 class="bg-gray-50 text-gray-600 border border-gray-200 px-2 py-1 rounded-full text-xs">
-                                                 {{ $label->nama_label }}
-                                             </span>
-                                         @endforeach
-                                     @endif
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                 @endforeach
-             </div>
-         </div>
-     @endif
- </div>
- <!-- Modal Popup -->
- <div id="cafeModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
-     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-         <!-- Background overlay -->
-         <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-             <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-         </div>
+                        <!-- Carousel Indicators -->
+                        <div id="carouselIndicators" class="flex justify-center mt-6 gap-2">
+                            @foreach ($cafes as $index => $cafe)
+                                <button
+                                    class="indicator-dot w-2 h-2 rounded-full transition-colors {{ $index === 0 ? 'bg-amber-600' : 'bg-gray-300' }}"
+                                    data-index="{{ $index }}"></button>
+                            @endforeach
+                        </div>
 
-         <!-- Modal content -->
-         <div
-             class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-             <!-- Ubah max-w-2xl menjadi max-w-lg -->
-             <div class="bg-white px-4 pt-5 pb-4 sm:p-4 sm:pb-4"> <!-- Kurangi padding pada desktop -->
-                 <div class="sm:flex sm:items-start">
-                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                         <div class="flex justify-between items-start">
-                             <div>
-                                 <h3 id="modalCafeName" class="text-xl leading-6 font-bold text-gray-900 sm:text-2xl">
-                                 </h3> <!-- Ukuran teks lebih kecil -->
-                                 <div class="mt-1 flex items-center text-gray-600 sm:mt-2"> <!-- Margin lebih ketat -->
-                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1 sm:w-5 sm:h-5">
-                                         <!-- Icon lebih kecil -->
-                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                             d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                             d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                                     </svg>
-                                     <span id="modalCafeAddress" class="text-xs sm:text-sm"></span>
-                                     <!-- Text lebih kecil -->
-                                 </div>
-                             </div>
-                             <button type="button" id="closeModal" class="text-gray-400 hover:text-gray-500">
-                                 <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24"
-                                     stroke="currentColor"> <!-- Close icon lebih kecil -->
-                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                         d="M6 18L18 6M6 6l12 12" />
-                                 </svg>
-                             </button>
-                         </div>
+                        <!-- Auto-play Control -->
+                        <div class="flex justify-center mt-4">
+                            <button id="autoPlayToggle"
+                                class="text-gray-600 hover:text-gray-900 text-sm px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                                <span id="autoPlayText"></span>
+                            </button>
+                        </div>
+                    </div>
+        @endif
+    </div>
 
-                         <div class="mt-3 sm:mt-4"> <!-- Margin lebih ketat -->
-                             <div class="w-full aspect-[3/4] mx-auto max-w-xs"> <!-- Container gambar lebih kecil -->
-                                 <img id="modalCafeImage" src="" alt=""
-                                     class="w-full h-full object-cover rounded-lg">
-                             </div>
 
-                             <!-- Gallery Section -->
-                             <div class="mt-3 sm:mt-4"> <!-- Margin lebih ketat -->
-                                 <h4 class="font-semibold text-base sm:text-lg mb-1 sm:mb-2">Galeri</h4>
-                                 <!-- Ukuran teks lebih kecil -->
-                                 <div id="cafeGallery" class="grid grid-cols-3 gap-1 sm:gap-2">
-                                     <!-- Gap lebih kecil -->
-                                     <!-- Gallery images will be inserted here by JavaScript -->
-                                 </div>
-                             </div>
+    <!-- Modal Popup -->
+    <div id="cafeModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
 
-                             <div class="mt-3 grid grid-cols-2 gap-2 sm:gap-4 sm:mt-4">
-                                 <!-- Gap dan margin lebih ketat -->
-                                 <div class="flex items-center">
-                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5" stroke="currentColor"
-                                         class="w-4 h-4 mr-1 text-amber-600 sm:w-5 sm:h-5"> <!-- Icon lebih kecil -->
-                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                             d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                     </svg>
-                                     <div>
-                                         <p class="text-xs text-gray-500 sm:text-sm">Jam Buka</p>
-                                         <!-- Text lebih kecil -->
-                                         <p id="modalCafeHours" class="font-medium text-sm sm:text-base"></p>
-                                         <!-- Text lebih kecil -->
-                                     </div>
-                                 </div>
-                                 <!-- Repeat similar size adjustments for other info items -->
-                                 <div class="flex items-center">
-                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5" stroke="currentColor"
-                                         class="w-4 h-4 mr-1 text-amber-600 sm:w-5 sm:h-5">
-                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                             d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
-                                     </svg>
-                                     <div>
-                                         <p class="text-xs text-gray-500 sm:text-sm">Harga Menu</p>
-                                         <p id="modalCafePrice" class="font-medium text-sm sm:text-base"></p>
-                                     </div>
-                                 </div>
-                                 <div class="flex items-center">
-                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5" stroke="currentColor"
-                                         class="w-4 h-4 mr-1 text-amber-600 sm:w-5 sm:h-5">
-                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                             d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                     </svg>
-                                     <div>
-                                         <p class="text-xs text-gray-500 sm:text-sm">Kapasitas</p>
-                                         <p id="modalCafeCapacity" class="font-medium text-sm sm:text-base"></p>
-                                     </div>
-                                 </div>
-                                 <div class="flex items-center">
-                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         stroke-width="1.5" stroke="currentColor"
-                                         class="w-4 h-4 mr-1 text-amber-600 sm:w-5 sm:h-5">
-                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                             d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
-                                     </svg>
-                                     <div>
-                                         <p class="text-xs text-gray-500 sm:text-sm">Parkir</p>
-                                         <p id="modalCafeParking" class="font-medium text-sm sm:text-base"></p>
-                                     </div>
-                                 </div>
-                             </div>
+            <!-- Modal content -->
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <!-- Ubah max-w-2xl menjadi max-w-lg -->
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-4 sm:pb-4"> <!-- Kurangi padding pada desktop -->
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 id="modalCafeName" class="text-xl leading-6 font-bold text-gray-900 sm:text-2xl">
+                                    </h3> <!-- Ukuran teks lebih kecil -->
+                                    <div class="mt-1 flex items-center text-gray-600 sm:mt-2"> <!-- Margin lebih ketat -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1 sm:w-5 sm:h-5">
+                                            <!-- Icon lebih kecil -->
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                        </svg>
+                                        <span id="modalCafeAddress" class="text-xs sm:text-sm"></span>
+                                        <!-- Text lebih kecil -->
+                                    </div>
+                                </div>
+                                <button type="button" id="closeModal" class="text-gray-400 hover:text-gray-500">
+                                    <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor"> <!-- Close icon lebih kecil -->
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
 
-                             <div class="mt-4 sm:mt-6"> <!-- Margin lebih ketat -->
-                                 <h4 class="font-semibold text-base sm:text-lg mb-1 sm:mb-2">Fasilitas</h4>
-                                 <!-- Ukuran teks lebih kecil -->
-                                 <div id="modalCafeFacilities" class="flex flex-wrap gap-1 sm:gap-2">
-                                     <!-- Gap lebih kecil -->
-                                     <!-- Fasilitas akan dimasukkan oleh JavaScript -->
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-             <div class="bg-gray-50 px-4 py-3 sm:px-4 sm:py-3 sm:flex sm:flex-row-reverse">
-                 <!-- Padding lebih ketat -->
-                 <a id="modalCafeMaps" href="#" target="_blank"
-                     class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1.5 bg-amber-600 text-sm font-medium text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 sm:ml-2 sm:w-auto sm:px-4 sm:py-2">
-                     <!-- Button lebih kecil -->
-                     Lihat di Maps
-                 </a>
-                 <button type="button" id="closeModalBtn"
-                     class="mt-2 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-3 py-1.5 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 sm:mt-0 sm:ml-2 sm:w-auto sm:px-4 sm:py-2">
-                     <!-- Button lebih kecil -->
-                     Tutup
-                 </button>
-             </div>
-         </div>
-     </div>
- </div>
- @endsection
+                            <div class="mt-3 sm:mt-4"> <!-- Margin lebih ketat -->
+                                <div class="w-full aspect-[3/4] mx-auto max-w-xs"> <!-- Container gambar lebih kecil -->
+                                    <img id="modalCafeImage" src="" alt=""
+                                        class="w-full h-full object-cover rounded-lg">
+                                </div>
 
+                                <!-- Gallery Section -->
+                                <div class="mt-3 sm:mt-4"> <!-- Margin lebih ketat -->
+                                    <h4 class="font-semibold text-base sm:text-lg mb-1 sm:mb-2">Galeri</h4>
+                                    <!-- Ukuran teks lebih kecil -->
+                                    <div id="cafeGallery" class="grid grid-cols-3 gap-1 sm:gap-2">
+                                        <!-- Gap lebih kecil -->
+                                        <!-- Gallery images will be inserted here by JavaScript -->
+                                    </div>
+                                </div>
+
+                                <div class="mt-3 grid grid-cols-2 gap-2 sm:gap-4 sm:mt-4">
+                                    <!-- Gap dan margin lebih ketat -->
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor"
+                                            class="w-4 h-4 mr-1 text-amber-600 sm:w-5 sm:h-5"> <!-- Icon lebih kecil -->
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                        </svg>
+                                        <div>
+                                            <p class="text-xs text-gray-500 sm:text-sm">Jam Buka</p>
+                                            <!-- Text lebih kecil -->
+                                            <p id="modalCafeHours" class="font-medium text-sm sm:text-base"></p>
+                                            <!-- Text lebih kecil -->
+                                        </div>
+                                    </div>
+                                    <!-- Repeat similar size adjustments for other info items -->
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor"
+                                            class="w-4 h-4 mr-1 text-amber-600 sm:w-5 sm:h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                                        </svg>
+                                        <div>
+                                            <p class="text-xs text-gray-500 sm:text-sm">Harga Menu</p>
+                                            <p id="modalCafePrice" class="font-medium text-sm sm:text-base"></p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor"
+                                            class="w-4 h-4 mr-1 text-amber-600 sm:w-5 sm:h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                        </svg>
+                                        <div>
+                                            <p class="text-xs text-gray-500 sm:text-sm">Kapasitas</p>
+                                            <p id="modalCafeCapacity" class="font-medium text-sm sm:text-base"></p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor"
+                                            class="w-4 h-4 mr-1 text-amber-600 sm:w-5 sm:h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                                        </svg>
+                                        <div>
+                                            <p class="text-xs text-gray-500 sm:text-sm">Parkir</p>
+                                            <p id="modalCafeParking" class="font-medium text-sm sm:text-base"></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 sm:mt-6"> <!-- Margin lebih ketat -->
+                                    <h4 class="font-semibold text-base sm:text-lg mb-1 sm:mb-2">Fasilitas</h4>
+                                    <!-- Ukuran teks lebih kecil -->
+                                    <div id="modalCafeFacilities" class="flex flex-wrap gap-1 sm:gap-2">
+                                        <!-- Gap lebih kecil -->
+                                        <!-- Fasilitas akan dimasukkan oleh JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-4 sm:py-3 sm:flex sm:flex-row-reverse">
+                    <!-- Padding lebih ketat -->
+                    <a id="modalCafeMaps" href="#" target="_blank"
+                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-3 py-1.5 bg-amber-600 text-sm font-medium text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 sm:ml-2 sm:w-auto sm:px-4 sm:py-2">
+                        <!-- Button lebih kecil -->
+                        Lihat di Maps
+                    </a>
+                    <button type="button" id="closeModalBtn"
+                        class="mt-2 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-3 py-1.5 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 sm:mt-0 sm:ml-2 sm:w-auto sm:px-4 sm:py-2">
+                        <!-- Button lebih kecil -->
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
