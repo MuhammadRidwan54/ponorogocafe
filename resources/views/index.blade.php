@@ -167,11 +167,11 @@
                          </p>
 
                          <div class="flex flex-wrap gap-1">
-                             @if ($cafe->fasilitas)
-                                 @foreach ($cafe->fasilitas->take(3) as $fasilitas)
+                             @if ($cafe->labels)
+                                 @foreach ($cafe->labels->take(3) as $label)
                                      <span
                                          class="bg-gray-50 text-gray-600 border border-gray-200 px-2 py-1 rounded-full text-xs">
-                                         {{ $fasilitas->nama_fasilitas }}
+                                         {{ $label->nama_label }}
                                      </span>
                                  @endforeach
                              @endif
@@ -219,11 +219,11 @@
                                  </p>
 
                                  <div class="flex flex-wrap gap-1">
-                                     @if ($cafe->fasilitas)
-                                         @foreach ($cafe->fasilitas->take(3) as $fasilitas)
+                                     @if ($cafe->labels)
+                                         @foreach ($cafe->labels->take(3) as $label)
                                              <span
                                                  class="bg-gray-50 text-gray-600 border border-gray-200 px-2 py-1 rounded-full text-xs">
-                                                 {{ $fasilitas->nama_fasilitas }}
+                                                 {{ $label->nama_label }}
                                              </span>
                                          @endforeach
                                      @endif

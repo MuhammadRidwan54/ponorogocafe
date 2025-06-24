@@ -23,6 +23,7 @@ return new class extends Migration
     $table->unsignedBigInteger('tempatparkir_id');
     $table->unsignedBigInteger('jambuka_id');
     $table->timestamps();
+    
 
     $table->foreign('hargamenu_id')->references('id')->on('hargamenu')->onDelete('cascade');
     $table->foreign('kapasitasruang_id')->references('id')->on('kapasitasruang')->onDelete('cascade');
