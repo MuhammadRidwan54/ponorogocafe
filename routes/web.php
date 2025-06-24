@@ -10,7 +10,8 @@ use App\Http\Controllers\{
     FasilitasController, 
     HargamenuController,
     TempatparkirController, 
-    KapasitasruangController
+    KapasitasruangController,
+    LabelController
 };
 
 /*
@@ -57,4 +58,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('kapasitas_ruang', KapasitasruangController::class);
     Route::resource('tempat_parkir', TempatparkirController::class);
     Route::resource('jam_buka', JambukaController::class);
+    Route::resource('label', LabelController::class);
 });
