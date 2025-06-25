@@ -3,95 +3,132 @@
 @section('title', 'Rekomendasi Cafe - Ponorogo')
 
 @section('content')
-    <div class="text-center py-16 px-4">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Rekomendasi Cafe untuk Anda</h1>
-        <p class="text-gray-600 text-lg mb-8">Cari rekomendasi cafe sesuai kriteria</p>
+    <div class="bg-gradient-to-b from-amber-50 to-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center py-16 px-4">
+                <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                    Rekomendasi Cafe untuk Anda
+                </h1>
+                <p class="text-gray-600 text-xl mb-12 max-w-2xl mx-auto">
+                    Cari rekomendasi cafe sesuai kriteria
+                </p>
 
-        <!-- Search Form -->
-        <form action="{{ route('cafe.search') }}" method="GET" class="relative mx-auto w-full max-w-2xl">
-            <div class="bg-white rounded-full px-6 py-4 flex items-center shadow-lg border border-gray-200">
-                <button type="button" id="toggleFilter"
-                    class="text-amber-700 hover:bg-amber-50 rounded-full p-2 mr-3 transition-colors">
-                    <i class="fas fa-sliders-h text-lg"></i>
-                </button>
-                <!-- Chips -->
-                <div id="selectedFilters" class="flex flex-wrap gap-2 justify-center hidden"></div>
-                <input type="text" name="search" id="searchInput" placeholder="Cari nama cafe..."
-                    value="{{ request('search') }}" class="w-full flex-1 focus:outline-none text-lg bg-transparent" />
-                <button type="submit" class="text-amber-700 hover:bg-amber-50 rounded-full p-2 ml-3 transition-colors">
-                    <i class="fas fa-search text-lg"></i>
-                </button>
+                <!-- Enhanced Search Form -->
+                <form action="{{ route('cafe.search') }}" method="GET" class="relative mx-auto w-full max-w-4xl">
+                    <div class="bg-gray-200 rounded-full px-6 py-4 flex items-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <!-- Filter Toggle Button -->
+                        <button type="button" id="toggleFilter"
+                            class="text-amber-700 hover:bg-amber-100 rounded-full p-2 mr-3 transition-all duration-300 hover:scale-110 flex-shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"/>
+                            </svg>
+                        </button>
+
+                        <!-- Selected Filters Chips -->
+                        <div id="selectedFilters" class="flex flex-wrap gap-2 mr-3 hidden"></div>
+
+                        <!-- Search Input -->
+                        <input type="text" name="search" id="searchInput" 
+                            placeholder="Pilih kriteria..." 
+                            value="{{ request('search') }}" 
+                            class="w-full flex-1 focus:outline-none text-base bg-transparent placeholder-gray-500 text-gray-700" />
+
+                        <!-- Search Button -->
+                        <button type="submit" class="bg-amber-700 hover:bg-amber-800 text-white rounded-full px-6 py-2.5 ml-3 transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg flex-shrink-0">
+                            <span class="text-sm font-medium">Cari...</span>
+                        </button>
+                    </div>
+
+                    <!-- Enhanced Filter Dropdown -->
+                    <div id="filterDropdown"
+                        class="hidden absolute top-full mt-3 w-full text-white rounded-3xl p-8 shadow-2xl z-20"
+                        style="background-color: #7C6A46;">
+                        
+                        <!-- Harga Menu -->
+                        <div class="mb-4">
+                            <h3 class="font-bold text-lg text-white mb-2">Harga menu</h3>
+                            <div class="flex flex-wrap gap-3">
+                                @foreach ($hargamenu as $menu)
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="harga_menu" value="{{ $menu->id }}"
+                                            {{ request('harga_menu') == $menu->id ? 'checked' : '' }} 
+                                            class="hidden peer">
+                                        <span class="pill-button inline-block bg-white text-amber-800 hover:bg-amber-50 peer-checked:bg-amber-200 peer-checked:text-amber-900 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 peer-checked:scale-105 peer-checked:shadow-md">
+                                            {{ $menu->harga_menu }}
+                                        </span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Kapasitas Ruang -->
+                        <div class="mb-4">
+                            <h3 class="font-bold text-lg text-white mb-2">Kapasitas ruang</h3>
+                            <div class="flex flex-wrap gap-3">
+                                @foreach ($kapasitasruang as $kapasitas)
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="kapasitas_ruang" value="{{ $kapasitas->id }}"
+                                            {{ request('kapasitas_ruang') == $kapasitas->id ? 'checked' : '' }}
+                                            class="hidden peer">
+                                        <span class="pill-button inline-block bg-white text-amber-800 hover:bg-amber-50 peer-checked:bg-amber-200 peer-checked:text-amber-900 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 peer-checked:scale-105 peer-checked:shadow-md">
+                                            {{ $kapasitas->kapasitas_ruang }}
+                                        </span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Fasilitas -->
+                        <div class="mb-4">
+                            <h3 class="font-bold text-lg text-white mb-2">Fasilitas</h3>
+                            <div class="flex flex-wrap gap-3">
+                                @foreach ($fasilitas as $item)
+                                    <label class="cursor-pointer">
+                                        <input type="checkbox" name="fasilitas[]" value="{{ $item->id }}"
+                                            {{ in_array($item->id, request('fasilitas', [])) ? 'checked' : '' }}
+                                            class="hidden peer">
+                                        <span class="pill-button inline-block bg-white text-amber-800 hover:bg-amber-50 peer-checked:bg-amber-200 peer-checked:text-amber-900 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 peer-checked:scale-105 peer-checked:shadow-md">
+                                            {{ $item->nama_fasilitas }}
+                                        </span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- Tempat Parkir -->
+                        <div class="mb-4">
+                            <h3 class="font-bold text-lg text-white mb-2">Tempat parkir</h3>
+                            <div class="flex flex-wrap gap-3">
+                                @foreach ($tempatParkir as $parkir)
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="tempat_parkir" value="{{ $parkir->id }}"
+                                            {{ request('tempat_parkir') == $parkir->id ? 'checked' : '' }}
+                                            class="hidden peer">
+                                        <span class="pill-button inline-block bg-white text-amber-800 hover:bg-amber-50 peer-checked:bg-amber-200 peer-checked:text-amber-900 px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 hover:scale-105 peer-checked:scale-105 peer-checked:shadow-md">
+                                            {{ $parkir->tempat_parkir }}
+                                        </span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+                        
+                        <!-- Divider Line -->
+                        <div class="border-t border-white/50 mb-6"></div>
+                        
+                        <!-- Reset Filter Button -->
+                        <div class="flex justify-center">
+                            <button type="button" id="clearFilters" class="bg-white hover:bg-gray-100 px-8 py-3 rounded-full font-semibold transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg" style="color: #7C6A46;">
+                                Reset Filter
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-
-            <!-- Filter Dropdown -->
-            <div id="filterDropdown"
-                class="hidden absolute top-full mt-4 w-full bg-amber-800 text-white rounded-2xl p-6 shadow-xl z-10">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Harga Menu -->
-                    <div>
-                        <p class="font-bold mb-3 text-white">Harga menu</p>
-                        <div class="space-y-2">
-                            @foreach ($hargamenu as $menu)
-                                <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="radio" name="harga_menu" value="{{ $menu->id }}"
-                                        {{ request('harga_menu') == $menu->id ? 'checked' : '' }} class="text-amber-600">
-                                    <span class="text-sm">{{ $menu->harga_menu }}</span>
-                                </label>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- Kapasitas -->
-                    <div>
-                        <p class="font-bold mb-3 text-white">Kapasitas ruang</p>
-                        <div class="space-y-2">
-                            @foreach ($kapasitasruang as $kapasitas)
-                                <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="radio" name="kapasitas_ruang" value="{{ $kapasitas->id }}"
-                                        {{ request('kapasitas_ruang') == $kapasitas->id ? 'checked' : '' }}
-                                        class="text-amber-600">
-                                    <span class="text-sm">{{ $kapasitas->kapasitas_ruang }}</span>
-                                </label>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- Fasilitas -->
-                    <div>
-                        <p class="font-bold mb-3 text-white">Fasilitas</p>
-                        <div class="space-y-2">
-                            @foreach ($fasilitas as $item)
-                                <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" name="fasilitas[]" value="{{ $item->id }}"
-                                        {{ in_array($item->id, request('fasilitas', [])) ? 'checked' : '' }}
-                                        class="text-amber-600">
-                                    <span class="text-sm">{{ $item->nama_fasilitas }}</span>
-                                </label>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- Tempat Parkir -->
-                    <div>
-                        <p class="font-bold mb-3 text-white">Tempat parkir</p>
-                        <div class="space-y-2">
-                            @foreach ($tempatParkir as $parkir)
-                                <label class="flex items-center space-x-2 cursor-pointer">
-                                    <input type="radio" name="tempat_parkir" value="{{ $parkir->id }}"
-                                        {{ request('tempat_parkir') == $parkir->id ? 'checked' : '' }}
-                                        class="text-amber-600">
-                                    <span class="text-sm">{{ $parkir->tempat_parkir }}</span>
-                                </label>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 
     <!-- Explore Cafe Section -->
-    <div class="bg-gray-50 rounded-t-3xl px-6 md:px-12 py-12">
+    <div class="bg-gray-50 rounded-t-3xl px-4 sm:px-8 lg:px-16 xl:px-24 py-12">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Explore Our Cafe</h2>
         </div>
@@ -140,11 +177,12 @@
             <!-- Grid View for Search Results -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 @forelse($cafes as $cafe)
-                    <div class="cafe-card bg-white rounded-xl overflow-hidden shadow-md border border-gray-100"
+                    <div class="cafe-card bg-white rounded-lg overflow-hidden shadow-sm border border-gray-200 h-full flex flex-col transition-all hover:shadow-md"
                         data-cafe-id="{{ $cafe->id }}" data-cafe='@json($cafe)'>
-                        <div class="relative">
+                        <!-- Gambar Cafe - Ratio 4:3 -->
+                        <div class="relative" style="padding-bottom: 133.33%;">
                             <img src="{{ asset('storage/' . $cafe->thumbnail) }}" alt="{{ $cafe->nama_cafe }}"
-                                class="w-full h-48 object-cover">
+                                class="absolute inset-0 w-full h-full object-cover">
                             <div class="absolute top-2 right-2">
                                 <span class="bg-white/90 text-gray-700 px-2 py-1 rounded-full text-sm font-medium">
                                     ⭐ {{ $cafe->rating ?? '4.0' }}
@@ -152,29 +190,30 @@
                             </div>
                         </div>
 
-                        <div class="p-4">
-                            <h3 class="font-semibold text-lg text-gray-900 mb-1">{{ $cafe->nama_cafe }}</h3>
-                            <p class="text-gray-600 text-sm mb-3 flex items-center gap-1">
+                        <!-- Info Cafe -->
+                        <div class="p-4 flex flex-col gap-2">
+                            <h3 class="font-semibold text-lg text-gray-900 line-clamp-1">{{ $cafe->nama_cafe }}</h3>
+                            <p class="text-gray-500 text-sm flex items-start gap-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-black-500">
+                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mt-0.5 flex-shrink-0">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                 </svg>
-                                {{ $cafe->alamat }}
+                                <span class="line-clamp-2">{{ $cafe->alamat }}</span>
                             </p>
 
-                            <div class="flex flex-wrap gap-1">
-                                @if ($cafe->labels)
-                                    @foreach ($cafe->labels->take(3) as $label)
-                                        <span
-                                            class="bg-gray-50 text-gray-600 border border-gray-200 px-2 py-1 rounded-full text-xs">
-                                            {{ $label->nama_label }}
-                                        </span>
-                                    @endforeach
-                                @endif
+                            <!-- Label/Tag -->
+                            @if ($cafe->labels && $cafe->labels->count() > 0)
+                            <div class="flex flex-wrap gap-1 mt-1">
+                                @foreach ($cafe->labels->take(2) as $label)
+                                    <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs">
+                                        {{ $label->nama_label }}
+                                    </span>
+                                @endforeach
                             </div>
+                            @endif
                         </div>
                     </div>
                 @empty
