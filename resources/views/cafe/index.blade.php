@@ -7,7 +7,7 @@
 @section('content')
     <div class="bg-white rounded-xl shadow-md">
         <div class="p-4 lg:p-6">
-            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+            {{-- <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
                 <h1 class="text-xl lg:text-2xl font-bold text-gray-800">Daftar Cafe</h1>
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
                     <button onclick="openModal('create')"
@@ -16,12 +16,31 @@
                         <span>Tambah Cafe</span>
                     </button>
                 </div>
+            </div> --}}
+
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                <h1 class="text-xl lg:text-2xl font-bold text-gray-900">Daftar Cafe</h1>
+                <button onclick="openModal('create')"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg flex items-center justify-center space-x-2 shadow-sm transition-all duration-200 text-sm font-medium">
+                    <i class="fas fa-plus"></i>
+                    <span>Tambah Cafe</span>
+                </button>
             </div>
 
-            @if (session('success'))
+            {{-- @if (session('success'))
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
                     role="alert">
                     <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+            @endif --}}
+
+            <!-- Success Message -->
+            @if (session('success'))
+                <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-6" role="alert">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>{{ session('success') }}</span>
+                    </div>
                 </div>
             @endif
 
@@ -165,26 +184,19 @@
 
 
     <!-- Create/Edit Modal -->
-    <div id="cafeModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50 p-4">
-        <div class="relative top-10 lg:top-20 mx-auto border w-full max-w-2xl shadow-lg rounded-xl bg-white">
-            <div class="p-4 lg:p-5">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-base lg:text-lg font-medium text-gray-900" id="modalTitle">Tambah Cafe</h3>
-                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
-                        <i class="fas fa-times"></i>
+    <div id="cafeModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50 p-4">
+        <div class="relative top-10 lg:top-20 mx-auto border w-full max-w-4xl shadow-xl rounded-xl bg-white">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900" id="modalTitle">Tambah Cafe</h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 p-1 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-times text-xl"></i>
                     </button>
                 </div>
+                
                 <form id="cafeForm" method="POST" enctype="multipart/form-data">
-                    @csrf
                     <div id="modalContent">
                         <!-- Content will be loaded here -->
-                    </div>
-
-                    <div class="flex justify-end space-x-3">
-                        <button type="button" onclick="closeModal()"
-                            class="bg-gray-500 hover:bg-gray-600 text-white px-4 lg:px-6 py-2 rounded-lg transition-colors text-sm lg:text-base">Batal</button>
-                        <button type="submit"
-                            class="bg-brown-600 hover:bg-brown-700 text-white px-4 lg:px-6 py-2 rounded-lg transition-colors text-sm lg:text-base">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -211,247 +223,278 @@
             if (action === 'create') {
                 title.textContent = 'Tambah Cafe';
                 form.action = "{{ route('cafe.store') }}";
-                form.innerHTML = `
-                @csrf
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Nama Cafe</label>
-                        <input type="text" name="nama_cafe" class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Alamat</label>
-                        <textarea name="alamat" rows="3" class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required></textarea>
+                modalContent.innerHTML = `
+                    @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Nama Cafe *</label>
+                            <input type="text" name="nama_cafe" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Alamat URL</label>
+                            <input type="url" name="alamat_url"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="https://maps.google.com/...">
+                        </div>
+
+                        <div class="md:col-span-2 space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Alamat *</label>
+                            <textarea name="alamat" rows="3" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required></textarea>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Jam Buka *</label>
+                            <select name="jambuka_id" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="">Pilih Jam Buka</option>
+                                ${globalData.jambuka.map(jb => `<option value="${jb.id}">${jb.jam_buka}</option>`).join('')}
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Harga Menu *</label>
+                            <select name="hargamenu_id" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="">Pilih Harga Menu</option>
+                                ${globalData.hargamenu.map(hm => `<option value="${hm.id}">${hm.harga_menu}</option>`).join('')}
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Kapasitas Ruang *</label>
+                            <select name="kapasitasruang_id" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="">Pilih Kapasitas Ruang</option>
+                                ${globalData.kapasitasruang.map(kr => `<option value="${kr.id}">${kr.kapasitas_ruang}</option>`).join('')}
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Tempat Parkir *</label>
+                            <select name="tempatparkir_id" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="">Pilih Tempat Parkir</option>
+                                ${globalData.tempatparkir.map(tp => `<option value="${tp.id}">${tp.tempat_parkir}</option>`).join('')}
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Thumbnail *</label>
+                            <input type="file" name="thumbnail" accept="image/*" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                            <div id="thumbnailPreview" class="mt-2 flex space-x-2"></div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Gambar</label>
+                            <div id="imageInputs">
+                                <div class="image-input-group flex items-center space-x-2 mb-2">
+                                    <input type="file" name="gambar[]" accept="image/*" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <button type="button" onclick="removeImageInput(this)" class="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="imagesPreview" class="mt-2 flex space-x-2 overflow-x-auto"></div>
+                            <button type="button" onclick="addImageInput()" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg mt-2 text-sm font-medium">
+                                Tambah Gambar Lain
+                            </button>
+                            <p class="text-sm text-gray-500 mt-1">Dapat memilih lebih dari satu gambar</p>
+                        </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Alamat URL</label>
-                        <input type="text" name="alamat_url"
-                            class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent"
-                            placeholder="https://maps.google.com/..." >
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Jam Buka</label>
-                        <select name="jambuka_id" class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required>
-                            <option value="">Pilih Jam Buka</option>
-                            ${globalData.jambuka.map(jb => `<option value="${jb.id}">${jb.jam_buka}</option>`).join('')}
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Harga Menu</label>
-                        <select name="hargamenu_id" class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required>
-                            <option value="">Pilih Harga Menu</option>
-                            ${globalData.hargamenu.map(hm => `<option value="${hm.id}">${hm.harga_menu}</option>`).join('')}
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Kapasitas Ruang</label>
-                        <select name="kapasitasruang_id" class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required>
-                            <option value="">Pilih Kapasitas Ruang</option>
-                            ${globalData.kapasitasruang.map(kr => `<option value="${kr.id}">${kr.kapasitas_ruang}</option>`).join('')}
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Tempat Parkir</label>
-                        <select name="tempatparkir_id" class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required>
-                            <option value="">Pilih Tempat Parkir</option>
-                            ${globalData.tempatparkir.map(tp => `<option value="${tp.id}">${tp.tempat_parkir}</option>`).join('')}
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Thumbnail</label>
-                        <input type="file" name="thumbnail" accept="image/*" 
-                            class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required>
-                        <div id="thumbnailPreview" class="mt-2 flex space-x-2"></div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Gambar</label>
-                        <div id="imageInputs">
-                            <div class="image-input-group flex items-center space-x-2 mb-2">
-                                <input type="file" name="gambar[]" accept="image/*" 
-                                    class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent">
-                                <button type="button" onclick="removeImageInput(this)" class="text-red-600 hover:text-red-900">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                    <div class="mt-6 space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Fasilitas</label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                ${globalData.fasilitas.map(f => `
+                                    <div class="flex items-center">
+                                        <input type="checkbox" name="fasilitas_id[]" value="${f.id}" id="fasilitas${f.id}" 
+                                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                        <label for="fasilitas${f.id}" class="ml-2 text-sm text-gray-700">${f.nama_fasilitas}</label>
+                                    </div>
+                                `).join('')}
                             </div>
                         </div>
-                        <div id="imagesPreview" class="mt-2 flex space-x-2 overflow-x-auto"></div>
-                        <button type="button" onclick="addImageInput()" class="bg-brown-600 hover:bg-brown-700 text-white px-4 py-2 rounded-lg mt-2 text-sm">
-                            Tambah Gambar Lain
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Label</label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                ${globalData.labels.map(l => `
+                                    <div class="flex items-center">
+                                        <input type="checkbox" name="label_id[]" value="${l.id}" id="label${l.id}" 
+                                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                        <label for="label${l.id}" class="ml-2 text-sm text-gray-700">${l.nama_label}</label>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200 mt-6">
+                        <button type="button" onclick="closeModal()" 
+                            class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg transition-colors text-sm font-medium">
+                            Batal
                         </button>
-                        <p class="text-sm text-gray-500 mt-1">Dapat memilih lebih dari satu gambar</p>
+                        <button type="submit" 
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg transition-colors text-sm font-medium">
+                            Simpan
+                        </button>
                     </div>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Fasilitas</label>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
-                        ${globalData.fasilitas.map(f => `
-                                <div class="flex items-center">
-                                    <input type="checkbox" name="fasilitas_id[]" value="${f.id}" id="fasilitas${f.id}" class="rounded border-gray-300 text-brown-600 focus:ring-brown-500">
-                                    <label for="fasilitas${f.id}" class="ml-2 text-sm text-gray-700">${f.nama_fasilitas}</label>
-                                </div>
-                            `).join('')}
-                    </div>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Label</label>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
-                        ${globalData.labels.map(l => `
-                                <div class="flex items-center">
-                                    <input type="checkbox" name="label_id[]" value="${l.id}" id="label${l.id}" class="rounded border-gray-300 text-brown-600 focus:ring-brown-500">
-                                    <label for="label${l.id}" class="ml-2 text-sm text-gray-700">${l.nama_label}</label>
-                                </div>
-                            `).join('')}
-                    </div>
-                </div>
-
-                <div class="flex justify-end space-x-3">
-                    <button type="button" onclick="closeModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 lg:px-6 py-2 rounded-lg transition-colors text-sm lg:text-base">Batal</button>
-                    <button type="submit" class="bg-brown-600 hover:bg-brown-700 text-white px-4 lg:px-6 py-2 rounded-lg transition-colors text-sm lg:text-base">Simpan</button>
-                </div>
-            `;
+                `;
             } else if (action === 'edit') {
                 const button = event.currentTarget;
                 const cafe = JSON.parse(button.getAttribute('data-cafe'));
                 title.textContent = 'Edit Cafe';
                 form.action = `/cafe/${cafe.id}`;
-                form.innerHTML = `
-            
-                @csrf
-                @method('PUT')
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Nama Cafe</label>
-                        <input type="text" name="nama_cafe" value="${cafe.nama_cafe.replace(/"/g, '&quot;')}" class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Alamat</label>
-                        <textarea name="alamat" rows="3" class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required>${cafe.alamat.replace(/"/g, '&quot;')}</textarea>
-                    </div>
+                modalContent.innerHTML = `
+                    @csrf
+                    @method('PUT')
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Nama Cafe *</label>
+                            <input type="text" name="nama_cafe" value="${cafe.nama_cafe.replace(/"/g, '&quot;')}" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Alamat URL</label>
+                            <input type="url" name="alamat_url" value="${cafe.alamat_url ? cafe.alamat_url : ''}" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="https://maps.google.com/...">
+                        </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Alamat URL</label>
-                        <input type="url" name="alamat_url" value="${cafe.alamat_url ? cafe.alamat_url : ''}" 
-                            class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent"
-                            placeholder="https://maps.google.com/..." >
-                    </div>
+                        <div class="md:col-span-2 space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Alamat *</label>
+                            <textarea name="alamat" rows="3" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>${cafe.alamat.replace(/"/g, '&quot;')}</textarea>
+                        </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Jam Buka</label>
-                        <select name="jambuka_id" class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required>
-                            <option value="">Pilih Jam Buka</option>
-                            ${globalData.jambuka.map(jb => `<option value="${jb.id}" ${cafe.jambuka_id == jb.id ? 'selected' : ''}>${jb.jam_buka}</option>`).join('')}
-                        </select>
-                    </div>
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Jam Buka *</label>
+                            <select name="jambuka_id" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="">Pilih Jam Buka</option>
+                                ${globalData.jambuka.map(jb => `<option value="${jb.id}" ${cafe.jambuka_id == jb.id ? 'selected' : ''}>${jb.jam_buka}</option>`).join('')}
+                            </select>
+                        </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Harga Menu</label>
-                        <select name="hargamenu_id" class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required>
-                            <option value="">Pilih Harga Menu</option>
-                            ${globalData.hargamenu.map(hm => `<option value="${hm.id}" ${cafe.hargamenu_id == hm.id ? 'selected' : ''}>${hm.harga_menu}</option>`).join('')}
-                        </select>
-                    </div>
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Harga Menu *</label>
+                            <select name="hargamenu_id" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="">Pilih Harga Menu</option>
+                                ${globalData.hargamenu.map(hm => `<option value="${hm.id}" ${cafe.hargamenu_id == hm.id ? 'selected' : ''}>${hm.harga_menu}</option>`).join('')}
+                            </select>
+                        </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Kapasitas Ruang</label>
-                        <select name="kapasitasruang_id" class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required>
-                            <option value="">Pilih Kapasitas Ruang</option>
-                            ${globalData.kapasitasruang.map(kr => `<option value="${kr.id}" ${cafe.kapasitasruang_id == kr.id ? 'selected' : ''}>${kr.kapasitas_ruang}</option>`).join('')}
-                        </select>
-                    </div>
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Kapasitas Ruang *</label>
+                            <select name="kapasitasruang_id" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="">Pilih Kapasitas Ruang</option>
+                                ${globalData.kapasitasruang.map(kr => `<option value="${kr.id}" ${cafe.kapasitasruang_id == kr.id ? 'selected' : ''}>${kr.kapasitas_ruang}</option>`).join('')}
+                            </select>
+                        </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Tempat Parkir</label>
-                        <select name="tempatparkir_id" class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent" required>
-                            <option value="">Pilih Tempat Parkir</option>
-                            ${globalData.tempatparkir.map(tp => `<option value="${tp.id}" ${cafe.tempatparkir_id == tp.id ? 'selected' : ''}>${tp.tempat_parkir}</option>`).join('')}
-                        </select>
-                    </div>
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Tempat Parkir *</label>
+                            <select name="tempatparkir_id" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="">Pilih Tempat Parkir</option>
+                                ${globalData.tempatparkir.map(tp => `<option value="${tp.id}" ${cafe.tempatparkir_id == tp.id ? 'selected' : ''}>${tp.tempat_parkir}</option>`).join('')}
+                            </select>
+                        </div>
 
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Thumbnail</label>
-                        <input type="file" name="thumbnail" accept="image/*" 
-                            class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent">
-                        <div id="thumbnailPreview" class="mt-2 flex space-x-2">
-                            ${cafe.thumbnail ? `
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Thumbnail</label>
+                            <input type="file" name="thumbnail" accept="image/*" 
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            <div id="thumbnailPreview" class="mt-2 flex space-x-2">
+                                ${cafe.thumbnail ? `
                                     <div class="relative">
-                                        <img src="{{ asset('storage/') }}/${cafe.thumbnail}" class="h-16 w-16 object-cover rounded-lg">
+                                        <img src="{{ asset('storage/') }}/${cafe.thumbnail}" class="h-16 w-16 object-cover rounded-lg border border-gray-200">
                                         <p class="text-sm text-gray-500 mt-1">Thumbnail saat ini</p>
                                     </div>
                                 ` : ''}
-                        </div>
-                    </div>
-                    
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2">Gambar</label>
-                        <div id="imageInputs">
-                            <div class="image-input-group flex items-center space-x-2 mb-2">
-                                <input type="file" name="gambar[]" accept="image/*" 
-                                    class="w-full px-3 lg:px-4 py-2 lg:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brown-500 focus:border-transparent">
-                                <button type="button" onclick="removeImageInput(this)" class="text-red-600 hover:text-red-900">
-                                    <i class="fas fa-trash"></i>
-                                </button>
                             </div>
                         </div>
-                        <div id="imagesPreview" class="mt-2 flex space-x-2 overflow-x-auto">
-                            ${cafe.gambar && JSON.parse(cafe.gambar).length > 0 ? 
-                                JSON.parse(cafe.gambar).map(gambar => `
+                        
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">Gambar</label>
+                            <div id="imageInputs">
+                                <div class="image-input-group flex items-center space-x-2 mb-2">
+                                    <input type="file" name="gambar[]" accept="image/*" 
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <button type="button" onclick="removeImageInput(this)" class="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="imagesPreview" class="mt-2 flex space-x-2 overflow-x-auto">
+                                ${cafe.gambar && JSON.parse(cafe.gambar).length > 0 ? 
+                                    JSON.parse(cafe.gambar).map(gambar => `
                                         <div class="relative">
-                                            <img src="{{ asset('storage/') }}/${gambar}" class="h-16 w-16 object-cover rounded-lg">
+                                            <img src="{{ asset('storage/') }}/${gambar}" class="h-16 w-16 object-cover rounded-lg border border-gray-200">
                                             <p class="text-sm text-gray-500 mt-1">Gambar saat ini</p>
                                         </div>
                                     `).join('')
-                            : ''}
+                                : ''}
+                            </div>
+                            <button type="button" onclick="addImageInput()" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg mt-2 text-sm font-medium">
+                                Tambah Gambar Lain
+                            </button>
+                            <p class="text-sm text-gray-500 mt-1">Dapat memilih lebih dari satu gambar</p>
                         </div>
-                        <button type="button" onclick="addImageInput()" class="bg-brown-600 hover:bg-brown-700 text-white px-4 py-2 rounded-lg mt-2 text-sm">
-                            Tambah Gambar Lain
+                    </div>
+
+                    <div class="mt-6 space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Fasilitas</label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                ${globalData.fasilitas.map(f => `
+                                    <div class="flex items-center">
+                                        <input type="checkbox" name="fasilitas_id[]" value="${f.id}" id="fasilitas${f.id}" 
+                                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                            ${cafe.fasilitas.includes(f.id) ? 'checked' : ''}>
+                                        <label for="fasilitas${f.id}" class="ml-2 text-sm text-gray-700">${f.nama_fasilitas}</label>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Label</label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                ${globalData.labels.map(l => `
+                                    <div class="flex items-center">
+                                        <input type="checkbox" name="label_id[]" value="${l.id}" id="label${l.id}" 
+                                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                            ${cafe.labels && cafe.labels.includes(l.id) ? 'checked' : ''}>
+                                        <label for="label${l.id}" class="ml-2 text-sm text-gray-700">${l.nama_label}</label>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200 mt-6">
+                        <button type="button" onclick="closeModal()" 
+                            class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg transition-colors text-sm font-medium">
+                            Batal
                         </button>
-                        <p class="text-sm text-gray-500 mt-1">Dapat memilih lebih dari satu gambar</p>
+                        <button type="submit" 
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg transition-colors text-sm font-medium">
+                            Simpan
+                        </button>
                     </div>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Fasilitas</label>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
-                        ${globalData.fasilitas.map(f => `
-                                <div class="flex items-center">
-                                    <input type="checkbox" name="fasilitas_id[]" value="${f.id}" id="fasilitas${f.id}" 
-                                        class="rounded border-gray-300 text-brown-600 focus:ring-brown-500"
-                                        ${cafe.fasilitas.includes(f.id) ? 'checked' : ''}>
-                                    <label for="fasilitas${f.id}" class="ml-2 text-sm text-gray-700">${f.nama_fasilitas}</label>
-                                </div>
-                            `).join('')}
-                    </div>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Label</label>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
-                      ${globalData.labels.map(l => `
-        <div class="flex items-center">
-            <input type="checkbox" name="label_id[]" value="${l.id}" id="label${l.id}" 
-                class="rounded border-gray-300 text-brown-600 focus:ring-brown-500"
-                ${cafe.labels && cafe.labels.includes(l.id) ? 'checked' : ''}>
-            <label for="label${l.id}" class="ml-2 text-sm text-gray-700">${l.nama_label}</label>
-        </div>
-    `).join('')}
-                    </div>
-                </div>
-
-                <div class="flex justify-end space-x-3">
-                    <button type="button" onclick="closeModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 lg:px-6 py-2 rounded-lg transition-colors text-sm lg:text-base">Batal</button>
-                    <button type="submit" class="bg-brown-600 hover:bg-brown-700 text-white px-4 lg:px-6 py-2 rounded-lg transition-colors text-sm lg:text-base">Simpan</button>
-                </div>
-            `;
+                `;
             }
 
             modal.classList.remove('hidden');

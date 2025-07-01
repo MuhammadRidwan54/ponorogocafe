@@ -5,159 +5,228 @@
 @section('header-description', 'Selamat datang di panel admin PonorogoCafe')
 
 @section('content')
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-6 mb-6 lg:mb-8">
-        <!-- Fasilitas Card -->
-        <div class="bg-white rounded-xl shadow-md p-3 lg:p-6 hover:shadow-lg transition-shadow duration-200">
-            <div class="flex flex-col lg:flex-row lg:items-center">
-                <div class="p-2 lg:p-3 rounded-full bg-brown-100 text-brown-600 self-center lg:self-auto">
-                    <i class="fas fa-building text-lg lg:text-xl"></i>
-                </div>
-                <div class="mt-2 lg:mt-0 lg:ml-4 text-center lg:text-left">
-                    <h3 class="text-sm lg:text-lg font-semibold text-gray-700">Fasilitas</h3>
-                    <p class="text-lg lg:text-2xl font-bold text-brown-600">12</p>
-                </div>
-            </div>
-            <div class="mt-2 lg:mt-4 text-center lg:text-left">
-                <a href="" class="text-brown-600 hover:text-brown-800 font-medium text-xs lg:text-sm">
-                    Kelola →
-                </a>
-            </div>
-        </div>
+    <div class="min-h-screen bg-gray-50 flex">
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col min-w-0 lg:ml-0">
+            <!-- Main Dashboard Content -->
+            <main class="flex-1 overflow-auto p-2 space-y-6">  
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Total Cafe -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div class="p-3 rounded-lg bg-blue-50 text-blue-600">
+                                <i class="fas fa-coffee text-xl"></i>
+                            </div>
+                            <span class="flex items-center space-x-1 px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+12%</span>
+                            </span>
+                        </div>
+                        <div class="mt-4">
+                            <h3 class="text-2xl font-bold text-gray-900">{{ $cafe_count ?? 15 }}</h3>
+                            <p class="text-sm text-gray-600">Total Cafe</p>
+                        </div>
+                    </div>
 
-        <!-- Harga Menu Card -->
-        <div class="bg-white rounded-xl shadow-md p-3 lg:p-6 hover:shadow-lg transition-shadow duration-200">
-            <div class="flex flex-col lg:flex-row lg:items-center">
-                <div class="p-2 lg:p-3 rounded-full bg-green-100 text-green-600 self-center lg:self-auto">
-                    <i class="fas fa-utensils text-lg lg:text-xl"></i>
-                </div>
-                <div class="mt-2 lg:mt-0 lg:ml-4 text-center lg:text-left">
-                    <h3 class="text-sm lg:text-lg font-semibold text-gray-700">Harga Menu</h3>
-                    <p class="text-lg lg:text-2xl font-bold text-green-600">8</p>
-                </div>
-            </div>
-            <div class="mt-2 lg:mt-4 text-center lg:text-left">
-                <a href="" class="text-green-600 hover:text-green-800 font-medium text-xs lg:text-sm">
-                    Kelola →
-                </a>
-            </div>
-        </div>
+                    <!-- Fasilitas -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div class="p-3 rounded-lg bg-green-50 text-green-600">
+                                <i class="fas fa-building text-xl"></i>
+                            </div>
+                            <span class="flex items-center space-x-1 px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+5%</span>
+                            </span>
+                        </div>
+                        <div class="mt-4">
+                            <h3 class="text-2xl font-bold text-gray-900">{{ $fasilitas_count ?? 12 }}</h3>
+                            <p class="text-sm text-gray-600">Fasilitas</p>
+                        </div>
+                    </div>
 
-        <!-- Kapasitas Ruang Card -->
-        <div class="bg-white rounded-xl shadow-md p-3 lg:p-6 hover:shadow-lg transition-shadow duration-200">
-            <div class="flex flex-col lg:flex-row lg:items-center">
-                <div class="p-2 lg:p-3 rounded-full bg-blue-100 text-blue-600 self-center lg:self-auto">
-                    <i class="fas fa-users text-lg lg:text-xl"></i>
-                </div>
-                <div class="mt-2 lg:mt-0 lg:ml-4 text-center lg:text-left">
-                    <h3 class="text-sm lg:text-lg font-semibold text-gray-700">Kapasitas</h3>
-                    <p class="text-lg lg:text-2xl font-bold text-blue-600">5</p>
-                </div>
-            </div>
-            <div class="mt-2 lg:mt-4 text-center lg:text-left">
-                <a href="" class="text-blue-600 hover:text-blue-800 font-medium text-xs lg:text-sm">
-                    Kelola →
-                </a>
-            </div>
-        </div>
+                    <!-- Menu Items -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div class="p-3 rounded-lg bg-orange-50 text-orange-600">
+                                <i class="fas fa-utensils text-xl"></i>
+                            </div>
+                            <span class="flex items-center space-x-1 px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded-full">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>-2%</span>
+                            </span>
+                        </div>
+                        <div class="mt-4">
+                            <h3 class="text-2xl font-bold text-gray-900">{{ $harga_menu_count ?? 8 }}</h3>
+                            <p class="text-sm text-gray-600">Menu Items</p>
+                        </div>
+                    </div>
 
-        <!-- Tempat Parkir Card -->
-        <div class="bg-white rounded-xl shadow-md p-3 lg:p-6 hover:shadow-lg transition-shadow duration-200">
-            <div class="flex flex-col lg:flex-row lg:items-center">
-                <div class="p-2 lg:p-3 rounded-full bg-purple-100 text-purple-600 self-center lg:self-auto">
-                    <i class="fas fa-car text-lg lg:text-xl"></i>
+                    <!-- Total Kapasitas -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div class="p-3 rounded-lg bg-purple-50 text-purple-600">
+                                <i class="fas fa-users text-xl"></i>
+                            </div>
+                            <span class="flex items-center space-x-1 px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+8%</span>
+                            </span>
+                        </div>
+                        <div class="mt-4">
+                            <h3 class="text-2xl font-bold text-gray-900">250</h3>
+                            <p class="text-sm text-gray-600">Total Kapasitas</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="mt-2 lg:mt-0 lg:ml-4 text-center lg:text-left">
-                    <h3 class="text-sm lg:text-lg font-semibold text-gray-700">Parkir</h3>
-                    <p class="text-lg lg:text-2xl font-bold text-purple-600">3</p>
-                </div>
-            </div>
-            <div class="mt-2 lg:mt-4 text-center lg:text-left">
-                <a href="" class="text-purple-600 hover:text-purple-800 font-medium text-xs lg:text-sm">
-                    Kelola →
-                </a>
-            </div>
-        </div>
 
-        <!-- Jam Buka Card -->
-        <div class="bg-white rounded-xl shadow-md p-3 lg:p-6 hover:shadow-lg transition-shadow duration-200">
-            <div class="flex flex-col lg:flex-row lg:items-center">
-                <div class="p-2 lg:p-3 rounded-full bg-orange-100 text-orange-600 self-center lg:self-auto">
-                    <i class="fas fa-clock text-lg lg:text-xl"></i>
-                </div>
-                <div class="mt-2 lg:mt-0 lg:ml-4 text-center lg:text-left">
-                    <h3 class="text-sm lg:text-lg font-semibold text-gray-700">Jam Buka</h3>
-                    <p class="text-lg lg:text-2xl font-bold text-orange-600">4</p>
-                </div>
-            </div>
-            <div class="mt-2 lg:mt-4 text-center lg:text-left">
-                <a href="" class="text-orange-600 hover:text-orange-800 font-medium text-xs lg:text-sm">
-                    Kelola →
-                </a>
-            </div>
-        </div>
+                <!-- Main Content Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Quick Actions -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                            <div class="p-6 border-b border-gray-200">
+                                <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                                    <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                                    Aksi Cepat
+                                </h3>
+                            </div>
+                            <div class="p-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <a href="{{ route('cafe.index') }}" class="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md hover:border-blue-300 transition-all group">
+                                        <div class="p-2 rounded-lg mr-4 bg-blue-50 text-blue-600">
+                                            <i class="fas fa-plus"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="font-medium text-gray-900 group-hover:text-blue-700">Tambah Cafe Baru</p>
+                                            <p class="text-sm text-gray-500">Daftarkan cafe baru ke sistem</p>
+                                        </div>
+                                        <i class="fas fa-arrow-right text-gray-400 group-hover:text-blue-600"></i>
+                                    </a>
 
-        <!-- Menu Cafe Card -->
-        <div class="bg-white rounded-xl shadow-md p-3 lg:p-6 hover:shadow-lg transition-shadow duration-200">
-            <div class="flex flex-col lg:flex-row lg:items-center">
-                <div class="p-2 lg:p-3 rounded-full bg-red-100 text-red-600 self-center lg:self-auto">
-                    <i class="fas fa-coffee text-lg lg:text-xl"></i>
-                </div>
-                <div class="mt-2 lg:mt-0 lg:ml-4 text-center lg:text-left">
-                    <h3 class="text-sm lg:text-lg font-semibold text-gray-700">Cafe</h3>
-                    <p class="text-lg lg:text-2xl font-bold text-red-600">15</p>
-                </div>
-            </div>
-            <div class="mt-2 lg:mt-4 text-center lg:text-left">
-                <a href="" class="text-red-600 hover:text-red-800 font-medium text-xs lg:text-sm">
-                    Kelola →
-                </a>
-            </div>
-        </div>
-    </div>
+                                    <a href="{{ route('fasilitas.index') }}" class="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md hover:border-green-300 transition-all group">
+                                        <div class="p-2 rounded-lg mr-4 bg-green-50 text-green-600">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="font-medium text-gray-900 group-hover:text-green-700">Kelola Fasilitas</p>
+                                            <p class="text-sm text-gray-500">Update fasilitas yang tersedia</p>
+                                        </div>
+                                        <i class="fas fa-arrow-right text-gray-400 group-hover:text-green-600"></i>
+                                    </a>
 
-    <!-- Recent Activity -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-        <!-- Quick Actions -->
-        <div class="bg-white rounded-xl shadow-md p-4 lg:p-6">
-            <h3 class="text-base lg:text-lg font-semibold text-gray-700 mb-4">Aksi Cepat</h3>
-            <div class="space-y-3">
-                <a href="" class="flex items-center p-3 bg-brown-50 rounded-lg hover:bg-brown-100 transition-colors">
-                    <i class="fas fa-plus text-brown-600 mr-3"></i>
-                    <span class="text-gray-700 text-sm lg:text-base">Tambah Cafe Baru</span>
-                </a>
-                <a href="" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                    <i class="fas fa-building text-gray-600 mr-3"></i>
-                    <span class="text-gray-700 text-sm lg:text-base">Kelola Fasilitas</span>
-                </a>
-                <a href="" class="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                    <i class="fas fa-utensils text-gray-600 mr-3"></i>
-                    <span class="text-gray-700 text-sm lg:text-base">Update Harga Menu</span>
-                </a>
-            </div>
-        </div>
+                                    <a href="{{ route('harga_menu.index') }}" class="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md hover:border-orange-300 transition-all group">
+                                        <div class="p-2 rounded-lg mr-4 bg-orange-50 text-orange-600">
+                                            <i class="fas fa-utensils"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="font-medium text-gray-900 group-hover:text-orange-700">Update Menu</p>
+                                            <p class="text-sm text-gray-500">Perbarui harga dan menu</p>
+                                        </div>
+                                        <i class="fas fa-arrow-right text-gray-400 group-hover:text-orange-600"></i>
+                                    </a>
 
-        <!-- System Info -->
-        <div class="bg-white rounded-xl shadow-md p-4 lg:p-6">
-            <h3 class="text-base lg:text-lg font-semibold text-gray-700 mb-4">Informasi Sistem</h3>
-            <div class="space-y-3">
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-600 text-sm lg:text-base">Total Data Cafe</span>
-                    <span class="font-semibold text-brown-600">15</span>
+                                    <a href="#" class="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md hover:border-purple-300 transition-all group">
+                                        <div class="p-2 rounded-lg mr-4 bg-purple-50 text-purple-600">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="font-medium text-gray-900 group-hover:text-purple-700">Analisis Data</p>
+                                            <p class="text-sm text-gray-500">Lihat laporan dan statistik</p>
+                                        </div>
+                                        <i class="fas fa-arrow-right text-gray-400 group-hover:text-purple-600"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Info -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                        <div class="p-6 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                                <i class="fas fa-info-circle text-green-600 mr-2"></i>
+                                Info Sistem
+                            </h3>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="text-sm font-medium text-gray-600">Total Data</span>
+                                <span class="font-bold text-blue-600">{{ $total_data ?? 47 }}</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="text-sm font-medium text-gray-600">Data Master</span>
+                                <span class="font-bold text-green-600">{{ $total_master ?? 32 }}</span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="text-sm font-medium text-gray-600">Status</span>
+                                <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold flex items-center">
+                                    <i class="fas fa-circle text-green-500 mr-1" style="font-size: 8px;"></i>
+                                    Online
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                <span class="text-sm font-medium text-gray-600">Update Terakhir</span>
+                                <span class="text-xs text-gray-500">{{ now()->diffForHumans() }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-600 text-sm lg:text-base">Data Master</span>
-                    <span class="font-semibold text-green-600">32</span>
+
+                <!-- Recent Activity -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+                    <div class="p-6 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                            Aktivitas Terbaru
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="flex items-center p-4 border-l-4 border-green-500 bg-green-50 rounded-r-lg">
+                                <div class="p-2 bg-white rounded-lg mr-4 shadow-sm">
+                                    <i class="fas fa-plus text-gray-600"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-900">Cafe "Warung Kopi Santai" ditambahkan</p>
+                                    <p class="text-xs text-gray-500">2 menit yang lalu</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center p-4 border-l-4 border-blue-500 bg-blue-50 rounded-r-lg">
+                                <div class="p-2 bg-white rounded-lg mr-4 shadow-sm">
+                                    <i class="fas fa-edit text-gray-600"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-900">Fasilitas "WiFi Gratis" diperbarui</p>
+                                    <p class="text-xs text-gray-500">15 menit yang lalu</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center p-4 border-l-4 border-orange-500 bg-orange-50 rounded-r-lg">
+                                <div class="p-2 bg-white rounded-lg mr-4 shadow-sm">
+                                    <i class="fas fa-utensils text-gray-600"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-900">Menu "Kopi Americano" harga diubah</p>
+                                    <p class="text-xs text-gray-500">30 menit yang lalu</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center p-4 border-l-4 border-purple-500 bg-purple-50 rounded-r-lg">
+                                <div class="p-2 bg-white rounded-lg mr-4 shadow-sm">
+                                    <i class="fas fa-clock text-gray-600"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-medium text-gray-900">Jam buka "24 Jam" ditambahkan</p>
+                                    <p class="text-xs text-gray-500">1 jam yang lalu</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-600 text-sm lg:text-base">Status Sistem</span>
-                    <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">Online</span>
-                </div>
-                <div class="flex justify-between items-center">
-                    <span class="text-gray-600 text-sm lg:text-base">Last Update</span>
-                    <span class="text-gray-500 text-xs lg:text-sm">2 menit lalu</span>
-                </div>
-            </div>
+            </main>
         </div>
     </div>
 @endsection

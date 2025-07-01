@@ -117,10 +117,6 @@ class HomeController extends Controller
             $nilaiKapasitas = 3;
         }
 
-        // Tempat Parkir
-        $parkir = strtolower($cafe->tempatparkir->tempat_parkir ?? '');
-        $nilaiParkir = ($parkir === 'luas (motor & mobil)') ? 5 : 3;
-
         // Fasilitas
         $fasilitasId = $cafe->fasilitas->pluck('nama_fasilitas')->map(fn($f) => strtolower($f))->toArray();
 
@@ -128,6 +124,10 @@ class HomeController extends Controller
         $nilaiTempatIbadah = in_array('tempat ibadah', $fasilitasId) ? 5 : 3;
         $nilaiToilet       = in_array('toilet', $fasilitasId) ? 5 : 3;
         $nilaiRuangRapat   = in_array('ruang rapat', $fasilitasId) ? 5 : 3;
+
+        // Tempat Parkir
+        $parkir = strtolower($cafe->tempatparkir->tempat_parkir ?? '');
+        $nilaiParkir = ($parkir === 'luas (motor & mobil)') ? 5 : 3;
 
         // Skor SAW
         $score =
