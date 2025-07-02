@@ -26,6 +26,7 @@ Route::controller(HomeController::class)->group(function () {
 
     Route::get('/search', 'search')->name('cafe.search');
     
+    
 });
 
 /*
