@@ -31,6 +31,8 @@ Route::controller(HomeController::class)->group(function () {
 
 use App\Http\Controllers\KomentarController;
     Route::post('/komentar', [KomentarController::class, 'store'])->name('komentar.store');
+    // Tambahkan route untuk refresh komentar
+    // Route::get('/komentar/{cafe}/refresh', [KomentarController::class, 'refresh'])->name('komentar.refresh');
 
 /*
 |--------------------------------------------------------------------------

@@ -578,6 +578,40 @@
             
         }
 
+        /* Pointer Events for Modals */
+        .comment-form input,
+        .comment-form textarea,
+        .comment-form button {
+            pointer-events: auto !important;
+        }
+
+        .modal-content {
+            pointer-events: auto;
+        }
+
+        .modal-overlay {
+            pointer-events: none;
+        }
+
+        /* Comment Highlight Animation */
+        .comment-highlight {
+            animation: highlight 2s ease;
+        }
+
+        @keyframes highlight {
+            0% { background-color: rgba(124, 106, 70, 0.3); }
+            100% { background-color: transparent; }
+        }
+
+        .loading-spinner {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
         @media (min-width: 768px) {
             #selectedFilters {
                 max-height: 60px;
@@ -1134,13 +1168,6 @@
             });
 
             // === NOTIFIKASI KOMENTAR ===
-            window.onload = function() {
-                // Show notification
-                showNotification();
-                
-                // Original functionality - open cafe modal
-                openCafeModal(@json($cafe));
-            }
 
             function showNotification() {
                 const notification = document.getElementById('successNotification');
@@ -1198,42 +1225,99 @@
                 }
             });
             
-            // =============================================
-            // CAFE MODAL FUNCTIONALITY
-            // =============================================
-            const cafeModal = document.getElementById('cafeModal');
-            const closeModal = document.getElementById('closeModal');
-            const closeModalBtn = document.getElementById('closeModalBtn');
 
-            // Function to open modal
+            
+            // =============================================
+            // ENHANCED CAFE MODAL FUNCTIONALITY
+            // =============================================
+            let currentOpenModal = null;
+
+            // Function to open modal for specific cafe
             window.openCafeModal = function(cafeData) {
-                if (!cafeModal) return;
+                // Close any currently open modal first
+                if (currentOpenModal) {
+                    closeModal(currentOpenModal);
+                }
+
+                // Convert cafeData to object if it's a string
+                if (typeof cafeData === 'string') {
+                    try {
+                        cafeData = JSON.parse(cafeData);
+                    } catch (e) {
+                        console.error('Error parsing cafe data:', e);
+                        return;
+                    }
+                }
+
+                // Ensure cafeData has an id
+                if (!cafeData || !cafeData.id) {
+                    console.error('Invalid cafe data:', cafeData);
+                    return;
+                }
+
+                const modalId = `cafeModal-${cafeData.id}`;
+                const modal = document.getElementById(modalId);
                 
+                if (!modal) {
+                    console.error(`Modal with ID ${modalId} not found`);
+                    return;
+                }
+
                 // Fill modal with cafe data
-                document.getElementById('modalCafeName').textContent = cafeData.nama_cafe || 'Nama Cafe';
-                document.getElementById('modalCafeAddress').textContent = cafeData.alamat || 'Alamat tidak tersedia';
+                fillModalData(modal, cafeData);
+
+                // Show modal with animation
+                modal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+                currentOpenModal = modalId;
+
+                // Add event listener for close button inside modal
+                const closeBtn = modal.querySelector('[onclick*="closeModal"]');
+                if (closeBtn) {
+                    closeBtn.onclick = () => closeModal(modalId);
+                }
+            };
+
+            // Function to fill modal data
+            function fillModalData(modal, cafeData) {
+                // Basic info
+                if (modal.querySelector('#modalCafeName')) {
+                    modal.querySelector('#modalCafeName').textContent = cafeData.nama_cafe || 'Nama Cafe';
+                }
+                if (modal.querySelector('#modalCafeAddress')) {
+                    modal.querySelector('#modalCafeAddress').textContent = cafeData.alamat || 'Alamat tidak tersedia';
+                }
                 
-                const modalImage = document.getElementById('modalCafeImage');
+                // Image
+                const modalImage = modal.querySelector('#modalCafeImage');
                 if (modalImage) {
                     modalImage.src = cafeData.thumbnail ? '{{ asset('storage') }}/' + cafeData.thumbnail : '';
                     modalImage.alt = cafeData.nama_cafe || 'Cafe Image';
                 }
 
-                // Handle relational data
-                document.getElementById('modalCafeHours').textContent = cafeData.jambuka?.jam_buka || 'Tidak diketahui';
-                document.getElementById('modalCafePrice').textContent = cafeData.hargamenu?.harga_menu || 'Tidak diketahui';
-                document.getElementById('modalCafeCapacity').textContent = cafeData.kapasitasruang?.kapasitas_ruang || 'Tidak diketahui';
-                document.getElementById('modalCafeParking').textContent = cafeData.tempatparkir?.tempat_parkir || 'Tidak diketahui';
+                // Relations data
+                if (modal.querySelector('#modalCafeHours')) {
+                    modal.querySelector('#modalCafeHours').textContent = cafeData.jambuka?.jam_buka || 'Tidak diketahui';
+                }
+                if (modal.querySelector('#modalCafePrice')) {
+                    modal.querySelector('#modalCafePrice').textContent = cafeData.hargamenu?.harga_menu || 'Tidak diketahui';
+                }
+                if (modal.querySelector('#modalCafeCapacity')) {
+                    modal.querySelector('#modalCafeCapacity').textContent = cafeData.kapasitasruang?.kapasitas_ruang || 'Tidak diketahui';
+                }
+                if (modal.querySelector('#modalCafeParking')) {
+                    modal.querySelector('#modalCafeParking').textContent = cafeData.tempatparkir?.tempat_parkir || 'Tidak diketahui';
+                }
                 
-                // Google Maps link
-                const modalMaps = document.getElementById('modalCafeMaps');
+                // Maps link
+                const modalMaps = modal.querySelector('#modalCafeMaps');
                 if (modalMaps) {
                     modalMaps.href = cafeData.alamat_url || 
                         `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((cafeData.nama_cafe || '') + ' ' + (cafeData.alamat || ''))}`;
                 }
                 
                 // Facilities
-                const facilitiesContainer = document.getElementById('modalCafeFacilities');
+                const facilitiesContainer = modal.querySelector('#modalCafeFacilities');
                 if (facilitiesContainer) {
                     facilitiesContainer.innerHTML = '';
                     if (cafeData.fasilitas?.length > 0) {
@@ -1252,7 +1336,7 @@
                 }
 
                 // Gallery Images
-                const galleryContainer = document.getElementById('cafeGallery');
+                const galleryContainer = modal.querySelector('#cafeGallery');
                 if (galleryContainer) {
                     galleryContainer.innerHTML = '';
                     
@@ -1261,24 +1345,28 @@
                         if (typeof cafeData.gambar === 'string') {
                             try {
                                 images = JSON.parse(cafeData.gambar);
+                                if (!Array.isArray(images)) images = [];
                             } catch (e) {
                                 console.error('Error parsing gallery images:', e);
                                 images = [];
                             }
                         }
+                        
                         if (images.length > 0) {
                             images.forEach((image, index) => {
-                                // Buat container aspect ratio 3:4, lebar tetap
                                 const aspectContainer = document.createElement('div');
                                 aspectContainer.className = 'aspect-[3/4] min-w-[96px] w-24 relative rounded-lg overflow-hidden flex-shrink-0';
 
-                                // Buat img di dalam container
                                 const thumbnail = document.createElement('img');
                                 thumbnail.src = '{{ asset('storage') }}/' + image;
                                 thumbnail.alt = `Thumbnail ${index + 1}`;
                                 thumbnail.className = 'absolute inset-0 w-full h-full object-cover rounded-lg cursor-pointer transition-all hover:opacity-80';
-                                thumbnail.addEventListener('click', () => {
-                                    modalImage.src = '{{ asset('storage') }}/' + image;
+                                // Tambahkan event listener untuk preview gambar
+                                thumbnail.addEventListener('click', (e) => {
+                                    e.stopPropagation(); // Mencegah event bubbling ke card
+                                    if (modalImage) {
+                                        modalImage.src = '{{ asset('storage') }}/' + image;
+                                    }
                                 });
 
                                 aspectContainer.appendChild(thumbnail);
@@ -1291,17 +1379,46 @@
                         showNoGalleryMessage(galleryContainer);
                     }
                 }
+            }
 
-                // Update input hidden cafe_id pada form komentar
-                const cafeIdInput = cafeModal.querySelector('input[name="cafe_id"]');
-                if (cafeIdInput) {
-                    cafeIdInput.value = cafeData.id;
+            // Function to close modal
+            window.closeModal = function(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                    currentOpenModal = null;
                 }
-
-                // Show modal
-                cafeModal.classList.remove('hidden');
-                document.body.classList.add('overflow-hidden');
             };
+
+            // Close modal when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!currentOpenModal) return;
+    
+                const modal = document.getElementById(currentOpenModal);
+                if (!modal) return;
+                
+                // Cek apakah yang diklik adalah:
+                // 1. Elemen di luar modal
+                // 2. Bukan elemen input/textarea/form
+                // 3. Bukan elemen dalam modal content
+                const isOutsideModal = !e.target.closest('.modal-content') && 
+                                    !e.target.closest('input') && 
+                                    !e.target.closest('textarea') && 
+                                    !e.target.closest('form') &&
+                                    !e.target.closest('.cafe-card');
+                
+                if (isOutsideModal) {
+                    closeModal(currentOpenModal);
+                }
+            });
+
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && currentOpenModal) {
+                    closeModal(currentOpenModal);
+                }
+            });
 
             function showNoGalleryMessage(container) {
                 const noImagesMsg = document.createElement('div');
@@ -1315,16 +1432,150 @@
                 container.appendChild(noImagesMsg);
             }
 
-            // Function to close modal
-            function closeCafeModal() {
-                cafeModal.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden');
+            // Initialize modal functionality for all cafe cards
+            document.querySelectorAll('.cafe-card').forEach(card => {
+                card.addEventListener('click', function(event) {
+                    // Daftar elemen yang tidak boleh memicu modal
+                    const nonTriggerElements = ['A', 'BUTTON', 'INPUT', 'TEXTAREA', 'SELECT', 'LABEL'];
+                    const clickedElement = event.target;
+                    
+                    // Cek hierarki elemen yang diklik
+                    let currentElement = clickedElement;
+                    let shouldOpenModal = true;
+                    
+                    while (currentElement !== this) {
+                        if (nonTriggerElements.includes(currentElement.tagName) || 
+                            currentElement.isContentEditable ||
+                            currentElement.hasAttribute('onclick')) {
+                            shouldOpenModal = false;
+                            break;
+                        }
+                        currentElement = currentElement.parentElement;
+                    }
+                    
+                    if (!shouldOpenModal) return;
+
+                    try {
+                        const cafeData = this.dataset.cafe;
+                        if (cafeData) {
+                            openCafeModal(cafeData);
+                        }
+                    } catch (e) {
+                        console.error('Error opening cafe modal:', e);
+                    }
+                });
+            });
+
+            
+            // =============================================
+            // COMMENT SYSTEM IMPLEMENTATION
+            // =============================================
+            // Handle comment form submission with AJAX
+            function setupCommentForm() {
+                const commentForm = cafeModal.querySelector('.comment-form');
+                if (!commentForm) return;
+
+                commentForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const form = this;
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.innerHTML;
+                        
+                    // Tampilkan loading state
+                    submitBtn.innerHTML = `
+                        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Mengirim...
+                    `;
+                    submitBtn.disabled = true;
+
+                    // Simpan scroll position sebelum submit
+                    const scrollPosition = window.scrollY || window.pageYOffset;
+                    
+                    // Kirim form secara tradisional
+                    form.submit();
+                    
+                    // Setelah submit, kembalikan tombol ke state semula
+                    setTimeout(() => {
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.disabled = false;
+                        
+                        // Scroll kembali ke posisi semula
+                        window.scrollTo(0, scrollPosition);
+                    }, 1000);
+                });
+            }
+
+            // Fungsi untuk menampilkan notifikasi
+            function showCommentNotification(message, type = 'success') {
+                const notification = document.createElement('div');
+                notification.className = `fixed bottom-4 right-4 px-4 py-2 rounded-md shadow-lg text-white ${
+                    type === 'success' ? 'bg-green-500' : 'bg-red-500'
+                } z-50 flex items-center`;
+                
+                notification.innerHTML = `
+                    <span>${message}</span>
+                    <button class="ml-2" onclick="this.parentElement.remove()">
+                        &times;
+                    </button>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+
+            // Fungsi untuk scroll ke cafe tertentu
+            function scrollToCafe(cafeId) {
+                const element = document.getElementById('cafe-' + cafeId);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                    // Buka modal jika ada
+                    const modal = document.getElementById('cafeModal-' + cafeId);
+                    if (modal) {
+                        modal.classList.remove('hidden');
+                    }
+                }
+            }
+
+            // Event listener untuk modal
+            if (cafeModal) {
+                // Setup form komentar saat modal dibuka
+                const modalObserver = new MutationObserver(function(mutations) {
+                    if (!cafeModal.classList.contains('hidden')) {
+                        setupCommentForm();
+                    }
+                });
+
+                modalObserver.observe(cafeModal, {
+                    attributes: true,
+                    attributeFilter: ['class']
+                });
             }
 
             // Close modal events
             if (closeModal) {
                 closeModal.addEventListener('click', closeCafeModal);
             }
+
+            // Cek jika ada hash di URL (#cafe-1)
+            if (window.location.hash) {
+                const cafeId = window.location.hash.replace('#cafe-', '');
+                setTimeout(() => scrollToCafe(cafeId), 100);
+            }
+
+            // Handle notifikasi dari session
+            @if(session('comment_success'))
+                setTimeout(() => {
+                    alert('{{ session('comment_success') }}');
+                    scrollToCafe('{{ session('cafe_id') }}');
+                }, 300);
+            @endif
 
             if (closeModalBtn) {
                 closeModalBtn.addEventListener('click', closeCafeModal);
@@ -1346,6 +1597,24 @@
                         console.error('Error parsing cafe data:', e);
                     }
                 });
+            });
+
+            // Cek notifikasi komentar saat page load
+            document.addEventListener('DOMContentLoaded', function() {
+                if (sessionStorage.getItem('showCommentSuccess')) {
+                    // Buka modal cafe yang sesuai
+                    const cafeId = sessionStorage.getItem('currentCafeId');
+                    if (cafeId) {
+                        const cafeCard = document.querySelector(`.cafe-card[data-cafe-id="${cafeId}"]`);
+                        if (cafeCard) {
+                            const cafeData = JSON.parse(cafeCard.dataset.cafe);
+                            openCafeModal(cafeData);
+                        }
+                    }
+                    
+                    showToast('Komentar berhasil dikirim! Menunggu persetujuan admin.');
+                    sessionStorage.removeItem('showCommentSuccess');
+                }
             });
 
             // =============================================
@@ -1580,6 +1849,19 @@
             `;
             document.head.appendChild(style);
         });
+
+        // Add fade-in animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in {
+                animation: fadeIn 0.3s ease-out forwards;
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 
     @stack('scripts')
