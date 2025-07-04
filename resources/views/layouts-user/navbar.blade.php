@@ -14,12 +14,12 @@
                 </a>
             </div>
 
-            <!-- Admin Button -->
+            {{-- <!-- Admin Button -->
             <div class="flex items-center">
                 <button class="bg-white text-[#7C6A46] font-semibold py-2 px-4 md:px-6 rounded-full text-sm transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg">
                     <span>Admin</span>
                 </button>
-            </div>
+            </div> --}}
         </div>
     </div>
 </nav>
