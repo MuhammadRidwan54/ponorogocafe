@@ -3,20 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cafe;
+use App\Models\Label;
 use App\Models\Review;
 use App\Models\JamBuka;
+use App\Models\Komentar;
 use App\Models\Fasilitas;
-use App\Models\Label;
 use App\Models\HargaMenu;
 use App\Models\TempatParkir;
-use App\Models\KapasitasRuang;
 use Illuminate\Http\Request;
+use App\Models\KapasitasRuang;
 
 class CafeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $cafe = Cafe::with(['fasilitas', 'labels', 'hargamenu', 'kapasitasruang', 'tempatparkir', 'jambuka'])->get();
+        $query = Cafe::query();
+
+        if ($request->filled('search')) {
+            $query->where('nama_cafe', 'like', '%' . $request->search . '%');
+        }
+
+        $cafe = $query->with(['fasilitas', 'labels', 'hargamenu', 'kapasitasruang', 'tempatparkir', 'jambuka'])->get();
         
         $jambuka = JamBuka::all();
         $hargamenu = HargaMenu::all();
@@ -24,6 +31,11 @@ class CafeController extends Controller
         $tempatparkir = TempatParkir::all();
         $fasilitas = Fasilitas::all();
         $labels = Label::all();
+
+        // Jika AJAX, return hanya tbody
+        if ($request->ajax()) {
+            return view('cafe._table', compact('cafe'))->render();
+        }
 
         return view('cafe.index', compact(
             'cafe',
@@ -157,4 +169,12 @@ class CafeController extends Controller
 
         return redirect()->route('cafe.index')->with('success', 'Cafe berhasil dihapus');
     }
+
+    public function komentar($id)
+    {
+        $cafe = Cafe::with('komentar')->findOrFail($id);
+
+        return view('komentar.index', compact('cafe'));
+    }
+
 }

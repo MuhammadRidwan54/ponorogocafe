@@ -560,12 +560,52 @@
             .filter-chip {
                 font-size: 0.875rem; /* text-sm */
             }
+
+            /* Scrollable Comments Container */
+            .comment-card {
+                padding: 12px;
+            }
+            
+            .comment-avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 12px;
+            }
+            
+            .comment-form {
+                padding: 16px;
+            }
+            
         }
 
         @media (min-width: 768px) {
             #selectedFilters {
                 max-height: 60px;
                 overflow-y: hidden;
+            }
+
+            /* Scrollable Comments Container */
+            .comments-container {
+                max-height: 400px;
+                overflow-y: auto;
+            }
+            
+            .comments-container::-webkit-scrollbar {
+                width: 4px;
+            }
+            
+            .comments-container::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 2px;
+            }
+            
+            .comments-container::-webkit-scrollbar-thumb {
+                background: #c1c1c1;
+                border-radius: 2px;
+            }
+            
+            .comments-container::-webkit-scrollbar-thumb:hover {
+                background: #a8a8a8;
             }
         }
 
@@ -1093,6 +1133,71 @@
                 }
             });
 
+            // === NOTIFIKASI KOMENTAR ===
+            window.onload = function() {
+                // Show notification
+                showNotification();
+                
+                // Original functionality - open cafe modal
+                openCafeModal(@json($cafe));
+            }
+
+            function showNotification() {
+                const notification = document.getElementById('successNotification');
+                const progressBar = document.getElementById('progressBar');
+                
+                // Show notification with slide-in animation
+                setTimeout(() => {
+                    notification.classList.remove('translate-x-full');
+                    notification.classList.add('translate-x-0');
+                }, 100);
+
+                // Start progress bar countdown
+                let width = 100;
+                const interval = setInterval(() => {
+                    width -= 2;
+                    progressBar.style.width = width + '%';
+                    
+                    if (width <= 0) {
+                        clearInterval(interval);
+                        closeNotification();
+                    }
+                }, 100); // 5 seconds total (100 * 50ms = 5000ms)
+
+                // Store interval ID for cleanup if manually closed
+                notification.dataset.intervalId = interval;
+            }
+
+            function closeNotification() {
+                const notification = document.getElementById('successNotification');
+                const intervalId = notification.dataset.intervalId;
+                
+                // Clear auto-close interval
+                if (intervalId) {
+                    clearInterval(intervalId);
+                }
+                
+                // Hide notification with slide-up animation
+                notification.classList.remove('translate-y-0');
+                notification.classList.add('-translate-y-full');
+                
+                // Remove from DOM after animation
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }
+
+            // Close notification when clicking outside (optional)
+            document.addEventListener('click', function(event) {
+                const notification = document.getElementById('successNotification');
+                if (notification && !notification.contains(event.target)) {
+                    // Uncomment the line below if you want to close on outside click
+                    // closeNotification();
+                }
+            });
+            
             // =============================================
             // CAFE MODAL FUNCTIONALITY
             // =============================================
@@ -1186,8 +1291,13 @@
                         showNoGalleryMessage(galleryContainer);
                     }
                 }
-                
-                
+
+                // Update input hidden cafe_id pada form komentar
+                const cafeIdInput = cafeModal.querySelector('input[name="cafe_id"]');
+                if (cafeIdInput) {
+                    cafeIdInput.value = cafeData.id;
+                }
+
                 // Show modal
                 cafeModal.classList.remove('hidden');
                 document.body.classList.add('overflow-hidden');
@@ -1414,6 +1524,7 @@
                     }
                 });
             }
+            
 
             // =============================================
             // ADDITIONAL ENHANCEMENTS

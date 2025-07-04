@@ -58,9 +58,14 @@ class Cafe extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    public function komentar()
+    {
+        return $this->hasMany(\App\Models\Komentar::class, 'cafe_id');
+    }
     public function labels()
-{
-    return $this->belongsToMany(Label::class, 'cafe_label');
-}
+    {
+        return $this->belongsToMany(Label::class, 'cafe_label');
+    }
 
 }

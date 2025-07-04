@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminKomentarController;
 use App\Http\Controllers\{
     AuthController,
     DashboardController,
@@ -24,10 +25,12 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/hasil', 'hasil')->name('home.hasil');
     Route::get('/cafe/{id}', 'cafe')->name('home.cafe');
 
-    Route::get('/search', 'search')->name('cafe.search');
-    
+    Route::get('/search', 'search')->name('cafe.search');    
     
 });
+
+use App\Http\Controllers\KomentarController;
+    Route::post('/komentar', [KomentarController::class, 'store'])->name('komentar.store');
 
 /*
 |--------------------------------------------------------------------------
@@ -60,4 +63,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('tempat_parkir', TempatparkirController::class);
     Route::resource('jam_buka', JambukaController::class);
     Route::resource('label', LabelController::class);
+
+    // Admin Komentar
+    Route::get('/admin/komentar', [AdminKomentarController::class, 'index'])->name('admin.komentar.index');
+    Route::post('/admin/komentar/{id}/setujui', [AdminKomentarController::class, 'setujui'])->name('admin.komentar.setujui');
+    Route::delete('/admin/komentar/{id}', [AdminKomentarController::class, 'hapus'])->name('admin.komentar.hapus');
+
 });

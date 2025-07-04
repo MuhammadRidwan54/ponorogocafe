@@ -72,7 +72,15 @@
             class="flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200
             {{ request()->routeIs('cafe.*') ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
             <i class="fas fa-coffee w-4 h-4"></i>
-            <span>Menu Cafe</span>
+            <span>Daftar Cafe</span>
+        </a>
+
+        <!-- Tambahkan menu Kelola Komentar di bawah ini -->
+        <a href="{{ route('admin.komentar.index') }}"
+            class="flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200
+            {{ request()->routeIs('admin.komentar.*') ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-comments w-4 h-4"></i>
+            <span>Kelola Komentar</span>
         </a>
     </nav>
 </div>

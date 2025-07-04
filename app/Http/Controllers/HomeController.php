@@ -163,16 +163,37 @@ class HomeController extends Controller
         'cafes' => $cafes,
         'jamBukaOptions' => Jambuka::all(),
         'kriteria' => $input,
-        'request' => $request
+        'request' => $request,
+        'hargamenu' => HargaMenu::all(),
+        'kapasitasruang' => KapasitasRuang::all(),
+        'fasilitas' => Fasilitas::all(),
+        'tempatParkir' => TempatParkir::all(),
     ]);
 }
-
-
 
     // Detail cafe
     public function cafe($id)
     {
-        $cafe = Cafe::with(['hargamenu', 'kapasitasruang', 'tempatparkir', 'jambuka', 'fasilitas'])->findOrFail($id);
-        return view('detailcafe', compact('cafe'));
+        $cafe = Cafe::with([
+            'hargamenu',
+            'kapasitasruang',
+            'tempatparkir',
+            'jambuka',
+            'fasilitas',
+            'komentar' => function($q) {
+                $q->where('disetujui', true);
+            }
+        ])->findOrFail($id);
+        
+        $cafes = Cafe::with(['fasilitas', 'hargamenu', 'kapasitasruang', 'tempatparkir', 'jambuka'])->get();
+
+        return view('index', [
+            'cafe' => $cafe,
+            'cafes' => $cafes,
+            'hargamenu' => HargaMenu::all(),
+            'kapasitasruang' => KapasitasRuang::all(),
+            'fasilitas' => Fasilitas::all(),
+            'tempatParkir' => TempatParkir::all(),
+        ]);
     }
 }
