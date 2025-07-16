@@ -54,8 +54,13 @@ class CafeController extends Controller
             'nama_cafe' => 'required|string',
             'alamat' => 'required|string',
             'alamat_url' => 'required|url',
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:5120',
-            'gambar.*' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'keterangan_motor' => 'required|string',
+            'keterangan_mobil' => 'required|string',
+            'keterangan_mushola' => 'required|string',
+            'keterangan_toilet' => 'required|string',
+            'instagram_url' => 'nullable|url|',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg|max:8192',
+            'gambar.*' => 'nullable|image|mimes:jpeg,png,jpg|max:8192',
             'fasilitas_id' => 'required|array',
             'fasilitas_id.*' => 'exists:fasilitas,id',
             'label_id' => 'required|array',
@@ -65,6 +70,11 @@ class CafeController extends Controller
             'tempatparkir_id' => 'required|exists:tempatparkir,id',
             'jambuka_id' => 'required|exists:jambuka,id',
         ]);
+
+        // Format instagram_url jika input berupa @username
+        if ($request->instagram_url && str_starts_with($request->instagram_url, '@')) {
+            $validated['instagram_url'] = 'https://instagram.com/'.substr($request->instagram_url, 1);
+        }
 
         $gambarPaths = [];
         if ($request->hasFile('gambar')) {
@@ -77,6 +87,11 @@ class CafeController extends Controller
             'nama_cafe' => $request->nama_cafe,
             'alamat' => $request->alamat,
             'alamat_url' => $request->alamat_url,
+            'keterangan_motor' => $request->keterangan_motor,
+            'keterangan_mobil' => $request->keterangan_mobil,
+            'keterangan_mushola' => $request->keterangan_mushola,
+            'keterangan_toilet' => $request->keterangan_toilet,
+            'instagram_url' => $request->instagram_url,
             'thumbnail' => $request->file('thumbnail')->store('thumbnail_cafe', 'public'),
             'gambar' => json_encode($gambarPaths),
             'hargamenu_id' => $request->hargamenu_id,
@@ -119,8 +134,13 @@ class CafeController extends Controller
             'nama_cafe' => 'required|string',
             'alamat' => 'required|string',
             'alamat_url' => 'nullable|url',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'gambar.*' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'keterangan_motor' => 'required|string',
+            'keterangan_mobil' => 'required|string',
+            'keterangan_mushola' => 'required|string',
+            'keterangan_toilet' => 'required|string',
+            'instagram_url' => 'nullable|url',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg|max:6114',
+            'gambar.*' => 'nullable|image|mimes:jpeg,png,jpg|max:6114',
             'fasilitas_id' => 'required|array',
             'fasilitas_id.*' => 'exists:fasilitas,id',
             'label_id' => 'required|array',
@@ -144,6 +164,11 @@ class CafeController extends Controller
             'nama_cafe' => $request->nama_cafe,
             'alamat' => $request->alamat,
             'alamat_url' => $request->alamat_url ?? null,
+            'keterangan_motor' => $request->keterangan_motor,
+            'keterangan_mobil' => $request->keterangan_mobil,
+            'keterangan_mushola' => $request->keterangan_mushola,
+            'keterangan_toilet' => $request->keterangan_toilet,
+            'instagram_url' => $request->instagram_url ?? null,
             'gambar' => json_encode($gambarPaths),
             'hargamenu_id' => $request->hargamenu_id,
             'kapasitasruang_id' => $request->kapasitasruang_id,

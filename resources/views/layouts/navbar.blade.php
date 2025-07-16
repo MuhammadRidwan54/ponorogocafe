@@ -1,85 +1,92 @@
 <!-- Sidebar -->
 <div id="sidebar"
-    class="bg-white border-r border-gray-200 w-64 min-h-screen p-4 shadow-sm fixed lg:relative transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40">
+    class="bg-white border-r border-gray-100 w-64 min-h-screen fixed lg:relative transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 shadow-lg lg:shadow-none">
+    
     <!-- Close button for mobile -->
-    <div class="lg:hidden flex justify-end mb-4">
-        <button id="closeSidebarBtn" class="text-gray-400 hover:text-gray-600">
-            <i class="fas fa-times text-xl"></i>
+    <div class="lg:hidden flex justify-end p-4 border-b border-gray-50">
+        <button id="closeSidebarBtn" class="p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-colors duration-200">
+            <i class="fas fa-times text-lg"></i>
         </button>
     </div>
-
+    
     <!-- Sidebar Header -->
-    <div class="border-b border-gray-100 pb-6 mb-6">
-        <h1 class="text-xl font-bold text-gray-900">ponorogocafe.id</h1>
-        <p class="text-sm text-gray-500 mt-1">Dashboard Admin</p>
+    <div class="p-6 border-b border-gray-50">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center">
+                <i class="fas fa-coffee text-white text-sm"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-semibold text-gray-900 tracking-tight">ponorogocafe.id</h1>
+                <p class="text-xs text-gray-500 font-medium">Dashboard Admin</p>
+            </div>
+        </div>
     </div>
-
+    
     <!-- Navigation Menu -->
-    <nav class="space-y-1">
+    <nav class="p-4 space-y-1">
         <a href="{{ route('dashboard') }}"
-            class="flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200
-            {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <i class="fas fa-home w-4 h-4"></i>
+            class="group flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+            {{ request()->routeIs('dashboard') ? 'bg-gray-900 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-home text-sm {{ request()->routeIs('dashboard') ? 'text-white' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
             <span>Dashboard</span>
         </a>
-
+        
         <a href="{{ route('fasilitas.index') }}"
-            class="flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200
-            {{ request()->routeIs('fasilitas.*') ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <i class="fas fa-building w-4 h-4"></i>
+            class="group flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+            {{ request()->routeIs('fasilitas.*') ? 'bg-gray-900 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-building text-sm {{ request()->routeIs('fasilitas.*') ? 'text-white' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
             <span>Fasilitas</span>
         </a>
-
+        
         <a href="{{ route('harga_menu.index') }}"
-            class="flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200
-            {{ request()->routeIs('harga_menu.*') ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <i class="fas fa-utensils w-4 h-4"></i>
+            class="group flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+            {{ request()->routeIs('harga_menu.*') ? 'bg-gray-900 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-utensils text-sm {{ request()->routeIs('harga_menu.*') ? 'text-white' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
             <span>Harga Menu</span>
         </a>
-
+        
         <a href="{{ route('kapasitas_ruang.index') }}"
-            class="flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200
-            {{ request()->routeIs('kapasitas_ruang.*') ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <i class="fas fa-users w-4 h-4"></i>
+            class="group flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+            {{ request()->routeIs('kapasitas_ruang.*') ? 'bg-gray-900 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-users text-sm {{ request()->routeIs('kapasitas_ruang.*') ? 'text-white' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
             <span>Kapasitas Ruang</span>
         </a>
-
+        
         <a href="{{ route('tempat_parkir.index') }}"
-            class="flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200
-            {{ request()->routeIs('tempat_parkir.*') ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <i class="fas fa-car w-4 h-4"></i>
+            class="group flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+            {{ request()->routeIs('tempat_parkir.*') ? 'bg-gray-900 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-car text-sm {{ request()->routeIs('tempat_parkir.*') ? 'text-white' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
             <span>Tempat Parkir</span>
         </a>
-
+        
         <a href="{{ route('jam_buka.index') }}"
-            class="flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200
-            {{ request()->routeIs('jam_buka.*') ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <i class="fas fa-clock w-4 h-4"></i>
+            class="group flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+            {{ request()->routeIs('jam_buka.*') ? 'bg-gray-900 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-clock text-sm {{ request()->routeIs('jam_buka.*') ? 'text-white' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
             <span>Jam Buka</span>
         </a>
-
+        
         <a href="{{ route('label.index') }}"
-            class="flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200
-            {{ request()->routeIs('label.*') ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <i class="fas fa-tag w-4 h-4"></i>
+            class="group flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+            {{ request()->routeIs('label.*') ? 'bg-gray-900 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-tag text-sm {{ request()->routeIs('label.*') ? 'text-white' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
             <span>Label</span>
         </a>
-
+        
         <!-- Separator -->
-        <div class="border-t border-gray-200 my-4"></div>
-
+        <div class="h-px bg-gray-100 my-4 mx-3"></div>
+        
         <a href="{{ route('cafe.index') }}"
-            class="flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200
-            {{ request()->routeIs('cafe.*') ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <i class="fas fa-coffee w-4 h-4"></i>
+            class="group flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+            {{ request()->routeIs('cafe.*') ? 'bg-gray-900 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-coffee text-sm {{ request()->routeIs('cafe.*') ? 'text-white' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
             <span>Daftar Cafe</span>
         </a>
-
-        <!-- Tambahkan menu Kelola Komentar di bawah ini -->
+        
         <a href="{{ route('admin.komentar.index') }}"
-            class="flex items-center space-x-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200
-            {{ request()->routeIs('admin.komentar.*') ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900' }}">
-            <i class="fas fa-comments w-4 h-4"></i>
+            class="group flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+            {{ request()->routeIs('admin.komentar.*') ? 'bg-gray-900 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+            <i class="fas fa-comments text-sm {{ request()->routeIs('admin.komentar.*') ? 'text-white' : 'text-gray-400 group-hover:text-gray-600' }}"></i>
             <span>Kelola Komentar</span>
         </a>
     </nav>

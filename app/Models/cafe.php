@@ -15,6 +15,11 @@ class Cafe extends Model
         'nama_cafe',
         'alamat',
         'alamat_url',
+        'keterangan_motor',
+        'keterangan_mobil',
+        'keterangan_mushola',
+        'keterangan_toilet',
+        'instagram_url',
         'thumbnail', // Disimpan sebagai string (path ke gambar)
         'gambar', // Disimpan dalam bentuk JSON (array)
         'hargamenu_id',
@@ -67,5 +72,6 @@ class Cafe extends Model
     {
         return $this->belongsToMany(Label::class, 'cafe_label');
     }
+    
 
 }

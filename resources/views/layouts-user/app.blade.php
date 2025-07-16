@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Rekomendasi Cafe - Ponorogo')</title>
-    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('logo_pocaf.png') }}" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -87,7 +87,7 @@
         }
 
         .retry-btn {
-            background-color: #7C6A46;
+            background-color: #996207;
             color: white;
             padding: 0.25rem 0.75rem;
             border-radius: 0.5rem;
@@ -178,7 +178,7 @@
         /* Filter Chips - Enhanced */
         .filter-chip {
             background-color: #f5efe4 !important; /* Soft brown, bisa sesuaikan */
-            color: #7C6A46 !important;
+            color: #996207 !important;
             border: 1px solid #e5dcc3 !important;
             font-weight: 200;
             letter-spacing: 0.025em;
@@ -219,7 +219,7 @@
         }
 
         .filter-chip-close {
-            color: #7C6A46;
+            color: #996207;
             font-weight: 600;
             font-size: 1rem;
             line-height: 1;
@@ -436,11 +436,11 @@
         /* Enhanced smooth gradient for coil effect */
         #spring-coil {
             background: linear-gradient(90deg, 
-                #7C6A46 0%, 
+                #996207 0%, 
                 #A0916D 25%, 
-                #7C6A46 50%, 
+                #996207 50%, 
                 #A0916D 75%, 
-                #7C6A46 100%) !important;
+                #996207 100%) !important;
             transition: opacity 0.4s ease-in-out;
         }
 
@@ -651,7 +651,7 @@
         /* Focus States */
         button:focus-visible,
         input:focus-visible {
-            outline: 2px solid #7C6A46;
+            outline: 2px solid #996207;
             outline-offset: 2px;
         }
     </style>
@@ -999,7 +999,7 @@
                 // Create filter chips with animation (simplified from first code)
                 activeFilters.forEach((filter, index) => {
                     const chip = document.createElement('div');
-                    chip.className = 'filter-chip bg-gray-200 text-[#7C6A46] px-2 py-1 rounded-full text-xs md:text-sm flex items-center gap-1 animate-fade-in';
+                    chip.className = 'filter-chip bg-gray-200 text-[#996207] px-2 py-1 rounded-full text-xs md:text-sm flex items-center gap-1 animate-fade-in';
                     chip.style.animationDelay = `${index * 50}ms`;
                     chip.innerHTML = `
                         <span>${filter.label}</span>
@@ -1169,61 +1169,26 @@
 
             // === NOTIFIKASI KOMENTAR ===
 
-            function showNotification() {
-                const notification = document.getElementById('successNotification');
-                const progressBar = document.getElementById('progressBar');
-                
-                // Show notification with slide-in animation
+            const notification = document.getElementById('notification');
+    
+            if (notification) {
+                // Tampilkan notifikasi dengan animasi
                 setTimeout(() => {
-                    notification.classList.remove('translate-x-full');
-                    notification.classList.add('translate-x-0');
-                }, 100);
-
-                // Start progress bar countdown
-                let width = 100;
-                const interval = setInterval(() => {
-                    width -= 2;
-                    progressBar.style.width = width + '%';
+                    notification.classList.remove('-translate-y-full');
+                    notification.classList.add('translate-y-0');
                     
-                    if (width <= 0) {
-                        clearInterval(interval);
-                        closeNotification();
-                    }
-                }, 100); // 5 seconds total (100 * 50ms = 5000ms)
-
-                // Store interval ID for cleanup if manually closed
-                notification.dataset.intervalId = interval;
+                    // Sembunyikan otomatis setelah 5 detik
+                    setTimeout(() => {
+                        notification.classList.remove('translate-y-0');
+                        notification.classList.add('-translate-y-full');
+                        
+                        // Hapus element setelah animasi selesai (300ms)
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 300);
+                    }, 5000); // 5 detik
+                }, 50); // Delay kecil untuk memastikan DOM siap
             }
-
-            function closeNotification() {
-                const notification = document.getElementById('successNotification');
-                const intervalId = notification.dataset.intervalId;
-                
-                // Clear auto-close interval
-                if (intervalId) {
-                    clearInterval(intervalId);
-                }
-                
-                // Hide notification with slide-up animation
-                notification.classList.remove('translate-y-0');
-                notification.classList.add('-translate-y-full');
-                
-                // Remove from DOM after animation
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 300);
-            }
-
-            // Close notification when clicking outside (optional)
-            document.addEventListener('click', function(event) {
-                const notification = document.getElementById('successNotification');
-                if (notification && !notification.contains(event.target)) {
-                    // Uncomment the line below if you want to close on outside click
-                    // closeNotification();
-                }
-            });
             
 
             
@@ -1308,14 +1273,7 @@
                 if (modal.querySelector('#modalCafeParking')) {
                     modal.querySelector('#modalCafeParking').textContent = cafeData.tempatparkir?.tempat_parkir || 'Tidak diketahui';
                 }
-                
-                // Maps link
-                const modalMaps = modal.querySelector('#modalCafeMaps');
-                if (modalMaps) {
-                    modalMaps.href = cafeData.alamat_url || 
-                        `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((cafeData.nama_cafe || '') + ' ' + (cafeData.alamat || ''))}`;
-                }
-                
+
                 // Facilities
                 const facilitiesContainer = modal.querySelector('#modalCafeFacilities');
                 if (facilitiesContainer) {
@@ -1332,6 +1290,79 @@
                         noFacility.className = 'text-gray-500 text-sm';
                         noFacility.textContent = 'Tidak ada fasilitas tersedia';
                         facilitiesContainer.appendChild(noFacility);
+                    }
+                }
+
+                // Additional information
+                if (modal.querySelector('#modalCafeMotor')) {
+                    modal.querySelector('#modalCafeMotor').textContent = cafeData.keterangan_motor || 'Tidak diketahui';
+                }
+                if (modal.querySelector('#modalCafeMobil')) {
+                    modal.querySelector('#modalCafeMobil').textContent = cafeData.keterangan_mobil || 'Tidak diketahui';
+                }
+                if (modal.querySelector('#modalCafeMushola')) {
+                    modal.querySelector('#modalCafeMushola').textContent = cafeData.keterangan_mushola || 'Tidak diketahui';
+                }
+                if (modal.querySelector('#modalCafeToilet')) {
+                    modal.querySelector('#modalCafeToilet').textContent = cafeData.keterangan_toilet || 'Tidak diketahui';
+                }
+                
+                // Instagram link - versi lebih robust
+                const instagramElement = modal.querySelector('#modalCafeInstagram');
+                if (instagramElement) {
+                    const formatInstagramUrl = (url) => {
+                        if (!url) return null;
+                        
+                        try {
+                            // Handle berbagai format:
+                            // 1. URL lengkap (https://www.instagram.com/p/xxx/)
+                            // 2. @username
+                            // 3. username saja
+                            // 4. ID post (DFfIMU9TSRj)
+                            
+                            url = url.trim();
+                            
+                            // Jika sudah berupa URL valid
+                            if (/^https?:\/\/(www\.)?instagram\.com/.test(url)) {
+                                return url;
+                            }
+                            
+                            // Jika berupa @username
+                            if (url.startsWith('@')) {
+                                return `https://instagram.com/${url.substring(1)}`;
+                            }
+                            
+                            // Jika berupa ID post (contoh: DFfIMU9TSRj)
+                            if (/^[A-Za-z0-9_-]+$/.test(url)) {
+                                return `https://www.instagram.com/p/${url}/`;
+                            }
+                            
+                            // Default anggap sebagai username
+                            return `https://instagram.com/${url}`;
+                        } catch (e) {
+                            console.error('Error formatting Instagram URL:', e);
+                            return null;
+                        }
+                    };
+
+                    const igUrl = formatInstagramUrl(cafeData.instagram_url);
+                    
+                    if (igUrl) {
+                        instagramElement.innerHTML = `
+                            <div class="instagram-link inline-flex items-center text-[#996207] text-sm font-medium cursor-pointer hover:opacity-80 transition-opacity">
+                                <i class="fab fa-instagram mr-2 w-4 h-4 text-center"></i>
+                                <span>${cafeData.instagram_url.includes('/p/') ? 'Lihat Postingan' : 'Kunjungi Instagram'}</span>
+                            </div>
+                        `;
+                        
+                        instagramElement.querySelector('.instagram-link').addEventListener('click', (e) => {
+                            e.preventDefault();
+                            window.open(igUrl, '_blank', 'noopener,noreferrer');
+                        });
+                        
+                        instagramElement.classList.remove('hidden');
+                    } else {
+                        instagramElement.classList.add('hidden');
                     }
                 }
 
@@ -1391,24 +1422,18 @@
                 }
             };
 
-            // Close modal when clicking outside
+            // Update the modal closing logic
             document.addEventListener('click', function(e) {
                 if (!currentOpenModal) return;
-    
+
                 const modal = document.getElementById(currentOpenModal);
                 if (!modal) return;
                 
-                // Cek apakah yang diklik adalah:
-                // 1. Elemen di luar modal
-                // 2. Bukan elemen input/textarea/form
-                // 3. Bukan elemen dalam modal content
-                const isOutsideModal = !e.target.closest('.modal-content') && 
-                                    !e.target.closest('input') && 
-                                    !e.target.closest('textarea') && 
-                                    !e.target.closest('form') &&
-                                    !e.target.closest('.cafe-card');
+                // Get the backdrop element
+                const backdrop = modal.querySelector('.fixed.inset-0.transition-opacity');
                 
-                if (isOutsideModal) {
+                // Only close if clicking directly on backdrop or its child
+                if (e.target === backdrop || e.target === backdrop.firstElementChild) {
                     closeModal(currentOpenModal);
                 }
             });
@@ -1468,154 +1493,68 @@
 
             
             // =============================================
-            // COMMENT SYSTEM IMPLEMENTATION
+            // COMMENT SYSTEM IMPLEMENTATION - FIXED VERSION
             // =============================================
-            // Handle comment form submission with AJAX
-            function setupCommentForm() {
-                const commentForm = cafeModal.querySelector('.comment-form');
-                if (!commentForm) return;
 
-                commentForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const form = this;
-                    const submitBtn = form.querySelector('button[type="submit"]');
-                    const originalBtnText = submitBtn.innerHTML;
-                        
-                    // Tampilkan loading state
-                    submitBtn.innerHTML = `
-                        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Mengirim...
-                    `;
-                    submitBtn.disabled = true;
-
-                    // Simpan scroll position sebelum submit
-                    const scrollPosition = window.scrollY || window.pageYOffset;
-                    
-                    // Kirim form secara tradisional
-                    form.submit();
-                    
-                    // Setelah submit, kembalikan tombol ke state semula
-                    setTimeout(() => {
-                        submitBtn.innerHTML = originalBtnText;
-                        submitBtn.disabled = false;
-                        
-                        // Scroll kembali ke posisi semula
-                        window.scrollTo(0, scrollPosition);
-                    }, 1000);
-                });
-            }
-
-            // Fungsi untuk menampilkan notifikasi
-            function showCommentNotification(message, type = 'success') {
-                const notification = document.createElement('div');
-                notification.className = `fixed bottom-4 right-4 px-4 py-2 rounded-md shadow-lg text-white ${
-                    type === 'success' ? 'bg-green-500' : 'bg-red-500'
-                } z-50 flex items-center`;
+            function submitComment(event, cafeId) {
+                event.preventDefault();
+                const form = event.target;
+                const formData = new FormData(form);
+                const submitBtn = form.querySelector('button[type="submit"]');
                 
-                notification.innerHTML = `
-                    <span>${message}</span>
-                    <button class="ml-2" onclick="this.parentElement.remove()">
-                        &times;
-                    </button>
+                // Tampilkan loading
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `
+                    <svg class="animate-spin h-4 w-4 mr-2 inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg> Mengirim...
                 `;
-                
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    notification.remove();
-                }, 3000);
-            }
 
-            // Fungsi untuk scroll ke cafe tertentu
-            function scrollToCafe(cafeId) {
-                const element = document.getElementById('cafe-' + cafeId);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth' });
-                    // Buka modal jika ada
-                    const modal = document.getElementById('cafeModal-' + cafeId);
-                    if (modal) {
-                        modal.classList.remove('hidden');
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                     }
-                }
-            }
-
-            // Event listener untuk modal
-            if (cafeModal) {
-                // Setup form komentar saat modal dibuka
-                const modalObserver = new MutationObserver(function(mutations) {
-                    if (!cafeModal.classList.contains('hidden')) {
-                        setupCommentForm();
-                    }
-                });
-
-                modalObserver.observe(cafeModal, {
-                    attributes: true,
-                    attributeFilter: ['class']
-                });
-            }
-
-            // Close modal events
-            if (closeModal) {
-                closeModal.addEventListener('click', closeCafeModal);
-            }
-
-            // Cek jika ada hash di URL (#cafe-1)
-            if (window.location.hash) {
-                const cafeId = window.location.hash.replace('#cafe-', '');
-                setTimeout(() => scrollToCafe(cafeId), 100);
-            }
-
-            // Handle notifikasi dari session
-            @if(session('comment_success'))
-                setTimeout(() => {
-                    alert('{{ session('comment_success') }}');
-                    scrollToCafe('{{ session('cafe_id') }}');
-                }, 300);
-            @endif
-
-            if (closeModalBtn) {
-                closeModalBtn.addEventListener('click', closeCafeModal);
-            }
-
-            cafeModal.addEventListener('click', function(e) {
-                if (!e.target.closest('.inline-block')) {
-                    closeCafeModal();
-                }
-            });
-
-            // Add click event to all cafe cards
-            document.querySelectorAll('.cafe-card').forEach(card => {
-                card.addEventListener('click', function(event) {
-                    try {
-                        const cafeData = JSON.parse(this.dataset.cafe);
-                        openCafeModal(cafeData);
-                    } catch (e) {
-                        console.error('Error parsing cafe data:', e);
-                    }
-                });
-            });
-
-            // Cek notifikasi komentar saat page load
-            document.addEventListener('DOMContentLoaded', function() {
-                if (sessionStorage.getItem('showCommentSuccess')) {
-                    // Buka modal cafe yang sesuai
-                    const cafeId = sessionStorage.getItem('currentCafeId');
-                    if (cafeId) {
-                        const cafeCard = document.querySelector(`.cafe-card[data-cafe-id="${cafeId}"]`);
-                        if (cafeCard) {
-                            const cafeData = JSON.parse(cafeCard.dataset.cafe);
-                            openCafeModal(cafeData);
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Kosongkan form
+                        form.reset();
+                        
+                        // Tampilkan notifikasi
+                        showSuccessNotification(data.message);
+                        
+                        // Optional: Tambahkan komentar ke daftar tanpa reload
+                        if (data.comment) {
+                            addCommentToUI(data.comment, cafeId);
                         }
+                    } else {
+                        throw new Error(data.message || 'Gagal mengirim komentar');
                     }
-                    
-                    showToast('Komentar berhasil dikirim! Menunggu persetujuan admin.');
-                    sessionStorage.removeItem('showCommentSuccess');
-                }
-            });
+                })
+                .catch(error => {
+                    alert(error.message);
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Kirim Komentar';
+                });
+            }
+
+            function showSuccessNotification(message) {
+                // Implementasi notifikasi Anda
+                const notification = document.getElementById('notification');
+                notification.querySelector('p').textContent = message;
+                notification.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    notification.classList.add('hidden');
+                }, 5000);
+            }
 
             // =============================================
             // CAROUSEL FUNCTIONALITY
@@ -1660,7 +1599,7 @@
                 
                 // Update original indicators (keep your existing functionality)
                 indicators.forEach((indicator, idx) => {
-                    indicator.classList.toggle('bg-[#7C6A46]', idx === currentIndex);
+                    indicator.classList.toggle('bg-[#996207]', idx === currentIndex);
                     indicator.classList.toggle('w-6', idx === currentIndex);
                     indicator.classList.toggle('bg-gray-300', idx !== currentIndex);
                     indicator.classList.toggle('w-2', idx !== currentIndex);

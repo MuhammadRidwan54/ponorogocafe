@@ -21,7 +21,7 @@
                         <!-- Filter Toggle Button -->
                         <div class="flex items-center gap-2">
                             <button type="button" id="toggleFilter"
-                                class="text-[#7C6A46] hover:bg-gray-100 rounded-xl p-2 transition-all duration-300 flex-shrink-0">
+                                class="text-[#996207] hover:bg-gray-100 rounded-xl p-2 transition-all duration-300 flex-shrink-0">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
@@ -38,14 +38,14 @@
 
                         <!-- Search Button -->
                         <button type="submit"
-                            class="bg-[#7C6A46] hover:bg-[#6b5a3d] text-white rounded-xl px-4 py-2 transition-all duration-300 hover:scale-105 shadow-md flex-shrink-0">
+                            class="bg-[#996207] hover:bg-[#6b5a3d] text-white rounded-xl px-4 py-2 transition-all duration-300 hover:scale-105 shadow-md flex-shrink-0">
                             <span class="text-sm font-medium">Cari</span>
                         </button>
                     </div>
 
                     <!-- Filter Dropdown -->
                     <div id="filterDropdown"
-                        class="hidden absolute top-full mt-3 w-full bg-[#7C6A46] text-white rounded-2xl p-4 md:p-6 shadow-2xl z-20">
+                        class="hidden absolute top-full mt-3 w-full bg-[#996207] text-white rounded-2xl p-4 md:p-6 shadow-2xl z-20">
                         <!-- Harga Menu -->
                         <div class="mb-4">
                             <h3 class="font-semibold text-sm md:text-base text-white mb-2">Harga menu</h3>
@@ -55,7 +55,7 @@
                                         <input type="radio" name="harga_menu" value="{{ $menu->id }}"
                                             {{ request('harga_menu') == $menu->id ? 'checked' : '' }} class="hidden peer">
                                         <span
-                                            class="inline-block bg-white text-[#7C6A46] hover:bg-gray-50 peer-checked:bg-gray-200 peer-checked:text-[#6b5a3d] px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-all duration-300 hover:scale-105 peer-checked:scale-105">
+                                            class="inline-block bg-white text-[#996207] hover:bg-gray-50 peer-checked:bg-gray-200 peer-checked:text-[#6b5a3d] px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-all duration-300 hover:scale-105 peer-checked:scale-105">
                                             {{ $menu->harga_menu }}
                                         </span>
                                     </label>
@@ -73,7 +73,7 @@
                                             {{ request('kapasitas_ruang') == $kapasitas->id ? 'checked' : '' }}
                                             class="hidden peer">
                                         <span
-                                            class="inline-block bg-white text-[#7C6A46] hover:bg-gray-50 peer-checked:bg-gray-200 peer-checked:text-[#6b5a3d] px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-all duration-300 hover:scale-105 peer-checked:scale-105">
+                                            class="inline-block bg-white text-[#996207] hover:bg-gray-50 peer-checked:bg-gray-200 peer-checked:text-[#6b5a3d] px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-all duration-300 hover:scale-105 peer-checked:scale-105">
                                             {{ $kapasitas->kapasitas_ruang }}
                                         </span>
                                     </label>
@@ -91,7 +91,7 @@
                                             {{ in_array($item->id, request('fasilitas', [])) ? 'checked' : '' }}
                                             class="hidden peer">
                                         <span
-                                            class="inline-block bg-white text-[#7C6A46] hover:bg-gray-50 peer-checked:bg-gray-200 peer-checked:text-[#6b5a3d] px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-all duration-300 hover:scale-105 peer-checked:scale-105">
+                                            class="inline-block bg-white text-[#996207] hover:bg-gray-50 peer-checked:bg-gray-200 peer-checked:text-[#6b5a3d] px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-all duration-300 hover:scale-105 peer-checked:scale-105">
                                             {{ $item->nama_fasilitas }}
                                         </span>
                                     </label>
@@ -109,7 +109,7 @@
                                             {{ request('tempat_parkir') == $parkir->id ? 'checked' : '' }}
                                             class="hidden peer">
                                         <span
-                                            class="inline-block bg-white text-[#7C6A46] hover:bg-gray-50 peer-checked:bg-gray-200 peer-checked:text-[#6b5a3d] px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-all duration-300 hover:scale-105 peer-checked:scale-105">
+                                            class="inline-block bg-white text-[#996207] hover:bg-gray-50 peer-checked:bg-gray-200 peer-checked:text-[#6b5a3d] px-3 py-1.5 rounded-full text-xs md:text-sm font-medium transition-all duration-300 hover:scale-105 peer-checked:scale-105">
                                             {{ $parkir->tempat_parkir }}
                                         </span>
                                     </label>
@@ -120,7 +120,7 @@
                         <!-- Reset Button -->
                         <div class="flex justify-center pt-2 border-t border-white/20">
                             <button type="button" id="clearFilters"
-                                class="bg-white hover:bg-gray-100 text-[#7C6A46] px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105">
+                                class="bg-white hover:bg-gray-100 text-[#996207] px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 hover:scale-105">
                                 Reset Filter
                             </button>
                         </div>
@@ -131,7 +131,7 @@
     </div>
 
     <!-- Cafe Section -->
-    <div class="bg-gray-50 rounded-t-3xl px-4 py-6 md:py-10">
+    <div class="bg-gray-50 rounded-t-3xl px-6 py-6 md:py-10">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 md:mb-6">
                 <h2 class="text-lg md:text-2xl font-bold text-gray-900 mb-2 md:mb-0">Explore Our Cafe</h2>
@@ -166,11 +166,49 @@
 
                     @foreach ($jamBukaOptions as $val => $label)
                         <button type="submit" name="jam_buka" value="{{ $val }}"
-                            class="px-3 py-1.5 rounded-full border text-xs md:text-sm transition-all duration-300 {{ request('jam_buka', '') === $val ? 'bg-[#7C6A46] text-white border-[#7C6A46]' : 'bg-white text-gray-700 border-gray-300 hover:border-[#7C6A46] hover:text-[#7C6A46]' }}">
+                            class="px-3 py-1.5 rounded-full border text-xs md:text-sm transition-all duration-300 {{ request('jam_buka', '') == $val ? 'bg-[#996207] text-white border-[#996207]' : 'bg-white text-gray-700 border-gray-300 hover:border-[#996207] hover:text-[#996207]' }}">
                             {{ $label }}
                         </button>
                     @endforeach
                 </form>
+                <!-- Keterangan waktu buka -->
+                @if (request('jam_buka') === 'pagi')
+                    <div class="flex align-middle items-start text-xs text-gray-600 gap-1 mb-4">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" />
+                        </svg>
+                        <span>Jam buka mulai pagi hari, antara pukul <strong>07.00 - 10.59 WIB</strong></span>
+                    </div>
+                @elseif (request('jam_buka') === 'siang')
+                    <div class="flex align-middle items-start text-xs text-gray-600 gap-1 mb-4">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" />
+                        </svg>
+                        <span>Jam buka mulai siang hari, antara pukul <strong>11.00 - 14.59 WIB</strong></span>
+                    </div>
+                @elseif (request('jam_buka') === 'sore')
+                    <div class="flex align-middle items-start text-xs text-gray-600 gap-1 mb-4">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" />
+                        </svg>
+                        <span>Jam buka mulai sore hari, antara pukul <strong>15.00 - 18.00 WIB</strong></span>
+                    </div>
+                @elseif (request('jam_buka') === '24')
+                    <div class="flex align-middle items-start text-xs text-gray-600 gap-1 mb-4">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" />
+                        </svg>
+                        <span>Jam buka <strong>24 jam nonstop</strong> setiap hari</span>
+                    </div>
+                @endif
 
                 <!-- Grid View for Search Results -->
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
@@ -219,7 +257,7 @@
                                     {{ $cafe->nama_cafe }}</h3>
                                 <p class="text-gray-500 text-xs md:text-sm flex items-start gap-1 mb-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-3 h-3 mt-0.5 flex-shrink-0">
+                                        stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mt-0.5 flex-shrink-0">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -232,7 +270,7 @@
                                 @if ($cafe->labels && $cafe->labels->count() > 0)
                                     <div class="flex flex-wrap gap-1">
                                         @foreach ($cafe->labels->take(2) as $label)
-                                            <span class="bg-[#7C6A46] text-white px-2 py-0.5 rounded-full text-[10px]">
+                                            <span class="bg-[#996207] text-white px-2 py-0.5 rounded-full text-[10px]">
                                                 {{ $label->nama_label }}
                                             </span>
                                         @endforeach
@@ -306,7 +344,7 @@
                                         <p class="text-gray-500 text-xs md:text-sm flex items-start gap-1 mb-2">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor"
-                                                class="w-3 h-3 mt-0.5 flex-shrink-0">
+                                                class="w-4 h-4 mt-0.5 flex-shrink-0">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -320,7 +358,7 @@
                                             <div class="flex flex-wrap gap-1">
                                                 @foreach ($cafe->labels->take(2) as $label)
                                                     <span
-                                                        class="bg-[#7C6A46] text-white px-2 py-0.5 rounded-full text-[10px]">
+                                                        class="bg-[#996207] text-white px-2 py-0.5 rounded-full text-[10px]">
                                                         {{ $label->nama_label }}
                                                     </span>
                                                 @endforeach
@@ -333,15 +371,6 @@
                     </div>
                 </div>
 
-                {{-- <!-- Carousel Indicators -->
-                <div class="flex justify-center mt-4 gap-2">
-                    @for ($i = 0; $i < max(1, $cafes->count() - 3); $i++)
-                        <div class="indicator-dot w-2 h-2 rounded-full transition-all duration-300 cursor-pointer {{ $i === 0 ? 'bg-[#7C6A46] w-6' : 'bg-gray-300' }}" data-index="{{ $i }}"></div>
-                    @endfor
-                </div> --}}
-                <!-- Spring Elastic Indicator -->
-                <!-- Your Original Indicators (Keep existing functionality) -->
-
                 <!-- Spring Elastic Indicator (New Addition) -->
                 <div class="flex justify-center mb-8">
                     <div class="relative flex items-center gap-2 px-8 py-4 bg-gray-50 rounded-full">
@@ -353,10 +382,10 @@
                         <!-- Spring elastic center -->
                         <div class="relative mx-2">
                             <div id="spring-indicator"
-                                class="w-8 h-2 bg-[#7C6A46] rounded-full transition-all duration-500 relative spring-indicator">
+                                class="w-8 h-2 bg-[#996207] rounded-full transition-all duration-500 relative spring-indicator">
                                 <!-- Spring coil effect -->
                                 <div id="spring-coil"
-                                    class="absolute inset-0 bg-gradient-to-r from-[#7C6A46] via-[#A0916D] via-[#7C6A46] via-[#A0916D] to-[#7C6A46] rounded-full opacity-0 transition-opacity duration-300">
+                                    class="absolute inset-0 bg-gradient-to-r from-[#996207] via-[#A0916D] via-[#996207] via-[#A0916D] to-[#996207] rounded-full opacity-0 transition-opacity duration-300">
                                 </div>
                             </div>
                         </div>
@@ -371,33 +400,17 @@
 
         @if (session('success'))
             <!-- Modern Success Notification Popup -->
-            <div id="successNotification"
-                class="fixed top-4 right-4 bg-white border-l-4 border-green-500 rounded-lg shadow-2xl p-4 max-w-sm w-full mx-4 transform translate-x-full transition-all duration-300 ease-in-out z-[9999]">
-                <div class="flex items-start">
-                    <div class="flex-shrink-0">
-                        <svg class="w-5 h-5 text-green-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-3 flex-1">
-                        <div class="flex items-center justify-between">
-                            <p class="text-sm font-medium text-gray-900">Berhasil!</p>
-                            <button onclick="closeNotification()" class="text-gray-400 hover:text-gray-600 transition-colors">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
-                        </div>
-                        <p class="text-sm text-gray-600 mt-1">{{ session('success') }}</p>
-                    </div>
+            <!-- Modern Success Notification Popup -->
+            <div id="notification" class="fixed top-4 sm:top-[70px] left-1/2 transform -translate-x-1/2 -translate-y-full bg-white bg-opacity-70 backdrop-blur-md border border-white border-opacity-20 text-black p-3 rounded-lg shadow-lg z-50 transition-all duration-300 flex items-start w-[calc(100%-2rem)] sm:max-w-md sm:w-full">
+                <div class="flex-shrink-0">
+                    <img src="{{ asset('logo_pocaf.png') }}" alt="Admin" class="h-8 w-8 rounded-full object-cover">
                 </div>
-
-                <!-- Progress bar -->
-                <div class="mt-3 bg-gray-200 rounded-full h-1 overflow-hidden">
-                    <div id="progressBar" class="bg-green-500 h-full rounded-full transition-all duration-75 ease-linear"
-                        style="width: 100%"></div>
+                <div class="ml-3 flex-1 overflow-hidden">
+                    <div class="flex items-center justify-between w-full">
+                        <p class="text-sm font-semibold truncate">Admin</p>
+                        <span class="text-xs text-right text-gray-500 whitespace-nowrap">{{ now()->format('h:i A') }}</span>
+                    </div>
+                    <p class="text-sm text-gray-800 mt-1 break-words">{{ session('success') }}</p>
                 </div>
             </div>
         @endif
@@ -406,15 +419,15 @@
         <!-- Modal Popup -->
         @foreach($cafes as $cafe)
             <div id="cafeModal-{{ $cafe->id }}" class="fixed inset-0 z-50 hidden overflow-y-auto">
-                <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-4 text-center sm:block sm:p-0">
-                    <!-- Background overlay -->
-                    <div class="fixed inset-0 transition-opacity backdrop-blur-sm" aria-hidden="true">
-                        <div class="absolute inset-0 opacity-75"></div>
-                    </div>
+                <!-- Backdrop - Only this area should close the modal when clicked -->
+                <div class="fixed inset-0 transition-opacity backdrop-blur-sm" aria-hidden="true">
+                    <div class="absolute inset-0 opacity-75"></div>
+                </div>
 
-                    <!-- Modal content -->
-                    <div
-                        class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md md:max-w-4xl lg:max-w-5xl sm:w-full mx-2 sm:mx-0">
+                <!-- Modal Content - Wrapped in modal-content class -->
+                <div class="modal-content flex items-center justify-center min-h-screen pt-4 px-4 pb-4 text-center sm:block sm:p-0">
+                    <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md md:max-w-4xl lg:max-w-5xl sm:w-full mx-2 sm:mx-0">
+                        <!-- Rest of your modal content remains exactly the same -->
                         <div class="bg-white px-4 pt-4 pb-4 sm:p-6 sm:pb-4">
                             <div class="sm:flex sm:items-start">
                                 <div class="text-center sm:mt-0 sm:ml-0 sm:text-left w-full">
@@ -468,7 +481,7 @@
                                                 <div class="flex items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                         stroke-width="1.5" stroke="currentColor"
-                                                        class="w-4 h-4 mr-1 text-[#7C6A46] flex-shrink-0">
+                                                        class="w-4 h-4 mr-1 text-[#996207] flex-shrink-0">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                     </svg>
@@ -480,38 +493,55 @@
                                                 <div class="flex items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                         stroke-width="1.5" stroke="currentColor"
-                                                        class="w-4 h-4 mr-1 text-[#7C6A46] flex-shrink-0">
+                                                        class="w-4 h-4 mr-1 text-[#996207] flex-shrink-0">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
                                                     </svg>
                                                     <div>
-                                                        <p class="text-xs text-left text-gray-500">Harga Menu</p>
-                                                        <p id="modalCafePrice" class="font-medium text-sm"></p>
+                                                        <p class="text-xs text-left text-gray-500">Kapasitas Motor</p>
+                                                        <p id="modalCafeMotor" class="text-left font-medium text-sm"></p>
                                                     </div>
                                                 </div>
                                                 <div class="flex items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                         stroke-width="1.5" stroke="currentColor"
-                                                        class="w-4 h-4 mr-1 text-[#7C6A46] flex-shrink-0">
+                                                        class="w-4 h-4 mr-1 text-[#996207] flex-shrink-0">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                                     </svg>
                                                     <div>
-                                                        <p class="text-xs text-left text-gray-500">Kapasitas</p>
-                                                        <p id="modalCafeCapacity" class="font-medium text-sm"></p>
+                                                        <p class="text-xs text-left text-gray-500">Kapasitas Mobil</p>
+                                                        <p id="modalCafeMobil" class="text-left font-medium text-sm"></p>
                                                     </div>
                                                 </div>
                                                 <div class="flex items-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                         stroke-width="1.5" stroke="currentColor"
-                                                        class="w-4 h-4 mr-1 text-[#7C6A46] flex-shrink-0">
+                                                        class="w-4 h-4 mr-1 text-[#996207] flex-shrink-0">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
                                                     </svg>
                                                     <div>
-                                                        <p class="text-xs text-left text-gray-500">Parkir</p>
-                                                        <p id="modalCafeParking" class="font-medium text-sm"></p>
+                                                        <p class="text-xs text-left text-gray-500">Mushola</p>
+                                                        <p id="modalCafeMushola" class="text-left font-medium text-sm"></p>
                                                     </div>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                        stroke-width="1.5" stroke="currentColor"
+                                                        class="w-4 h-4 mr-1 text-[#996207] flex-shrink-0">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                                                    </svg>
+                                                    <div>
+                                                        <p class="text-xs text-left text-gray-500">Toilet</p>
+                                                        <p id="modalCafeToilet" class="text-left font-medium text-sm"></p>
+                                                    </div>
+                                                </div>
+                                                <!-- Instagram Link -->
+                                                <div id="modalCafeInstagram" class="hidden mt-3 cursor-pointer inline-flex items-center">
+                                                    <i class="fab fa-instagram mr-2 w-4 h-4 text-[#996207]"></i>
+                                                    <span class="text-[#996207] text-sm font-medium">Instagram</span>
                                                 </div>
                                             </div>
 
@@ -550,15 +580,15 @@
                                                                 <div class="flex items-start justify-between gap-3">
                                                                     <div class="flex-1 min-w-0">
                                                                         <div class="flex items-center gap-2 mb-2">
-                                                                            <div class="w-8 h-8 bg-gradient-to-br from-[#7C6A46] to-[#8B7355] rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                                                            <div class="w-8 h-8 bg-gradient-to-br from-[#996207] to-[#8B7355] rounded-full flex items-center justify-center text-white text-sm font-medium">
                                                                                 {{ strtoupper(substr($komen->nama, 0, 1)) }}
                                                                             </div>
                                                                             <div class="flex-1 min-w-0">
-                                                                                <p class="font-medium text-gray-900 text-sm truncate">{{ $komen->nama }}</p>
-                                                                                <p class="text-xs text-gray-500">{{ $komen->created_at->diffForHumans() }}</p>
+                                                                                <p class="font-medium text-left text-gray-900 text-sm truncate">{{ $komen->nama }}</p>
+                                                                                <p class="text-xs text-left text-gray-500">{{ $komen->created_at->diffForHumans() }}</p>
                                                                             </div>
                                                                         </div>
-                                                                        <p class="text-gray-700 text-sm leading-relaxed">{{ $komen->isi_komentar }}</p>
+                                                                        <p class="text-gray-700 text-left text-sm leading-relaxed">{{ $komen->isi_komentar }}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -576,7 +606,7 @@
 
                                                 <!-- Comment Form -->
                                                 <div class="comment-form comment-section no-modal-trigger ignore-modal bg-gray-50 rounded-lg p-4 border border-gray-200">
-                                                    <form action="{{ route('komentar.store') }}" method="POST" class="space-y-3 comment-form no-modal-trigger ignore-modal-trigger">
+                                                    <form action="{{ route('komentar.store') }}" method="POST" class="comment-form" id="commentForm-{{ $cafe->id }}" onsubmit="submitComment(event, {{ $cafe->id }})">
                                                         @csrf
                                                         <input type="hidden" name="cafe_id" value="{{ $cafe->id }}">
 
@@ -593,7 +623,7 @@
                                                                     name="isi_komentar" 
                                                                     rows="3"
                                                                     placeholder="Tulis komentar Anda tentang cafe ini..."
-                                                                    class=" no-modal-trigger w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#7C6A46] focus:border-transparent transition-colors resize-none"
+                                                                    class=" no-modal-trigger w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#996207] focus:border-transparent transition-colors resize-none"
                                                                     required
                                                                 ></textarea>
                                                             </div>
@@ -608,7 +638,7 @@
                                                             </p>
                                                             <button 
                                                                 type="submit" 
-                                                                class="bg-[#7C6A46] hover:bg-[#6B5A3D] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2 justify-center sm:justify-start"
+                                                                class="bg-[#996207] hover:bg-[#6B5A3D] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2 justify-center sm:justify-start"
                                                             >
                                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
@@ -627,11 +657,11 @@
 
                         <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse gap-2">
                             <a id="modalCafeMaps" href="#" target="_blank" rel="noopener noreferrer"
-                                class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2 bg-[#7C6A46] text-sm font-medium text-white hover:bg-[#6b5a3d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7C6A46] sm:w-auto">
+                                class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2 bg-[#996207] text-sm font-medium text-white hover:bg-[#6b5a3d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#996207] sm:w-auto">
                                 Lihat di Maps
                             </a>
                             <button type="button" onclick="closeModal('cafeModal-{{ $cafe->id }}')"
-                                class="mt-2 sm:mt-0 w-full inline-flex justify-center rounded-xl border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#7C6A46] sm:w-auto">
+                                class="mt-2 sm:mt-0 w-full inline-flex justify-center rounded-xl border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#996207] sm:w-auto">
                                 Tutup
                             </button>
                         </div>

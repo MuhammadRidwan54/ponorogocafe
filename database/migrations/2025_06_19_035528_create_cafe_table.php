@@ -16,6 +16,11 @@ return new class extends Migration
     $table->string('nama_cafe');
     $table->string('alamat');
     $table->string('alamat_url');
+    $table->string('keterangan_motor');
+    $table->string('keterangan_mobil');
+    $table->string('keterangan_mushola');
+    $table->string('keterangan_toilet');
+    $table->string('instagram_url');
     $table->string('thumbnail');
     $table->json('gambar')->nullable();
     $table->unsignedBigInteger('hargamenu_id');

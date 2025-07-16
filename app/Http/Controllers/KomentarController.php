@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 class KomentarController extends Controller
 {
     public function store(Request $request)
-{
-    $request->validate([
+    {
+        $request->validate([
             'cafe_id' => 'required|exists:cafe,id',
             'isi_komentar' => 'required|string',
         ]);
@@ -21,9 +21,8 @@ class KomentarController extends Controller
             'disetujui' => false, // Belum disetujui
         ]);
 
-        // Redirect ke halaman detail cafe, bukan back()
-        return redirect()->route('home.cafe', $request->cafe_id)
-            ->with('success', 'Komentar dikirim, menunggu persetujuan admin.');
+        // Kembali ke halaman awal dengan notifikasi
+        return redirect('/')->with('success', 'Komentar dikirim, menunggu persetujuan admin.');
     }
 
 }
