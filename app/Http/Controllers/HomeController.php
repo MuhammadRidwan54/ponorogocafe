@@ -81,19 +81,19 @@ class HomeController extends Controller
     $input = $request->only([
         'harga_menu',
         'kapasitas_ruang',
-        'tempat_parkir',
         'fasilitas',
+        'tempat_parkir',
         'jam'
     ]);
 
-    $cafes = Cafe::with(['hargamenu', 'kapasitasruang', 'tempatparkir', 'jambuka', 'fasilitas'])->get();
+    $cafes = Cafe::with(['hargamenu', 'kapasitasruang', 'fasilitas', 'tempatparkir', 'jambuka'])->get();
 
     $bobot = [
         'harga_menu'      => 0.28, // Cost
         'kapasitas_ruang' => 0.12,
-        'ac'              => 0.14,
         'tempat_ibadah'   => 0.20,
         'toilet'          => 0.14,
+        'ac'              => 0.14,
         'ruang_rapat'     => 0.10,
         'tempat_parkir'   => 0.02,
     ];
@@ -119,23 +119,23 @@ class HomeController extends Controller
 
         // Fasilitas
         $fasilitasId = $cafe->fasilitas->pluck('nama_fasilitas')->map(fn($f) => strtolower($f))->toArray();
-
-        $nilaiAc           = in_array('ac', $fasilitasId) ? 5 : 3;
+        
         $nilaiTempatIbadah = in_array('tempat ibadah', $fasilitasId) ? 5 : 3;
         $nilaiToilet       = in_array('toilet', $fasilitasId) ? 5 : 3;
+        $nilaiAc           = in_array('ac', $fasilitasId) ? 5 : 3;
         $nilaiRuangRapat   = in_array('ruang rapat', $fasilitasId) ? 5 : 3;
 
         // Tempat Parkir
         $parkir = strtolower($cafe->tempatparkir->tempat_parkir ?? '');
-        $nilaiParkir = ($parkir === 'luas (motor & mobil)') ? 5 : 3;
+        $nilaiParkir = ($parkir === 'motor >30 mobil >6') ? 5 : 3;
 
         // Skor SAW
         $score =
             ($nilaiHarga / 5) * $bobot['harga_menu'] +
             ($nilaiKapasitas / 5) * $bobot['kapasitas_ruang'] +
-            ($nilaiAc / 5) * $bobot['ac'] +
             ($nilaiTempatIbadah / 5) * $bobot['tempat_ibadah'] +
             ($nilaiToilet / 5) * $bobot['toilet'] +
+            ($nilaiAc / 5) * $bobot['ac'] +
             ($nilaiRuangRapat / 5) * $bobot['ruang_rapat'] +
             ($nilaiParkir / 5) * $bobot['tempat_parkir'];
 

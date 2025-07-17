@@ -98,7 +98,7 @@
         }
 
         .retry-btn:hover {
-            background-color: #6b5a3d;
+            background-color: #996207;
             transform: scale(1.05);
         }
 

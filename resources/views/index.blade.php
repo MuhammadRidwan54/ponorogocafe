@@ -38,7 +38,7 @@
 
                         <!-- Search Button -->
                         <button type="submit"
-                            class="bg-[#996207] hover:bg-[#6b5a3d] text-white rounded-xl px-4 py-2 transition-all duration-300 hover:scale-105 shadow-md flex-shrink-0">
+                            class="bg-[#996207] hover:bg-[#996207] text-white rounded-xl px-4 py-2 transition-all duration-300 hover:scale-105 shadow-md flex-shrink-0">
                             <span class="text-sm font-medium">Cari</span>
                         </button>
                     </div>
@@ -140,19 +140,22 @@
             @if (request()->has('search') ||
                     request()->has('harga_menu') ||
                     request()->has('kapasitas_ruang') ||
-                    request()->has('tempat_parkir') ||
-                    request()->has('fasilitas'))
+                    request()->has('fasilitas') ||
+                    request()->has('tempat_parkir')
+                )
                 <!-- Time Filter Buttons -->
                 <form action="{{ route('cafe.search') }}" method="GET" class="flex flex-wrap gap-2 mb-4 md:mb-6">
                     <input type="hidden" name="search" value="{{ request('search') }}">
                     <input type="hidden" name="harga_menu" value="{{ request('harga_menu') }}">
                     <input type="hidden" name="kapasitas_ruang" value="{{ request('kapasitas_ruang') }}">
-                    <input type="hidden" name="tempat_parkir" value="{{ request('tempat_parkir') }}">
+                    
                     @if (request()->has('fasilitas'))
                         @foreach (request('fasilitas') as $f)
                             <input type="hidden" name="fasilitas[]" value="{{ $f }}">
                         @endforeach
                     @endif
+
+                    <input type="hidden" name="tempat_parkir" value="{{ request('tempat_parkir') }}">
 
                     @php
                         $jamBukaOptions = [
@@ -455,7 +458,7 @@
                                                     class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/100 via-black/60 to-transparent text-white px-4 pb-4 pt-10 rounded-b-lg">
                                                     <h3 id="modalCafeName" class="text-lg md:text-xl text-left font-bold mb-1">
                                                     </h3>
-                                                    <div class="flex items-center text-sm md:text-base">
+                                                    <div class="flex items-start text-sm md:text-base">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                                             class="w-4 h-4 md:w-5 md:h-5 mr-1 flex-shrink-0">
@@ -464,7 +467,7 @@
                                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                                 d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                                         </svg>
-                                                        <span id="modalCafeAddress" class="line-clamp-2"></span>
+                                                        <span id="modalCafeAddress" class="text-left line-clamp-2"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -638,7 +641,7 @@
                                                             </p>
                                                             <button 
                                                                 type="submit" 
-                                                                class="bg-[#996207] hover:bg-[#6B5A3D] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2 justify-center sm:justify-start"
+                                                                class="bg-[#996207] hover:bg-[#996207] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 flex items-center gap-2 justify-center sm:justify-start"
                                                             >
                                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
@@ -657,7 +660,7 @@
 
                         <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse gap-2">
                             <a id="modalCafeMaps" href="#" target="_blank" rel="noopener noreferrer"
-                                class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2 bg-[#996207] text-sm font-medium text-white hover:bg-[#6b5a3d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#996207] sm:w-auto">
+                                class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2 bg-[#996207] text-sm font-medium text-white hover:bg-[#996207] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#996207] sm:w-auto">
                                 Lihat di Maps
                             </a>
                             <button type="button" onclick="closeModal('cafeModal-{{ $cafe->id }}')"

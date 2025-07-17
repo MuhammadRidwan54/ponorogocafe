@@ -1,5 +1,5 @@
 <!-- Modern Mobile-First Navbar -->
-<nav id="mainNav" class="bg-[#7C6A46] shadow-lg h-14 md:h-16 sticky top-0 z-50 transition-all duration-300">
+<nav id="mainNav" class="bg-[#996207] shadow-lg h-14 md:h-16 sticky top-0 z-50 transition-all duration-300">
     <div class="max-w-7xl mx-auto px-6 h-full">
         <div class="flex justify-between items-center h-full">
             <!-- Logo -->
