@@ -135,6 +135,18 @@
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 md:mb-6">
                 <h2 class="text-lg md:text-2xl font-bold text-gray-900 mb-2 md:mb-0">Explore Our Cafe</h2>
+                @unless(request()->has('search') || 
+                    request()->has('harga_menu') || 
+                    request()->has('kapasitas_ruang') || 
+                    request()->has('fasilitas') || 
+                    request()->has('tempat_parkir'))
+                    <button id="viewAllButton" class="text-[#996207] hover:text-[#7a4f06] text-sm font-medium flex items-center gap-1 transition-colors duration-200">
+                        View All
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                @endunless
             </div>
 
             @if (request()->has('search') ||
@@ -214,23 +226,21 @@
                 @endif
 
                 <!-- Grid View for Search Results -->
+                <!-- Grid View for Search Results -->
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
-                    @forelse($cafes as $cafe)
+                    @forelse($cafes as $index => $cafe)
                         <div class="cafe-card lazy-load bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 p-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
                             data-cafe-id="{{ $cafe->id }}"
                             data-cafe='@json($cafe)'
-                            onclick="openCafeModal(@js($cafe))"
-                            onclick="handleCardClick(event, @js($cafe))">
+                            onclick="openCafeModal(@js($cafe))">
+                            
                             <!-- Cafe Image with Lazy Loading -->
                             <div class="relative aspect-[3/4] rounded-md overflow-hidden progressive-image">
                                 <!-- Shimmer Placeholder -->
-                                <div
-                                    class="placeholder absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse">
+                                <div class="placeholder absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse">
                                     <div class="flex items-center justify-center h-full">
-                                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                         </svg>
                                     </div>
                                 </div>
@@ -240,15 +250,24 @@
                                     class="lazy-image w-full h-full object-cover opacity-0 transition-opacity duration-500"
                                     loading="lazy">
 
+                                <!-- SAW Score and Ranking Badge -->
+                                <div class="absolute bottom-2 left-2 z-10 flex flex-col gap-1">
+                                    <span class="bg-[#996207] text-white px-2 py-1 rounded-full text-xs font-bold shadow-sm flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                        </svg>
+                                        Skor: {{ number_format($cafe->saw_score, 2) }}
+                                    </span>
+                                    <span class="bg-white text-[#996207] px-2 py-1 rounded-full text-xs font-bold shadow-sm">
+                                        Ranking #{{ $index + 1 }}
+                                    </span>
+                                </div>
+
                                 <!-- Resize Icon Badge -->
                                 <div class="absolute top-2 right-2 z-10">
-                                    <span
-                                        class="bg-black bg-opacity-50 backdrop-blur-sm text-white px-1 py-1 rounded-full text-xs font-medium shadow-sm flex items-center">
-                                        <!-- Heroicons: Arrows Pointing Out (resize/maximize) -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M4 8V4h4M20 16v4h-4M4 16v4h4M20 8V4h-4" />
+                                    <span class="bg-black bg-opacity-50 backdrop-blur-sm text-white px-1 py-1 rounded-full text-xs font-medium shadow-sm flex items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M20 16v4h-4M4 16v4h4M20 8V4h-4" />
                                         </svg>
                                     </span>
                                 </div>
@@ -257,14 +276,12 @@
                             <!-- Cafe Info -->
                             <div class="p-2 md:p-3">
                                 <h3 class="font-semibold text-sm md:text-base text-gray-900 line-clamp-1 mb-1">
-                                    {{ $cafe->nama_cafe }}</h3>
+                                    {{ $cafe->nama_cafe }}
+                                </h3>
                                 <p class="text-gray-500 text-xs md:text-sm flex items-start gap-1 mb-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mt-0.5 flex-shrink-0">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mt-0.5 flex-shrink-0">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                     </svg>
                                     <span class="line-clamp-2">{{ $cafe->alamat }}</span>
                                 </p>
@@ -285,8 +302,7 @@
                         <div class="col-span-full text-center py-8">
                             <div class="text-gray-400 mb-3">
                                 <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
                             <p class="text-gray-500 text-sm md:text-base">Tidak ada hasil ditemukan.</p>
@@ -374,6 +390,70 @@
                     </div>
                 </div>
 
+                <!-- Grid View (hidden by default) -->
+                <div id="gridView" class="hidden">
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
+                        @foreach($cafes as $cafe)
+                            <div class="cafe-card lazy-load bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 p-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+                                data-cafe-id="{{ $cafe->id }}"
+                                data-cafe='@json($cafe)'
+                                onclick="openCafeModal(@js($cafe))">
+                                
+                                <!-- Cafe Image with Lazy Loading -->
+                                <div class="relative aspect-[3/4] rounded-md overflow-hidden progressive-image">
+                                    <!-- Shimmer Placeholder -->
+                                    <div class="placeholder absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse">
+                                        <div class="flex items-center justify-center h-full">
+                                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+
+                                    <!-- Lazy Loaded Image -->
+                                    <img data-src="{{ asset('storage/' . $cafe->thumbnail) }}" alt="{{ $cafe->nama_cafe }}"
+                                        class="lazy-image w-full h-full object-cover opacity-0 transition-opacity duration-500"
+                                        loading="lazy">
+
+                                    <!-- Resize Icon Badge -->
+                                    <div class="absolute top-2 right-2 z-10">
+                                        <span class="bg-black bg-opacity-50 backdrop-blur-sm text-white px-1 py-1 rounded-full text-xs font-medium shadow-sm flex items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M20 16v4h-4M4 16v4h4M20 8V4h-4" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Cafe Info -->
+                                <div class="p-2 md:p-3">
+                                    <h3 class="font-semibold text-sm md:text-base text-gray-900 line-clamp-1 mb-1">
+                                        {{ $cafe->nama_cafe }}
+                                    </h3>
+                                    <p class="text-gray-500 text-xs md:text-sm flex items-start gap-1 mb-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mt-0.5 flex-shrink-0">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                        </svg>
+                                        <span class="line-clamp-2">{{ $cafe->alamat }}</span>
+                                    </p>
+
+                                    <!-- Labels -->
+                                    @if ($cafe->labels && $cafe->labels->count() > 0)
+                                        <div class="flex flex-wrap gap-1">
+                                            @foreach ($cafe->labels->take(2) as $label)
+                                                <span class="bg-[#996207] text-white px-2 py-0.5 rounded-full text-[10px]">
+                                                    {{ $label->nama_label }}
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
                 <!-- Spring Elastic Indicator (New Addition) -->
                 <div class="flex justify-center mb-8">
                     <div class="relative flex items-center gap-2 px-8 py-4 bg-gray-50 rounded-full">
@@ -399,6 +479,8 @@
                         @endfor
                     </div>
                 </div>
+
+                
             @endif
 
         @if (session('success'))

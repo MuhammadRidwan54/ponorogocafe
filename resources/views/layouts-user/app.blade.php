@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,7 @@
     <link rel="icon" href="{{ asset('logo_pocaf.png') }}" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
     <style>
         /* Modern Mobile-First Styles */
         * {
@@ -42,8 +43,13 @@
         }
 
         @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
         }
 
         /* Card Animations */
@@ -134,28 +140,33 @@
             background: transparent;
             border: none;
             outline: none;
-            font-size: 1rem; /* Gunakan 1rem agar konsisten dengan Tailwind text-base */
-            color: #374151;  /* Tailwind gray-700 */
+            font-size: 1rem;
+            /* Gunakan 1rem agar konsisten dengan Tailwind text-base */
+            color: #374151;
+            /* Tailwind gray-700 */
             padding: 0.5rem 0.75rem;
             text-align: left;
             min-width: 0;
         }
 
         #searchInput::placeholder {
-            color: #9ca3af; /* Tailwind gray-400 */
+            color: #9ca3af;
+            /* Tailwind gray-400 */
             text-align: left;
         }
 
         /* Filter Sections */
         .filter-section {
-            margin-bottom: 1.5rem; /* 24px, sama dengan Tailwind space-6 */
+            margin-bottom: 1.5rem;
+            /* 24px, sama dengan Tailwind space-6 */
         }
 
         /* Filter Buttons */
         .filter-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem; /* 8px, sama dengan Tailwind space-2 */
+            gap: 0.5rem;
+            /* 8px, sama dengan Tailwind space-2 */
             justify-content: flex-start;
         }
 
@@ -171,13 +182,15 @@
             /* max-height: 60px;
             overflow-y: hidden; */
         }
+
         #selectedFilters::-webkit-scrollbar {
             display: none;
         }
 
         /* Filter Chips - Enhanced */
         .filter-chip {
-            background-color: #f5efe4 !important; /* Soft brown, bisa sesuaikan */
+            background-color: #f5efe4 !important;
+            /* Soft brown, bisa sesuaikan */
             color: #996207 !important;
             border: 1px solid #e5dcc3 !important;
             font-weight: 200;
@@ -187,7 +200,8 @@
             gap: 0.5rem;
             padding: 0.25rem 0.75rem;
             border-radius: 9999px;
-            font-size: 0.75rem; /* text-xs */
+            font-size: 0.75rem;
+            /* text-xs */
             flex-shrink: 0;
             max-width: 200px;
             overflow: hidden;
@@ -243,6 +257,7 @@
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -254,6 +269,7 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+
             to {
                 opacity: 0;
                 transform: translateY(-10px);
@@ -317,12 +333,12 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(124, 106, 70, 0.1) 20%, 
-                rgba(124, 106, 70, 0.2) 50%, 
-                rgba(124, 106, 70, 0.1) 80%, 
-                transparent 100%);
+            background: linear-gradient(90deg,
+                    transparent 0%,
+                    rgba(124, 106, 70, 0.1) 20%,
+                    rgba(124, 106, 70, 0.2) 50%,
+                    rgba(124, 106, 70, 0.1) 80%,
+                    transparent 100%);
             transform: translateX(-100%);
             transition: transform 0.6s ease;
         }
@@ -338,8 +354,10 @@
         }
 
         .spring-indicator.moving {
-            width: 4rem; /* w-16 */
-            height: 0.5rem; /* h-2 */
+            width: 4rem;
+            /* w-16 */
+            height: 0.5rem;
+            /* h-2 */
             transform: scaleX(1.6) scaleY(1.1);
             /* Removed bounce animation - now just smooth elastic stretch */
         }
@@ -356,10 +374,10 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(255, 255, 255, 0.3) 50%, 
-                transparent 100%);
+            background: linear-gradient(90deg,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.3) 50%,
+                    transparent 100%);
             border-radius: 9999px;
             animation: smooth-wave 0.8s ease-in-out;
         }
@@ -370,9 +388,11 @@
                 transform: translateX(-100%);
                 opacity: 0;
             }
+
             50% {
                 opacity: 1;
             }
+
             100% {
                 transform: translateX(100%);
                 opacity: 0;
@@ -397,10 +417,12 @@
                 transform: scale(1);
                 opacity: 0;
             }
+
             50% {
                 transform: scale(1.1);
                 opacity: 0.6;
             }
+
             100% {
                 transform: scale(1);
                 opacity: 0;
@@ -424,23 +446,29 @@
 
         /* Status text animations */
         .status-moving {
-            color: #ea580c; /* orange-600 */
+            color: #ea580c;
+            /* orange-600 */
             animation: smooth-text-pulse 1s ease-in-out infinite alternate;
         }
 
         @keyframes smooth-text-pulse {
-            0% { opacity: 0.8; }
-            100% { opacity: 1; }
+            0% {
+                opacity: 0.8;
+            }
+
+            100% {
+                opacity: 1;
+            }
         }
 
         /* Enhanced smooth gradient for coil effect */
         #spring-coil {
-            background: linear-gradient(90deg, 
-                #996207 0%, 
-                #A0916D 25%, 
-                #996207 50%, 
-                #A0916D 75%, 
-                #996207 100%) !important;
+            background: linear-gradient(90deg,
+                    #996207 0%,
+                    #A0916D 25%,
+                    #996207 50%,
+                    #A0916D 75%,
+                    #996207 100%) !important;
             transition: opacity 0.4s ease-in-out;
         }
 
@@ -454,6 +482,7 @@
                 transform: scale(1);
                 opacity: 0.7;
             }
+
             100% {
                 transform: scale(1.3);
                 opacity: 0;
@@ -477,13 +506,19 @@
 
         /* Status text animations */
         .status-moving {
-            color: #ea580c; /* orange-600 */
+            color: #ea580c;
+            /* orange-600 */
             animation: text-pulse 0.5s ease-in-out infinite alternate;
         }
 
         @keyframes text-pulse {
-            0% { opacity: 0.7; }
-            100% { opacity: 1; }
+            0% {
+                opacity: 0.7;
+            }
+
+            100% {
+                opacity: 1;
+            }
         }
 
         /* Modal Animations */
@@ -496,12 +531,13 @@
         }
 
         /* Tambahkan ini di style Anda */
-        #cafeModal > .inline-block {
+        #cafeModal>.inline-block {
             position: relative;
             z-index: 60;
         }
-        #cafeModal > .fixed,
-        #cafeModal > .absolute {
+
+        #cafeModal>.fixed,
+        #cafeModal>.absolute {
             z-index: 50;
         }
 
@@ -509,6 +545,7 @@
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
         }
+
         #cafeGallery::-webkit-scrollbar {
             height: 6px;
         }
@@ -518,6 +555,7 @@
                 opacity: 0;
                 transform: translateY(-20px) scale(0.95);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -545,37 +583,40 @@
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
             }
+
             #cafeGallery::-webkit-scrollbar {
                 display: none;
             }
-            
+
             .cafe-card {
                 touch-action: manipulation;
             }
-            
-            button, .cafe-card {
+
+            button,
+            .cafe-card {
                 -webkit-tap-highlight-color: transparent;
             }
 
             .filter-chip {
-                font-size: 0.875rem; /* text-sm */
+                font-size: 0.875rem;
+                /* text-sm */
             }
 
             /* Scrollable Comments Container */
             .comment-card {
                 padding: 12px;
             }
-            
+
             .comment-avatar {
                 width: 32px;
                 height: 32px;
                 font-size: 12px;
             }
-            
+
             .comment-form {
                 padding: 16px;
             }
-            
+
         }
 
         /* Pointer Events for Modals */
@@ -599,8 +640,13 @@
         }
 
         @keyframes highlight {
-            0% { background-color: rgba(124, 106, 70, 0.3); }
-            100% { background-color: transparent; }
+            0% {
+                background-color: rgba(124, 106, 70, 0.3);
+            }
+
+            100% {
+                background-color: transparent;
+            }
         }
 
         .loading-spinner {
@@ -623,21 +669,21 @@
                 max-height: 400px;
                 overflow-y: auto;
             }
-            
+
             .comments-container::-webkit-scrollbar {
                 width: 4px;
             }
-            
+
             .comments-container::-webkit-scrollbar-track {
                 background: #f1f1f1;
                 border-radius: 2px;
             }
-            
+
             .comments-container::-webkit-scrollbar-thumb {
                 background: #c1c1c1;
                 border-radius: 2px;
             }
-            
+
             .comments-container::-webkit-scrollbar-thumb:hover {
                 background: #a8a8a8;
             }
@@ -738,38 +784,38 @@
 
                 loadImage(img) {
                     if (this.loadedImages.has(img)) return;
-                    
+
                     const card = img.closest('.cafe-card');
                     const placeholder = img.parentElement.querySelector('.placeholder');
-                    
+
                     if (card) card.classList.add('loading');
-                    
+
                     const imageLoader = new Image();
-                    
+
                     imageLoader.onload = () => {
                         img.src = img.dataset.src;
                         img.classList.add('loaded');
-                        
+
                         if (placeholder) {
                             placeholder.style.opacity = '0';
                             setTimeout(() => placeholder.remove(), 300);
                         }
-                        
+
                         if (card) card.classList.remove('loading');
                         this.loadedImages.add(img);
                         delete img.dataset.src;
                     };
-                    
+
                     imageLoader.onerror = () => {
                         this.handleImageError(img, card, placeholder);
                     };
-                    
+
                     imageLoader.src = img.dataset.src;
                 }
 
                 handleImageError(img, card, placeholder) {
                     if (card) card.classList.remove('loading');
-                    
+
                     const errorDiv = document.createElement('div');
                     errorDiv.className = 'image-error w-full h-full';
                     errorDiv.innerHTML = `
@@ -780,9 +826,9 @@
                         <span>Gambar tidak dapat dimuat</span>
                         <button class="retry-btn" data-retry-src="${img.dataset.src}">Coba Lagi</button>
                     `;
-                    
+
                     img.parentElement.replaceChild(errorDiv, img);
-                    
+
                     if (placeholder) {
                         placeholder.style.opacity = '0';
                         setTimeout(() => placeholder.remove(), 300);
@@ -795,12 +841,13 @@
                             const retrySrc = e.target.dataset.retrySrc;
                             const errorDiv = e.target.closest('.image-error');
                             const container = errorDiv.parentElement;
-                            
+
                             const newImg = document.createElement('img');
-                            newImg.className = 'lazy-image w-full h-full object-cover opacity-0 transition-opacity duration-500';
+                            newImg.className =
+                                'lazy-image w-full h-full object-cover opacity-0 transition-opacity duration-500';
                             newImg.dataset.src = retrySrc;
                             newImg.alt = 'Cafe Image';
-                            
+
                             container.replaceChild(newImg, errorDiv);
                             this.loadImage(newImg);
                         }
@@ -943,10 +990,10 @@
 
             function updateSelectedFilters() {
                 if (!selectedFilters) return;
-                
+
                 selectedFilters.innerHTML = '';
                 const activeFilters = [];
-                
+
                 // Check radio buttons
                 ['harga_menu', 'kapasitas_ruang'].forEach(name => {
                     const checked = document.querySelector(`input[name="${name}"]:checked`);
@@ -999,7 +1046,8 @@
                 // Create filter chips with animation (simplified from first code)
                 activeFilters.forEach((filter, index) => {
                     const chip = document.createElement('div');
-                    chip.className = 'filter-chip bg-gray-200 text-[#996207] px-2 py-1 rounded-full text-xs md:text-sm flex items-center gap-1 animate-fade-in';
+                    chip.className =
+                        'filter-chip bg-gray-200 text-[#996207] px-2 py-1 rounded-full text-xs md:text-sm flex items-center gap-1 animate-fade-in';
                     chip.style.animationDelay = `${index * 50}ms`;
                     chip.innerHTML = `
                         <span>${filter.label}</span>
@@ -1089,14 +1137,14 @@
                     const radioChecked = document.querySelector('input[type="radio"]:checked');
                     const checkboxChecked = document.querySelector('input[type="checkbox"]:checked');
                     const submitBtn = searchForm.querySelector('button[type="submit"]');
-                    
+
                     // Validasi
                     if (!searchValue && !radioChecked && !checkboxChecked) {
                         e.preventDefault();
                         alert('Silakan masukkan kata kunci pencarian atau pilih minimal satu filter.');
                         return false;
                     }
-                    
+
                     // Tampilkan loading state
                     if (submitBtn) {
                         const originalHtml = submitBtn.innerHTML;
@@ -1108,7 +1156,7 @@
                             Mencari...
                         `;
                         submitBtn.disabled = true;
-                        
+
                         // Kembalikan state setelah form selesai diproses
                         setTimeout(() => {
                             submitBtn.innerHTML = originalHtml;
@@ -1124,17 +1172,17 @@
                     e.preventDefault();
                     document.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked')
                         .forEach(input => input.checked = false);
-                    
+
                     if (selectedFilters) {
                         selectedFilters.innerHTML = '';
                         selectedFilters.classList.add('hidden');
                     }
-                    
+
                     if (searchInput) searchInput.value = '';
                     if (advancedSearchInput) advancedSearchInput.value = '';
                     if (dropdown) dropdown.classList.add('hidden');
                     if (searchDropdown) searchDropdown.classList.add('hidden');
-                    
+
                     window.location.href = window.location.origin + window.location.pathname;
                 });
             }
@@ -1170,18 +1218,18 @@
             // === NOTIFIKASI KOMENTAR ===
 
             const notification = document.getElementById('notification');
-    
+
             if (notification) {
                 // Tampilkan notifikasi dengan animasi
                 setTimeout(() => {
                     notification.classList.remove('-translate-y-full');
                     notification.classList.add('translate-y-0');
-                    
+
                     // Sembunyikan otomatis setelah 5 detik
                     setTimeout(() => {
                         notification.classList.remove('translate-y-0');
                         notification.classList.add('-translate-y-full');
-                        
+
                         // Hapus element setelah animasi selesai (300ms)
                         setTimeout(() => {
                             notification.remove();
@@ -1189,9 +1237,43 @@
                     }, 5000); // 5 detik
                 }, 50); // Delay kecil untuk memastikan DOM siap
             }
-            
 
+            // === VIEW ALL BUTTON TOGGLE FUNCTIONALITY ===
+            const viewAllButton = document.getElementById('viewAllButton');
+            const carouselView = document.querySelector('#cafeCarousel').parentElement.parentElement;
+            const gridView = document.getElementById('gridView');
             
+            if (viewAllButton && carouselView && gridView) {
+                // Function to switch to grid view
+                function showGridView() {
+                    carouselView.classList.add('hidden');
+                    gridView.classList.remove('hidden');
+                    viewAllButton.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                        Back to Home
+                    `;
+                    viewAllButton.onclick = showCarouselView;
+                }
+
+                // Function to switch to carousel view
+                function showCarouselView() {
+                    carouselView.classList.remove('hidden');
+                    gridView.classList.add('hidden');
+                    viewAllButton.innerHTML = `
+                        View All
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    `;
+                    viewAllButton.onclick = showGridView;
+                }
+
+                // Initial setup
+                viewAllButton.onclick = showGridView;
+            }
+
             // =============================================
             // ENHANCED CAFE MODAL FUNCTIONALITY
             // =============================================
@@ -1222,7 +1304,7 @@
 
                 const modalId = `cafeModal-${cafeData.id}`;
                 const modal = document.getElementById(modalId);
-                
+
                 if (!modal) {
                     console.error(`Modal with ID ${modalId} not found`);
                     return;
@@ -1250,9 +1332,10 @@
                     modal.querySelector('#modalCafeName').textContent = cafeData.nama_cafe || 'Nama Cafe';
                 }
                 if (modal.querySelector('#modalCafeAddress')) {
-                    modal.querySelector('#modalCafeAddress').textContent = cafeData.alamat || 'Alamat tidak tersedia';
+                    modal.querySelector('#modalCafeAddress').textContent = cafeData.alamat ||
+                        'Alamat tidak tersedia';
                 }
-                
+
                 // Image
                 const modalImage = modal.querySelector('#modalCafeImage');
                 if (modalImage) {
@@ -1262,16 +1345,20 @@
 
                 // Relations data
                 if (modal.querySelector('#modalCafeHours')) {
-                    modal.querySelector('#modalCafeHours').textContent = cafeData.jambuka?.jam_buka || 'Tidak diketahui';
+                    modal.querySelector('#modalCafeHours').textContent = cafeData.jambuka?.jam_buka ||
+                        'Tidak diketahui';
                 }
                 if (modal.querySelector('#modalCafePrice')) {
-                    modal.querySelector('#modalCafePrice').textContent = cafeData.hargamenu?.harga_menu || 'Tidak diketahui';
+                    modal.querySelector('#modalCafePrice').textContent = cafeData.hargamenu?.harga_menu ||
+                        'Tidak diketahui';
                 }
                 if (modal.querySelector('#modalCafeCapacity')) {
-                    modal.querySelector('#modalCafeCapacity').textContent = cafeData.kapasitasruang?.kapasitas_ruang || 'Tidak diketahui';
+                    modal.querySelector('#modalCafeCapacity').textContent = cafeData.kapasitasruang
+                        ?.kapasitas_ruang || 'Tidak diketahui';
                 }
                 if (modal.querySelector('#modalCafeParking')) {
-                    modal.querySelector('#modalCafeParking').textContent = cafeData.tempatparkir?.tempat_parkir || 'Tidak diketahui';
+                    modal.querySelector('#modalCafeParking').textContent = cafeData.tempatparkir?.tempat_parkir ||
+                        'Tidak diketahui';
                 }
 
                 // Facilities
@@ -1281,7 +1368,8 @@
                     if (cafeData.fasilitas?.length > 0) {
                         cafeData.fasilitas.forEach(facility => {
                             const facilityBadge = document.createElement('span');
-                            facilityBadge.className = 'bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs';
+                            facilityBadge.className =
+                                'bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs';
                             facilityBadge.textContent = facility.nama_fasilitas || 'Fasilitas';
                             facilitiesContainer.appendChild(facilityBadge);
                         });
@@ -1295,48 +1383,52 @@
 
                 // Additional information
                 if (modal.querySelector('#modalCafeMotor')) {
-                    modal.querySelector('#modalCafeMotor').textContent = cafeData.keterangan_motor || 'Tidak diketahui';
+                    modal.querySelector('#modalCafeMotor').textContent = cafeData.keterangan_motor ||
+                        'Tidak diketahui';
                 }
                 if (modal.querySelector('#modalCafeMobil')) {
-                    modal.querySelector('#modalCafeMobil').textContent = cafeData.keterangan_mobil || 'Tidak diketahui';
+                    modal.querySelector('#modalCafeMobil').textContent = cafeData.keterangan_mobil ||
+                        'Tidak diketahui';
                 }
                 if (modal.querySelector('#modalCafeMushola')) {
-                    modal.querySelector('#modalCafeMushola').textContent = cafeData.keterangan_mushola || 'Tidak diketahui';
+                    modal.querySelector('#modalCafeMushola').textContent = cafeData.keterangan_mushola ||
+                        'Tidak diketahui';
                 }
                 if (modal.querySelector('#modalCafeToilet')) {
-                    modal.querySelector('#modalCafeToilet').textContent = cafeData.keterangan_toilet || 'Tidak diketahui';
+                    modal.querySelector('#modalCafeToilet').textContent = cafeData.keterangan_toilet ||
+                        'Tidak diketahui';
                 }
-                
+
                 // Instagram link - versi lebih robust
                 const instagramElement = modal.querySelector('#modalCafeInstagram');
                 if (instagramElement) {
                     const formatInstagramUrl = (url) => {
                         if (!url) return null;
-                        
+
                         try {
                             // Handle berbagai format:
                             // 1. URL lengkap (https://www.instagram.com/p/xxx/)
                             // 2. @username
                             // 3. username saja
                             // 4. ID post (DFfIMU9TSRj)
-                            
+
                             url = url.trim();
-                            
+
                             // Jika sudah berupa URL valid
                             if (/^https?:\/\/(www\.)?instagram\.com/.test(url)) {
                                 return url;
                             }
-                            
+
                             // Jika berupa @username
                             if (url.startsWith('@')) {
                                 return `https://instagram.com/${url.substring(1)}`;
                             }
-                            
+
                             // Jika berupa ID post (contoh: DFfIMU9TSRj)
                             if (/^[A-Za-z0-9_-]+$/.test(url)) {
                                 return `https://www.instagram.com/p/${url}/`;
                             }
-                            
+
                             // Default anggap sebagai username
                             return `https://instagram.com/${url}`;
                         } catch (e) {
@@ -1346,7 +1438,7 @@
                     };
 
                     const igUrl = formatInstagramUrl(cafeData.instagram_url);
-                    
+
                     if (igUrl) {
                         instagramElement.innerHTML = `
                             <div class="instagram-link inline-flex items-center text-[#996207] text-sm font-medium cursor-pointer hover:opacity-80 transition-opacity">
@@ -1354,12 +1446,12 @@
                                 <span>${cafeData.instagram_url.includes('/p/') ? 'Lihat Postingan' : 'Kunjungi Instagram'}</span>
                             </div>
                         `;
-                        
+
                         instagramElement.querySelector('.instagram-link').addEventListener('click', (e) => {
                             e.preventDefault();
                             window.open(igUrl, '_blank', 'noopener,noreferrer');
                         });
-                        
+
                         instagramElement.classList.remove('hidden');
                     } else {
                         instagramElement.classList.add('hidden');
@@ -1370,7 +1462,7 @@
                 const galleryContainer = modal.querySelector('#cafeGallery');
                 if (galleryContainer) {
                     galleryContainer.innerHTML = '';
-                    
+
                     if (cafeData.gambar) {
                         let images = cafeData.gambar;
                         if (typeof cafeData.gambar === 'string') {
@@ -1382,16 +1474,18 @@
                                 images = [];
                             }
                         }
-                        
+
                         if (images.length > 0) {
                             images.forEach((image, index) => {
                                 const aspectContainer = document.createElement('div');
-                                aspectContainer.className = 'aspect-[3/4] min-w-[96px] w-24 relative rounded-lg overflow-hidden flex-shrink-0';
+                                aspectContainer.className =
+                                    'aspect-[3/4] min-w-[96px] w-24 relative rounded-lg overflow-hidden flex-shrink-0';
 
                                 const thumbnail = document.createElement('img');
                                 thumbnail.src = '{{ asset('storage') }}/' + image;
                                 thumbnail.alt = `Thumbnail ${index + 1}`;
-                                thumbnail.className = 'absolute inset-0 w-full h-full object-cover rounded-lg cursor-pointer transition-all hover:opacity-80';
+                                thumbnail.className =
+                                    'absolute inset-0 w-full h-full object-cover rounded-lg cursor-pointer transition-all hover:opacity-80';
                                 // Tambahkan event listener untuk preview gambar
                                 thumbnail.addEventListener('click', (e) => {
                                     e.stopPropagation(); // Mencegah event bubbling ke card
@@ -1428,10 +1522,10 @@
 
                 const modal = document.getElementById(currentOpenModal);
                 if (!modal) return;
-                
+
                 // Get the backdrop element
                 const backdrop = modal.querySelector('.fixed.inset-0.transition-opacity');
-                
+
                 // Only close if clicking directly on backdrop or its child
                 if (e.target === backdrop || e.target === backdrop.firstElementChild) {
                     closeModal(currentOpenModal);
@@ -1461,15 +1555,17 @@
             document.querySelectorAll('.cafe-card').forEach(card => {
                 card.addEventListener('click', function(event) {
                     // Daftar elemen yang tidak boleh memicu modal
-                    const nonTriggerElements = ['A', 'BUTTON', 'INPUT', 'TEXTAREA', 'SELECT', 'LABEL'];
+                    const nonTriggerElements = ['A', 'BUTTON', 'INPUT', 'TEXTAREA', 'SELECT',
+                        'LABEL'
+                    ];
                     const clickedElement = event.target;
-                    
+
                     // Cek hierarki elemen yang diklik
                     let currentElement = clickedElement;
                     let shouldOpenModal = true;
-                    
+
                     while (currentElement !== this) {
-                        if (nonTriggerElements.includes(currentElement.tagName) || 
+                        if (nonTriggerElements.includes(currentElement.tagName) ||
                             currentElement.isContentEditable ||
                             currentElement.hasAttribute('onclick')) {
                             shouldOpenModal = false;
@@ -1477,7 +1573,7 @@
                         }
                         currentElement = currentElement.parentElement;
                     }
-                    
+
                     if (!shouldOpenModal) return;
 
                     try {
@@ -1491,7 +1587,7 @@
                 });
             });
 
-            
+
             // =============================================
             // COMMENT SYSTEM IMPLEMENTATION - FIXED VERSION
             // =============================================
@@ -1501,7 +1597,7 @@
                 const form = event.target;
                 const formData = new FormData(form);
                 const submitBtn = form.querySelector('button[type="submit"]');
-                
+
                 // Tampilkan loading
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = `
@@ -1512,37 +1608,37 @@
                 `;
 
                 fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Kosongkan form
-                        form.reset();
-                        
-                        // Tampilkan notifikasi
-                        showSuccessNotification(data.message);
-                        
-                        // Optional: Tambahkan komentar ke daftar tanpa reload
-                        if (data.comment) {
-                            addCommentToUI(data.comment, cafeId);
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                         }
-                    } else {
-                        throw new Error(data.message || 'Gagal mengirim komentar');
-                    }
-                })
-                .catch(error => {
-                    alert(error.message);
-                })
-                .finally(() => {
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Kirim Komentar';
-                });
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Kosongkan form
+                            form.reset();
+
+                            // Tampilkan notifikasi
+                            showSuccessNotification(data.message);
+
+                            // Optional: Tambahkan komentar ke daftar tanpa reload
+                            if (data.comment) {
+                                addCommentToUI(data.comment, cafeId);
+                            }
+                        } else {
+                            throw new Error(data.message || 'Gagal mengirim komentar');
+                        }
+                    })
+                    .catch(error => {
+                        alert(error.message);
+                    })
+                    .finally(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Kirim Komentar';
+                    });
             }
 
             function showSuccessNotification(message) {
@@ -1550,7 +1646,7 @@
                 const notification = document.getElementById('notification');
                 notification.querySelector('p').textContent = message;
                 notification.classList.remove('hidden');
-                
+
                 setTimeout(() => {
                     notification.classList.add('hidden');
                 }, 5000);
@@ -1586,17 +1682,17 @@
             // Update carousel position
             function updateCarousel() {
                 if (!carousel || cards.length === 0) return;
-                
+
                 const visible = getVisibleCards();
                 const cardWidth = cards[0]?.offsetWidth || 200;
                 const gap = window.innerWidth >= 768 ? 16 : 12;
                 const translateX = -(currentIndex * (cardWidth + gap));
-                
+
                 // Start smooth spring animation before moving carousel
                 startSmoothSpringAnimation();
-                
+
                 carousel.style.transform = `translateX(${translateX}px)`;
-                
+
                 // Update original indicators (keep your existing functionality)
                 indicators.forEach((indicator, idx) => {
                     indicator.classList.toggle('bg-[#996207]', idx === currentIndex);
@@ -1611,11 +1707,11 @@
                 if (isMoving || !springIndicator) return;
 
                 isMoving = true;
-                
+
                 // Add moving class for smooth elastic effect
                 springIndicator.classList.add('moving');
                 if (springCoil) springCoil.style.opacity = '0.8';
-                
+
                 // Update status with smooth animation
                 if (statusText) {
                     statusText.textContent = 'Moving...';
@@ -1636,9 +1732,9 @@
             // Stop smooth spring animation
             function stopSmoothSpringAnimation() {
                 if (!springIndicator) return;
-                
+
                 isMoving = false;
-                
+
                 // Remove moving class with smooth transition
                 springIndicator.classList.remove('moving');
                 if (springCoil) {
@@ -1646,7 +1742,7 @@
                     springCoil.style.transition = 'opacity 0.3s ease-out';
                     springCoil.style.opacity = '0';
                 }
-                
+
                 // Update status with smooth transition
                 if (statusText) {
                     statusText.textContent = 'Ready';
@@ -1656,7 +1752,7 @@
 
             function goToNextCard() {
                 if (isMoving) return; // Prevent rapid clicking during animation
-                
+
                 const visible = getVisibleCards();
                 const maxIndex = Math.max(0, cards.length - visible);
                 currentIndex = currentIndex < maxIndex ? currentIndex + 1 : 0;
@@ -1665,7 +1761,7 @@
 
             function goToCard(idx) {
                 if (isMoving) return; // Prevent rapid clicking during animation
-                
+
                 currentIndex = idx;
                 updateCarousel();
                 stopAutoPlay();
@@ -1717,22 +1813,23 @@
             // Optional: Manual control buttons (if they exist)
             if (autoPlayToggle) {
                 let isAutoPlayEnabled = true;
-                
+
                 autoPlayToggle.addEventListener('click', () => {
                     isAutoPlayEnabled = !isAutoPlayEnabled;
-                    
+
                     if (isAutoPlayEnabled) {
                         startAutoPlay();
                         autoPlayToggle.textContent = 'Auto Play ON';
-                        autoPlayToggle.className = 'px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all font-medium';
+                        autoPlayToggle.className =
+                            'px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all font-medium';
                     } else {
                         stopAutoPlay();
                         autoPlayToggle.textContent = 'Auto Play OFF';
-                        autoPlayToggle.className = 'px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all font-medium';
+                        autoPlayToggle.className =
+                            'px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all font-medium';
                     }
                 });
             }
-            
 
             // =============================================
             // ADDITIONAL ENHANCEMENTS
@@ -1740,7 +1837,7 @@
 
             // Smooth scroll for anchor links, only if href is still "#" or "#id"
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
+                anchor.addEventListener('click', function(e) {
                     // Hanya preventDefault jika href adalah "#" atau id di halaman
                     const href = this.getAttribute('href');
                     if (href === '#' || document.querySelector(href)) {
@@ -1764,12 +1861,12 @@
             //         if (submitBtn) {
             //             const originalContent = submitBtn.innerHTML;
             //             submitBtn.innerHTML = `
-            //                 <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            //                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            //                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            //                 </svg>
-            //                 Mencari...
-            //             `;
+        //                 <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        //                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        //                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        //                 </svg>
+        //                 Mencari...
+        //             `;
             //             submitBtn.disabled = true;
             //         }
             //     });
@@ -1805,4 +1902,5 @@
 
     @stack('scripts')
 </body>
+
 </html>
