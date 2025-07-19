@@ -1242,12 +1242,62 @@
             const viewAllButton = document.getElementById('viewAllButton');
             const carouselView = document.querySelector('#cafeCarousel').parentElement.parentElement;
             const gridView = document.getElementById('gridView');
+            const defaultTitle = document.getElementById('defaultTitle');
+            const searchFormViewAll = document.getElementById('searchFormViewAll');
+            const instantSearchInput = document.getElementById('instantSearchInput');
+            
+            // Debounce function untuk optimasi performa
+            function debounce(func, timeout = 500) {
+                let timer;
+                return (...args) => {
+                    clearTimeout(timer);
+                    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+                };
+            }
+            
+            // Fungsi pencarian
+            const performSearch = debounce(function(searchTerm) {
+                if (searchTerm.length > 0) {
+                    // Filter cafe cards secara client-side
+                    const cafeCards = document.querySelectorAll('#gridView .cafe-card');
+                    cafeCards.forEach(card => {
+                        const cafeName = card.querySelector('h3').textContent.toLowerCase();
+                        const cafeAddress = card.querySelector('p span').textContent.toLowerCase();
+                        const searchText = searchTerm.toLowerCase();
+                        
+                        if (cafeName.includes(searchText) || cafeAddress.includes(searchText)) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                } else {
+                    // Tampilkan semua jika search kosong
+                    const cafeCards = document.querySelectorAll('#gridView .cafe-card');
+                    cafeCards.forEach(card => {
+                        card.style.display = 'block';
+                    });
+                }
+            });
+            
+            // Event listener untuk input pencarian
+            if (instantSearchInput) {
+                instantSearchInput.addEventListener('input', (e) => {
+                    performSearch(e.target.value);
+                });
+            }
             
             if (viewAllButton && carouselView && gridView) {
                 // Function to switch to grid view
                 function showGridView() {
                     carouselView.classList.add('hidden');
                     gridView.classList.remove('hidden');
+                    
+                    // Update UI
+                    defaultTitle.classList.add('hidden');
+                    searchFormViewAll.classList.remove('hidden');
+                    searchFormViewAll.classList.add('flex');
+                    
                     viewAllButton.innerHTML = `
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -1255,12 +1305,27 @@
                         Back to Home
                     `;
                     viewAllButton.onclick = showCarouselView;
+                    
+                    // Fokus ke input search saat beralih ke grid view
+                    setTimeout(() => {
+                        instantSearchInput.focus();
+                    }, 100);
                 }
 
                 // Function to switch to carousel view
                 function showCarouselView() {
                     carouselView.classList.remove('hidden');
                     gridView.classList.add('hidden');
+                    
+                    // Update UI
+                    defaultTitle.classList.remove('hidden');
+                    searchFormViewAll.classList.add('hidden');
+                    searchFormViewAll.classList.remove('flex');
+                    
+                    // Reset pencarian saat kembali ke carousel
+                    instantSearchInput.value = '';
+                    performSearch('');
+                    
                     viewAllButton.innerHTML = `
                         View All
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
