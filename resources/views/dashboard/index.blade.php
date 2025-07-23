@@ -127,6 +127,15 @@
     .hover\:bg-cafe-primary:hover {
         background-color: #7a4e05;
     }
+
+    .comment-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        font-size: 0.75rem;
+        min-width: 1.5rem;
+        height: 1.5rem;
+    }
 </style>
 
 <div class="space-y-6">
@@ -152,7 +161,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-gray-500 text-sm font-medium">Total Cafe</p>
-                    <h3 class="text-2xl font-bold text-gray-800">{{ $cafe_count ?? 15 }}</h3>
+                    <h3 class="text-2xl font-bold text-gray-800 count-up" data-target="{{ $cafe_count }}">0</h3>
                 </div>
                 <div class="bg-blue-100 p-3 rounded-full icon-wrapper">
                     <i class="fas fa-coffee text-blue-500 text-xl"></i>
@@ -168,7 +177,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-gray-500 text-sm font-medium">Fasilitas</p>
-                    <h3 class="text-2xl font-bold text-gray-800">{{ $fasilitas_count ?? 12 }}</h3>
+                    <h3 class="text-2xl font-bold text-gray-800 count-up" data-target="{{ $fasilitas_count }}">0</h3>
                 </div>
                 <div class="bg-green-100 p-3 rounded-full icon-wrapper">
                     <i class="fas fa-building text-green-500 text-xl"></i>
@@ -184,7 +193,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-gray-500 text-sm font-medium">Menu Items</p>
-                    <h3 class="text-2xl font-bold text-gray-800">{{ $harga_menu_count ?? 8 }}</h3>
+                    <h3 class="text-2xl font-bold text-gray-800 count-up" data-target="{{ $harga_menu_count }}">0</h3>
                 </div>
                 <div class="bg-red-100 p-3 rounded-full icon-wrapper">
                     <i class="fas fa-utensils text-red-500 text-xl"></i>
@@ -195,19 +204,29 @@
             </a>
         </div>
 
-        <!-- Total Kapasitas -->
-        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-teal-500 animate-card-pop stat-card">
+        <!-- Total Komentar (Replaced Total Kapasitas) -->
+        <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-indigo-500 animate-card-pop stat-card relative">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-gray-500 text-sm font-medium">Total Kapasitas</p>
-                    <h3 class="text-2xl font-bold text-gray-800">250</h3>
+                    <p class="text-gray-500 text-sm font-medium">Total Komentar</p>
+                    <h3 class="text-2xl font-bold text-gray-800 count-up" data-target="{{ $komentar_count }}">0</h3>
+                    @if($komentar_baru > 0)
+                        <span class="inline-block mt-1 px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                            {{ $komentar_baru }} baru butuh review
+                        </span>
+                    @endif
                 </div>
-                <div class="bg-teal-100 p-3 rounded-full icon-wrapper">
-                    <i class="fas fa-users text-teal-500 text-xl"></i>
+                <div class="bg-indigo-100 p-3 rounded-full icon-wrapper relative">
+                    <i class="fas fa-comments text-indigo-500 text-xl"></i>
+                    @if($komentar_baru > 0)
+                        <span class="comment-badge bg-red-500 text-white rounded-full flex items-center justify-center">
+                            {{ $komentar_baru }}
+                        </span>
+                    @endif
                 </div>
             </div>
-            <a href="#" class="mt-4 inline-block text-sm font-medium text-teal-500 hover:text-teal-700 transition-colors duration-300">
-                Lihat detail →
+            <a href="{{ route('admin.komentar.index') }}" class="mt-4 inline-block text-sm font-medium text-indigo-500 hover:text-indigo-700 transition-colors duration-300">
+                Kelola Komentar →
             </a>
         </div>
     </div>
@@ -270,11 +289,11 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="p-4 bg-gray-50 rounded-lg">
                 <p class="text-sm text-gray-500 font-medium">Total Data</p>
-                <p class="text-xl font-bold text-gray-800">{{ $total_data ?? 47 }}</p>
+                <p class="text-xl font-bold text-gray-800">{{ $total_data }}</p>
             </div>
             <div class="p-4 bg-gray-50 rounded-lg">
                 <p class="text-sm text-gray-500 font-medium">Data Master</p>
-                <p class="text-xl font-bold text-gray-800">{{ $total_master ?? 32 }}</p>
+                <p class="text-xl font-bold text-gray-800">{{ $total_master }}</p>
             </div>
             <div class="p-4 bg-gray-50 rounded-lg">
                 <p class="text-sm text-gray-500 font-medium">Status</p>
@@ -298,6 +317,24 @@
                 Lihat Semua
             </a>
         </div>
+        <div class="space-y-4">
+            @if($latest_comment)
+            <div class="flex items-start pb-4 border-b border-gray-100 last:border-0 last:pb-0 activity-item" 
+                 style="animation-delay: 0.1s">
+                <div class="bg-indigo-100 p-2 rounded-full mr-4 icon-wrapper">
+                    <i class="fas fa-comment text-indigo-500 text-sm"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-gray-800">
+                        <span class="font-medium">{{ $latest_comment->nama }}</span> memberi komentar di 
+                        <span class="font-medium">{{ $latest_comment->cafe->nama_cafe ?? 'Cafe' }}</span>
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1">
+                        {{ $latest_comment->created_at->diffForHumans() }}
+                    </p>
+                </div>
+            </div>
+            @endif
         <div class="space-y-4">
             <div class="flex items-start pb-4 border-b border-gray-100 last:border-0 last:pb-0 activity-item" 
                  style="animation-delay: 0.1s">
@@ -347,10 +384,60 @@
 </div>
 
 <script>
-    // Add intersection observer for scroll animations
     document.addEventListener('DOMContentLoaded', function() {
-        const animateElements = document.querySelectorAll('.animate-card-pop, .animate-slide-up, .activity-item');
+        // Enhanced count-up animation with formatting
+        const countUpElements = document.querySelectorAll('.count-up');
         
+        const easeOutExpo = (t) => {
+            return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+        };
+        
+        const formatNumber = (num) => {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        };
+        
+        const startCountUp = (element) => {
+            const target = parseInt(element.getAttribute('data-target'));
+            const duration = 2000; // ms
+            const startTime = performance.now();
+            
+            const animate = (currentTime) => {
+                const elapsedTime = currentTime - startTime;
+                const progress = Math.min(elapsedTime / duration, 1);
+                const easedProgress = easeOutExpo(progress);
+                const current = Math.floor(easedProgress * target);
+                
+                element.textContent = formatNumber(current);
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    element.textContent = formatNumber(target);
+                }
+            };
+            
+            requestAnimationFrame(animate);
+        };
+        
+        // Intersection Observer for count-up animation
+        const countUpObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    startCountUp(entry.target);
+                    countUpObserver.unobserve(entry.target);
+                }
+            });
+        }, { 
+            threshold: 0.5,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        countUpElements.forEach(el => {
+            countUpObserver.observe(el);
+        });
+        
+        // Existing scroll animations
+        const animateElements = document.querySelectorAll('.animate-card-pop, .animate-slide-up, .activity-item');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -362,7 +449,6 @@
         
         animateElements.forEach(el => {
             observer.observe(el);
-            // Pause animations initially
             el.style.animationPlayState = 'paused';
         });
     });
