@@ -1,14 +1,10 @@
 <footer class="bg-white border-t border-gray-200">
-    <div class="max-w-7xl mx-auto px-6 py-8 md:py-16">
+    <div class="max-w-7xl mx-auto px-6 py-4 md:py-8">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             <!-- Brand Section -->
             <div class="lg:col-span-2">
                 <div class="flex items-center mb-4 md:mb-6">
                     <h4 class="font-bold text-lg md:text-xl text-gray-900">ponorogocafe.id</h4>
-                    <svg class="w-5 h-5 md:w-6 md:h-6 ml-2 transform rotate-45 text-[#996207]" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 12L8 10l2-2 2 2-2 2z"/>
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z" clip-rule="evenodd"/>
-                    </svg>
                 </div>
                 <p class="text-gray-600 leading-relaxed mb-4 md:mb-6 max-w-md text-sm md:text-base">
                     Platform rekomendasi cafe terpercaya di Ponorogo. Temukan cafe terbaik untuk hangout, workspace, dan menikmati kuliner lokal dengan mudah.
@@ -35,7 +31,7 @@
                 </div>
             </div>
 
-            <!-- Quick Links -->
+            {{-- <!-- Quick Links -->
             <div>
                 <h5 class="font-semibold text-gray-900 mb-3 md:mb-4 text-sm md:text-base">Quick Links</h5>
                 <ul class="space-y-2 md:space-y-3">
@@ -56,7 +52,7 @@
                     <li><a href="#" class="text-gray-600 text-sm md:text-base hover:text-[#996207] transition-colors duration-300">Kebijakan Privasi</a></li>
                     <li><a href="#" class="text-gray-600 text-sm md:text-base hover:text-[#996207] transition-colors duration-300">Syarat & Ketentuan</a></li>
                 </ul>
-            </div>
+            </div> --}}
         </div>
 
         <!-- Bottom Section -->

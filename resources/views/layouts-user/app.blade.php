@@ -1406,6 +1406,32 @@
                 if (closeBtn) {
                     closeBtn.onclick = () => closeModal(modalId);
                 }
+                
+                const mapsLink = modal.querySelector(`#modalCafeMaps-${cafeData.id}`);
+                if (mapsLink) {
+                    // Pastikan link maps valid
+                    let mapsUrl = cafeData.alamat_url || '#';
+                    
+                    // Validasi format URL
+                    if (mapsUrl !== '#' && !mapsUrl.startsWith('http')) {
+                        mapsUrl = `https://${mapsUrl}`;
+                    }
+                    
+                    mapsLink.href = mapsUrl;
+                    
+                    // Tambahkan class disabled jika link tidak valid
+                    if (mapsUrl === '#') {
+                        mapsLink.classList.add('opacity-50', 'cursor-not-allowed');
+                        mapsLink.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            alert('Link Google Maps tidak tersedia untuk cafe ini');
+                        });
+                    } else {
+                        mapsLink.classList.remove('opacity-50', 'cursor-not-allowed');
+                        // Hapus event listener sebelumnya jika ada
+                        mapsLink.onclick = null;
+                    }
+                }
             };
 
             // Function to fill modal data
@@ -1586,6 +1612,29 @@
                     } else {
                         showNoGalleryMessage(galleryContainer);
                     }
+                }
+
+                const mapsLink = modal.querySelector(`#modalCafeMaps-${cafeData.id}`);
+                if (mapsLink) {
+                    // Pastikan link maps valid
+                    let mapsUrl = cafeData.link_maps || '#';
+                    
+                    // Jika bukan URL valid, buat URL Google Maps dari alamat
+                    if (!mapsUrl.startsWith('http') && cafeData.alamat) {
+                        const encodedAddress = encodeURIComponent(cafeData.alamat);
+                        mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+                    }
+                    
+                    mapsLink.href = mapsUrl;
+                    
+                    // Tambahkan event listener untuk memastikan link bisa diklik
+                    mapsLink.addEventListener('click', function(e) {
+                        if (mapsUrl === '#') {
+                            e.preventDefault();
+                            alert('Link maps tidak tersedia untuk cafe ini');
+                        }
+                        // Untuk URL valid, biarkan default behavior (buka tab baru)
+                    });
                 }
             }
 
@@ -1973,19 +2022,6 @@
             `;
             document.head.appendChild(style);
         });
-
-        // Add fade-in animation CSS
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(10px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            .animate-fade-in {
-                animation: fadeIn 0.3s ease-out forwards;
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 
     @stack('scripts')

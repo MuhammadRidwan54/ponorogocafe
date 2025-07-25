@@ -131,7 +131,7 @@
     </div>
 
     <!-- Cafe Section -->
-    <div class="bg-gray-50 rounded-t-3xl px-6 py-6 md:py-10">
+    <div class="bg-gray-100 rounded-t-3xl px-6 py-6 md:py-6">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 md:mb-6">
                 <!-- Teks default (show in carousel view) -->
@@ -268,12 +268,6 @@
 
                                 <!-- SAW Score and Ranking Badge -->
                                 <div class="absolute bottom-2 left-2 z-10 flex flex-col gap-1">
-                                    {{-- <span class="bg-[#996207] text-white px-2 py-1 rounded-full text-xs font-bold shadow-sm flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                                        </svg>
-                                        Skor: {{ number_format($cafe->saw_score, 2) }}
-                                    </span> --}}
                                     <span class="bg-white text-[#996207] px-2 py-1 rounded-full text-xs font-bold shadow-sm">
                                         Ranking #{{ $index + 1 }}
                                     </span>
@@ -471,8 +465,8 @@
                 </div>
 
                 <!-- Spring Elastic Indicator (New Addition) -->
-                <div class="flex justify-center mb-8">
-                    <div class="relative flex items-center gap-2 px-8 py-4 bg-gray-50 rounded-full">
+                <div class="flex justify-center">
+                    <div class="relative flex items-center gap-2 px-8 py-4 bg-gray-100 rounded-full">
                         <!-- Left indicators -->
                         @for ($i = 0; $i < 2; $i++)
                             <div class="w-2 h-2 rounded-full bg-gray-300 transition-all duration-500"></div>
@@ -592,11 +586,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex items-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                        stroke-width="1.5" stroke="currentColor"
-                                                        class="w-4 h-4 mr-1 text-[#996207] flex-shrink-0">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                                                        fill="currentColor" class="w-4 h-4 mr-1 text-[#996207] flex-shrink-0">
+                                                        <path d="M368 160c-23.1 0-44.5 6.7-62.4 18.3l-18.2-18.3h-49.4l16.4 33.3h-61.6l-16.4-33.3H96l64 64h66.7l32 64h49.4c16.5-19.3 40.8-32 68-32 48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88c0-7.3 1-14.4 2.8-21.2l-11.6-22.8h-35.5c1.1 5 1.6 10.2 1.6 15.5 0 48.6-39.4 88-88 88S32 328.6 32 280s39.4-88 88-88c23.1 0 44.5 6.7 62.4 18.3l18.2-18.3H160l-64-64h96l16.4 33.3h61.6l-16.4-33.3H368l32 32h64v32h-32l-32-32zm-80 120c0 30.9 25.1 56 56 56s56-25.1 56-56-25.1-56-56-56-56 25.1-56 56zm-176 56c30.9 0 56-25.1 56-56s-25.1-56-56-56-56 25.1-56 56 25.1 56 56 56z"/>
                                                     </svg>
                                                     <div>
                                                         <p class="text-xs text-left text-gray-500">Kapasitas Motor</p>
@@ -619,8 +611,7 @@
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                         stroke-width="1.5" stroke="currentColor"
                                                         class="w-4 h-4 mr-1 text-[#996207] flex-shrink-0">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21" />
                                                     </svg>
                                                     <div>
                                                         <p class="text-xs text-left text-gray-500">Mushola</p>
@@ -631,8 +622,7 @@
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                         stroke-width="1.5" stroke="currentColor"
                                                         class="w-4 h-4 mr-1 text-[#996207] flex-shrink-0">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
                                                     </svg>
                                                     <div>
                                                         <p class="text-xs text-left text-gray-500">Toilet</p>
@@ -757,7 +747,8 @@
                         </div>
 
                         <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse gap-2">
-                            <a id="modalCafeMaps" href="#" target="_blank" rel="noopener noreferrer"
+                            <a id="modalCafeMaps-{{ $cafe->id }}" href="{{ $cafe->alamat_url ?? '#' }}" 
+                                target="_blank" rel="noopener noreferrer"
                                 class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2 bg-[#996207] text-sm font-medium text-white hover:bg-[#996207] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#996207] sm:w-auto">
                                 Lihat di Maps
                             </a>
