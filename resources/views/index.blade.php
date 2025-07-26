@@ -276,14 +276,20 @@
                                     <span class="line-clamp-2">{{ $cafe->alamat }}</span>
                                 </p>
 
-                                <!-- Labels -->
+                                <!-- Labels Section -->
                                 @if ($cafe->labels && $cafe->labels->count() > 0)
                                     <div class="flex flex-wrap gap-1">
-                                        @foreach ($cafe->labels->take(2) as $label)
+                                        @foreach ($cafe->labels->take(3) as $label)
                                             <span class="bg-[#996207] text-white px-2 py-0.5 rounded-full text-[10px]">
                                                 {{ $label->nama_label }}
                                             </span>
                                         @endforeach
+                                        
+                                        @if ($cafe->labels->count() > 3)
+                                            <span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-[10px]">
+                                                +{{ $cafe->labels->count() - 3 }}
+                                            </span>
+                                        @endif
                                     </div>
                                 @endif
                             </div>
@@ -363,15 +369,20 @@
                                             <span class="line-clamp-2">{{ $cafe->alamat }}</span>
                                         </p>
 
-                                        <!-- Labels -->
+                                        <!-- Labels Section -->
                                         @if ($cafe->labels && $cafe->labels->count() > 0)
                                             <div class="flex flex-wrap gap-1">
-                                                @foreach ($cafe->labels->take(2) as $label)
-                                                    <span
-                                                        class="bg-[#996207] text-white px-2 py-0.5 rounded-full text-[10px]">
+                                                @foreach ($cafe->labels->take(3) as $label)
+                                                    <span class="bg-[#996207] text-white px-2 py-0.5 rounded-full text-[10px]">
                                                         {{ $label->nama_label }}
                                                     </span>
                                                 @endforeach
+                                                
+                                                @if ($cafe->labels->count() > 3)
+                                                    <span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-[10px]">
+                                                        +{{ $cafe->labels->count() - 3 }}
+                                                    </span>
+                                                @endif
                                             </div>
                                         @endif
                                     </div>
