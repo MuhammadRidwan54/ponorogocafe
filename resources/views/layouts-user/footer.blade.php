@@ -7,7 +7,7 @@
                     <h4 class="font-bold text-lg md:text-xl text-gray-900">ponorogocafe.id</h4>
                 </div>
                 <p class="text-gray-600 leading-relaxed mb-4 md:mb-6 max-w-md text-sm md:text-base">
-                    Platform rekomendasi cafe terpercaya di Ponorogo. Temukan cafe terbaik untuk hangout, workspace, dan menikmati kuliner lokal dengan mudah.
+                    Platform rekomendasi cafe di Ponorogo. Temukan cafe terbaik untuk hangout, workspace, event dan menikmati kuliner lokal.
                 </p>
                 <div class="flex items-center space-x-3 md:space-x-4">
                     <span class="text-xs md:text-sm text-gray-500">Ikuti kami:</span>
