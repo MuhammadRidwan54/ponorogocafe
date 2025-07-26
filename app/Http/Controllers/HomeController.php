@@ -44,10 +44,16 @@ class HomeController extends Controller
             $query->where('nama_cafe', 'like', '%' . $request->search . '%');
         }
         
-        // Filter berdasarkan fasilitas
+        // Filter berdasarkan fasilitas (logika AND)
         if ($request->has('fasilitas') && is_array($request->fasilitas)) {
-            $query->whereHas('fasilitas', function ($q) use ($request) {
-                $q->whereIn('fasilitas.id', $request->fasilitas);
+            $fasilitasIds = $request->fasilitas;
+            
+            $query->where(function($q) use ($fasilitasIds) {
+                foreach ($fasilitasIds as $fasilitasId) {
+                    $q->whereHas('fasilitas', function($subQuery) use ($fasilitasId) {
+                        $subQuery->where('fasilitas.id', $fasilitasId);
+                    });
+                }
             });
         }
 

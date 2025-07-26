@@ -131,38 +131,10 @@
     </div>
 
     <!-- Cafe Section -->
-    <div class="bg-gray-100 rounded-t-3xl px-6 py-6 md:py-6">
+    <div class="bg-gray-50 rounded-t-3xl px-6 py-6 md:py-10">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 md:mb-6">
-                <!-- Teks default (show in carousel view) -->
-                <h2 id="defaultTitle" class="text-lg md:text-2xl font-bold text-gray-900 mb-2 md:mb-0">Explore Our Cafe</h2>
-                
-                <!-- Form pencarian (hidden by default) -->
-                <div id="searchFormViewAll" class="hidden w-full md:w-auto">
-                    <div class="relative">
-                        <input type="text" id="instantSearchInput" placeholder="Cari cafe..." 
-                            class="w-full md:w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-[#996207] focus:border-[#996207] transition-all duration-300"
-                            autocomplete="off">
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-
-                @unless(request()->has('search') || 
-                    request()->has('harga_menu') || 
-                    request()->has('kapasitas_ruang') || 
-                    request()->has('fasilitas') || 
-                    request()->has('tempat_parkir'))
-                    <button id="viewAllButton" class="text-[#996207] hover:text-[#7a4f06] text-sm font-medium flex items-center gap-1 transition-colors duration-200">
-                        View All
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
-                @endunless
+                <h2 class="text-lg md:text-2xl font-bold text-gray-900 mb-2 md:mb-0">Explore Our Cafe</h2>
             </div>
 
             @if (request()->has('search') ||
@@ -242,21 +214,23 @@
                 @endif
 
                 <!-- Grid View for Search Results -->
-                <!-- Grid View for Search Results -->
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
-                    @forelse($cafes as $index => $cafe)
+                    @forelse($cafes as $cafeIndex => $cafe)
                         <div class="cafe-card lazy-load bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 p-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
                             data-cafe-id="{{ $cafe->id }}"
                             data-cafe='@json($cafe)'
+                            onclick="openCafeModal(@js($cafe))"
                             onclick="handleCardClick(event, @js($cafe))">
-                            
                             <!-- Cafe Image with Lazy Loading -->
                             <div class="relative aspect-[3/4] rounded-md overflow-hidden progressive-image">
                                 <!-- Shimmer Placeholder -->
-                                <div class="placeholder absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse">
+                                <div
+                                    class="placeholder absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse">
                                     <div class="flex items-center justify-center h-full">
-                                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                         </svg>
                                     </div>
                                 </div>
@@ -269,15 +243,19 @@
                                 <!-- SAW Score and Ranking Badge -->
                                 <div class="absolute bottom-2 left-2 z-10 flex flex-col gap-1">
                                     <span class="bg-white text-[#996207] px-2 py-1 rounded-full text-xs font-bold shadow-sm">
-                                        Ranking #{{ $index + 1 }}
+                                        Ranking #{{ $cafeIndex + 1 }}
                                     </span>
                                 </div>
 
                                 <!-- Resize Icon Badge -->
                                 <div class="absolute top-2 right-2 z-10">
-                                    <span class="bg-black bg-opacity-50 backdrop-blur-sm text-white px-1 py-1 rounded-full text-xs font-medium shadow-sm flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M20 16v4h-4M4 16v4h4M20 8V4h-4" />
+                                    <span
+                                        class="bg-black bg-opacity-50 backdrop-blur-sm text-white px-1 py-1 rounded-full text-xs font-medium shadow-sm flex items-center">
+                                        <!-- Heroicons: Arrows Pointing Out (resize/maximize) -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 8V4h4M20 16v4h-4M4 16v4h4M20 8V4h-4" />
                                         </svg>
                                     </span>
                                 </div>
@@ -286,12 +264,14 @@
                             <!-- Cafe Info -->
                             <div class="p-2 md:p-3">
                                 <h3 class="font-semibold text-sm md:text-base text-gray-900 line-clamp-1 mb-1">
-                                    {{ $cafe->nama_cafe }}
-                                </h3>
+                                    {{ $cafe->nama_cafe }}</h3>
                                 <p class="text-gray-500 text-xs md:text-sm flex items-start gap-1 mb-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mt-0.5 flex-shrink-0">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mt-0.5 flex-shrink-0">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                                     </svg>
                                     <span class="line-clamp-2">{{ $cafe->alamat }}</span>
                                 </p>
@@ -312,7 +292,8 @@
                         <div class="col-span-full text-center py-8">
                             <div class="text-gray-400 mb-3">
                                 <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
                             <p class="text-gray-500 text-sm md:text-base">Tidak ada hasil ditemukan.</p>
@@ -400,73 +381,9 @@
                     </div>
                 </div>
 
-                <!-- Grid View (hidden by default) -->
-                <div id="gridView" class="hidden">
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4">
-                        @foreach($cafes as $cafe)
-                            <div class="cafe-card lazy-load bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 p-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-                                data-cafe-id="{{ $cafe->id }}"
-                                data-cafe='@json($cafe)'
-                                onclick="openCafeModal(@js($cafe))">
-                                
-                                <!-- Cafe Image with Lazy Loading -->
-                                <div class="relative aspect-[3/4] rounded-md overflow-hidden progressive-image">
-                                    <!-- Shimmer Placeholder -->
-                                    <div class="placeholder absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse">
-                                        <div class="flex items-center justify-center h-full">
-                                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                            </svg>
-                                        </div>
-                                    </div>
-
-                                    <!-- Lazy Loaded Image -->
-                                    <img data-src="{{ asset('storage/' . $cafe->thumbnail) }}" alt="{{ $cafe->nama_cafe }}"
-                                        class="lazy-image w-full h-full object-cover opacity-0 transition-opacity duration-500"
-                                        loading="lazy">
-
-                                    <!-- Resize Icon Badge -->
-                                    <div class="absolute top-2 right-2 z-10">
-                                        <span class="bg-black bg-opacity-50 backdrop-blur-sm text-white px-1 py-1 rounded-full text-xs font-medium shadow-sm flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M20 16v4h-4M4 16v4h4M20 8V4h-4" />
-                                            </svg>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <!-- Cafe Info -->
-                                <div class="p-2 md:p-3">
-                                    <h3 class="font-semibold text-sm md:text-base text-gray-900 line-clamp-1 mb-1">
-                                        {{ $cafe->nama_cafe }}
-                                    </h3>
-                                    <p class="text-gray-500 text-xs md:text-sm flex items-start gap-1 mb-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mt-0.5 flex-shrink-0">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                                        </svg>
-                                        <span class="line-clamp-2">{{ $cafe->alamat }}</span>
-                                    </p>
-
-                                    <!-- Labels -->
-                                    @if ($cafe->labels && $cafe->labels->count() > 0)
-                                        <div class="flex flex-wrap gap-1">
-                                            @foreach ($cafe->labels->take(2) as $label)
-                                                <span class="bg-[#996207] text-white px-2 py-0.5 rounded-full text-[10px]">
-                                                    {{ $label->nama_label }}
-                                                </span>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-
                 <!-- Spring Elastic Indicator (New Addition) -->
-                <div class="flex justify-center">
-                    <div class="relative flex items-center gap-2 px-8 py-4 bg-gray-100 rounded-full">
+                <div class="flex justify-center mb-8">
+                    <div class="relative flex items-center gap-2 px-8 py-4 bg-gray-50 rounded-full">
                         <!-- Left indicators -->
                         @for ($i = 0; $i < 2; $i++)
                             <div class="w-2 h-2 rounded-full bg-gray-300 transition-all duration-500"></div>
@@ -489,8 +406,6 @@
                         @endfor
                     </div>
                 </div>
-
-                
             @endif
 
         @if (session('success'))
@@ -586,9 +501,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex items-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                                                        fill="currentColor" class="w-4 h-4 mr-1 text-[#996207] flex-shrink-0">
-                                                        <path d="M368 160c-23.1 0-44.5 6.7-62.4 18.3l-18.2-18.3h-49.4l16.4 33.3h-61.6l-16.4-33.3H96l64 64h66.7l32 64h49.4c16.5-19.3 40.8-32 68-32 48.6 0 88 39.4 88 88s-39.4 88-88 88-88-39.4-88-88c0-7.3 1-14.4 2.8-21.2l-11.6-22.8h-35.5c1.1 5 1.6 10.2 1.6 15.5 0 48.6-39.4 88-88 88S32 328.6 32 280s39.4-88 88-88c23.1 0 44.5 6.7 62.4 18.3l18.2-18.3H160l-64-64h96l16.4 33.3h61.6l-16.4-33.3H368l32 32h64v32h-32l-32-32zm-80 120c0 30.9 25.1 56 56 56s56-25.1 56-56-25.1-56-56-56-56 25.1-56 56zm-176 56c30.9 0 56-25.1 56-56s-25.1-56-56-56-56 25.1-56 56 25.1 56 56 56z"/>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                        stroke-width="1.5" stroke="currentColor"
+                                                        class="w-4 h-4 mr-1 text-[#996207] flex-shrink-0">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
                                                     </svg>
                                                     <div>
                                                         <p class="text-xs text-left text-gray-500">Kapasitas Motor</p>
@@ -611,7 +528,8 @@
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                         stroke-width="1.5" stroke="currentColor"
                                                         class="w-4 h-4 mr-1 text-[#996207] flex-shrink-0">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
                                                     </svg>
                                                     <div>
                                                         <p class="text-xs text-left text-gray-500">Mushola</p>
@@ -622,7 +540,8 @@
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                         stroke-width="1.5" stroke="currentColor"
                                                         class="w-4 h-4 mr-1 text-[#996207] flex-shrink-0">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 16.318A4.486 4.486 0 0012.016 15a4.486 4.486 0 00-3.198 1.318M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
                                                     </svg>
                                                     <div>
                                                         <p class="text-xs text-left text-gray-500">Toilet</p>
